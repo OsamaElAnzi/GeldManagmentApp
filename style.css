@@ -1,0 +1,159 @@
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Arial', sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background-color: #f4f4f9;
+        color: #333;
+        padding: 20px;
+    }
+
+    .main-content {
+        background-color: #fff;
+        border-radius: 10px;
+        padding: 30px;
+        max-width: 500px;
+        width: 100%;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+        text-align: center;
+        font-size: 2.2rem;
+        color: #007bff;
+        margin-bottom: 20px;
+    }
+
+    .info-van-bezit {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .info-van-bezit p {
+        font-size: 1.2rem;
+        margin: 10px 0;
+    }
+
+    .circle {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 30px 0;
+    }
+
+    
+
+    .circle-fill h1 {
+        font-size: 2.0rem;
+        color: #333;
+        margin: 0;
+    }
+
+    .wijzegings-blok,
+    .doel-aanpassen,
+    .doel-reset {
+        margin: 20px 0;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .input-van-bedrag {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .input-van-bedrag p {
+        font-size: 1.5rem;
+        color: #007bff;
+    }
+
+    input[type="text"] {
+        padding: 10px;
+        width: 80%;
+        font-size: 1rem;
+        border: 2px solid #ddd;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+    }
+
+    input[type="text"]:focus {
+        border-color: #007bff;
+        outline: none;
+    }
+
+    button {
+        padding: 12px 25px;
+        font-size: 1rem;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        margin-top: 10px;
+    }
+
+    button:hover {
+        background-color: #0056b3;
+    }
+
+    .knoppen {
+        display: flex;
+        justify-content: space-between;
+        width: 80%;
+    }
+
+    .INKOMEN {
+        background-color: #28a745;
+    }
+
+    .INKOMEN:hover {
+        background-color: #218838;
+    }
+
+    .UITGAVEN {
+        background-color: #dc3545;
+    }
+
+    .UITGAVEN:hover {
+        background-color: #c82333;
+    }
+
+    .AANPASSEN {
+        background-color: #17a2b8;
+    }
+
+    .AANPASSEN:hover {
+        background-color: #138496;
+    }
+
+    .RESET-KNOP {
+        background-color: #ffc107;
+    }
+
+    .RESET-KNOP:hover {
+        background-color: #e0a800;
+    }
+
+    .dark-day-mode button {
+        background-color: #6c757d;
+    }
+
+    .KNOPDARKMODE,
+    .KNOPDAYMODE {
+        width: 80%;
+        margin: 5px 0;
+    }
