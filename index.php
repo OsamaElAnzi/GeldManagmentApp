@@ -4,7 +4,7 @@ setupDatabase();
 
 $spaardoel = getSpaarDoel();
 $bedrag = getBedrag();
-$datum  = getDatum();
+$datum = getDatum();
 
 $condition = true;
 
@@ -53,21 +53,23 @@ $progress = ($spaardoel > 0) ? min(($bedrag / $spaardoel) * 100, 100) : 0;
     <title>Doel Aanpassen</title>
     <link rel="stylesheet" href="style.css" type="text/css">
     <style>
-            * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
+
         body {
             font-family: 'Arial', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh; 
+            min-height: 100vh;
             background-color: #f4f4f9;
             color: #333;
             padding: 20px;
         }
+
         .container {
             display: flex;
             flex-wrap: wrap;
@@ -77,6 +79,7 @@ $progress = ($spaardoel > 0) ? min(($bedrag / $spaardoel) * 100, 100) : 0;
             max-width: 1200px;
             margin: 0 auto;
         }
+
         .main-content {
             background-color: #fff;
             border-radius: 10px;
@@ -111,73 +114,85 @@ $progress = ($spaardoel > 0) ? min(($bedrag / $spaardoel) * 100, 100) : 0;
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
+
         button:hover {
             background-color: #0056b3;
         }
-    <?php if ($darkModeEnabled): ?>
-        body, html {
-            background-color: #121212;
-            color: white;
-        }
-        .main-content {
-            background-color: #1e1e1e;
-            color: white;
-        }
-        input, button {
-            background-color: #333;
-            color: white;
-        }
-        button:hover {
-            background-color: #555;
-        }
-    <?php else: ?>
-        body, html {
-            background-color: white;
-            color: black;
-        }
-        .main-content, .main-content > div {
-            background-color: #f5f5f5;
-            color: black;
-        }
-        input, button {
-            background-color: white;
-            color: black;
-        }
-        button:hover {
-            background-color: #ddd;
-        }
-    <?php endif; ?>
 
+        <?php if ($darkModeEnabled): ?>
+            body,
+            html {
+                background-color: #121212;
+                color: white;
+            }
+
+            .main-content {
+                background-color: #1e1e1e;
+                color: white;
+            }
+
+            input,
+            button {
+                background-color: #333;
+                color: white;
+            }
+
+            button:hover {
+                background-color: #555;
+            }
+
+        <?php else: ?>
+            body,
+            html {
+                background-color: white;
+                color: black;
+            }
+
+            .main-content,
+            .main-content>div {
+                background-color: #f5f5f5;
+                color: black;
+            }
+
+            input,
+            button {
+                background-color: white;
+                color: black;
+            }
+
+            button:hover {
+                background-color: #ddd;
+            }
+
+        <?php endif; ?>
     </style>
 </head>
 
 <body>
     <div class="container">
         <div class="main-content">
-        <div class="inkomen-lijst">
-            <h1>Inkomen</h1>
-            <div class="lijst">
-                <div class="title">
-                    <h3>Bedrag</h3>
-                    <h3>Datum</h3>
-                </div>
-                <div class="lijstInLijst">
-                    <?= displayInkomenLijst($condition) ?>
+            <div class="inkomen-lijst">
+                <h1>Inkomen</h1>
+                <div class="lijst">
+                    <div class="title">
+                        <h2>Bedrag</h2>
+                        <h2>Datum</h2>
+                    </div>
+                    <?php displayInkomenLijst($condition); ?>
                 </div>
             </div>
-        </div>
         </div>
         <div class="main-content">
             <h1>Doel</h1>
             <div class="info-van-bezit">
                 <p>Bedrag: <?= number_format($bedrag, 2) ?>$</p>
-                <p>Spaardoel: <?= number_format($spaardoel, 2);?>$</p>
+                <p>Spaardoel: <?= number_format($spaardoel, 2); ?>$</p>
                 <p>Nog te gaan: <?= number_format(nogTeGaanVoorDoelBehaling(), 2); ?>$</p>
             </div>
             <div class="circle">
-            <div class="circle-fill" style="background: conic-gradient(green <?= $progress ?>%, lightgrey 0%);">
-            <h1><?= number_format($progress, 0) . '%' ?></h1>
-        </div>
+                <div class="circle-fill" style="background: conic-gradient(green <?= $progress ?>%, lightgrey 0%);">
+                    <h1><?= number_format($progress, 0) . '%' ?></h1>
+                </div>
             </div>
             <div class="wijzigings-blok">
                 <form action="" method="GET">
@@ -213,9 +228,9 @@ $progress = ($spaardoel > 0) ? min(($bedrag / $spaardoel) * 100, 100) : 0;
             </div>
         </div>
         <div class="main-content">
-        <div class="afnamen-lijst">
-            <h1>afnamen</h1>
-        </div>
+            <div class="afnamen-lijst">
+                <h1>afnamen</h1>
+            </div>
         </div>
     </div>
 </body>

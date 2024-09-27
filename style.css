@@ -206,11 +206,27 @@ button:hover {
 }
 
 /* Title styling */
-.title {
+.lijstInLijst {
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    justify-content: space-around;
+    color: #218838;
+    gap: 10px; /* Adds space between elements */
+}
+.item {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
-    color: #218838;
+}
+.item h2 {
+    border-bottom: gray dashed 1px;
+}
+.title {
+        display: flex;
+        flex-direction: row; /* Stack items vertically */
+        justify-content: space-around;
+        color: #5b64b9;
+        gap: 10px; /* Adds space between elements */
 }
 
 /* List styling */

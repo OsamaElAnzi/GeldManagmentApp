@@ -112,14 +112,14 @@ function maakTableInkomenLijst() {
     $query = 'CREATE TABLE IF NOT EXISTS inkomenlijst
     (
         id INT AUTO_INCREMENT PRIMARY KEY,
-        datum DATE,
+        datum DATETIME NOT NULL,
         bedrag DECIMAL(10, 2)
     )';
     $pdo->exec($query);
 }
 maakTableInkomenLijst();
 
-function      ($datum, $bedrag) {
+function voegToeAanInkomenLijst($datum, $bedrag) {
     $pdo = conn();
     $query = 'INSERT INTO inkomenlijst (datum, bedrag) VALUES (:datum, :bedrag)';
     $stmt = $pdo->prepare($query);
@@ -132,18 +132,22 @@ function getInkomenLijst() {
     return $stmt->fetchAll();
 }
 function displayInkomenLijst($condition) {
-    if ($condition) {
-        // Iterate over the items from getInkomenLijst()
+    echo '<div class="lijstInLijst">'; 
+    if ($condition) {  // The if block is properly opened here
         foreach (getInkomenLijst() as $item) {
-            if ($item == true) {
-                echo '<h2>'.$item['datum'].'</h2>';
-                echo '<h2>+$'.$item['bedrag'].'</h2></br>' . PHP_EOL;
-            }else {
-                echo '<p>error</p>';
-            }
+            echo '<div class="item">'; // Wrap each item in its own div
+            echo '<h2>' . $item['datum'] . '</h2>';
+            echo '<h2>+' . $item['bedrag'] . '</h2>';
+            echo '</div>'; // Close the item div
         }
     } else {
         echo '<p>No income list to display.</p>';
     }
+    echo '</div>';  // Close the outer div
 }
+
+
+
+
+
 
