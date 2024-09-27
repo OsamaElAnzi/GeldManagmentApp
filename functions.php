@@ -1,7 +1,7 @@
 <?php
 function conn() {
     $host = 'localhost';
-    $port = '3307';
+    $port = '3306  ';
     $dbname = 'REKENING'; 
     $user = 'root';
     $pass = '';
@@ -119,7 +119,7 @@ function maakTableInkomenLijst() {
 }
 maakTableInkomenLijst();
 
-function voegToeAanInkomenLijst($datum, $bedrag) {
+function      ($datum, $bedrag) {
     $pdo = conn();
     $query = 'INSERT INTO inkomenlijst (datum, bedrag) VALUES (:datum, :bedrag)';
     $stmt = $pdo->prepare($query);
@@ -137,7 +137,7 @@ function displayInkomenLijst($condition) {
         foreach (getInkomenLijst() as $item) {
             if ($item == true) {
                 echo '<h2>'.$item['datum'].'</h2>';
-                echo '<h2>+$'.$item['bedrag'].'</h2></BR' . PHP_EOL;
+                echo '<h2>+$'.$item['bedrag'].'</h2></br>' . PHP_EOL;
             }else {
                 echo '<p>error</p>';
             }

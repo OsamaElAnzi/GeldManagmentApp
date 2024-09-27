@@ -53,114 +53,100 @@ $progress = ($spaardoel > 0) ? min(($bedrag / $spaardoel) * 100, 100) : 0;
     <title>Doel Aanpassen</title>
     <link rel="stylesheet" href="style.css" type="text/css">
     <style>
-        * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+            * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; 
+            background-color: #f4f4f9;
+            color: #333;
+            padding: 20px;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .main-content {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 30px;
+            flex: 1;
+            min-width: 300px;
+            max-width: 400px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
 
-body {
-    font-family: 'Arial', sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh; /* Volledige hoogte van viewport */
-    background-color: #f4f4f9;
-    color: #333;
-    padding: 20px;
-}
+        .circle-fill {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background-color: lightgrey;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-.container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    gap: 20px; /* Ruimte tussen de kolommen */
-    max-width: 1200px;
-    margin: 0 auto;
-}
+        input[type="text"],
+        button {
+            padding: 10px;
+            font-size: 1rem;
+            border-radius: 5px;
+            border: 1px solid gray;
+        }
 
-.main-content {
-    background-color: #fff;
-    border-radius: 10px;
-    padding: 30px;
-    flex: 1;
-    min-width: 300px;
-    max-width: 400px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-}
-
-.circle-fill {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    background-color: lightgrey;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-input[type="text"],
-button {
-    padding: 10px;
-    font-size: 1rem;
-    border-radius: 5px;
-    border: 1px solid gray;
-}
-
-button {
-    background-color: #007bff;
-    color: white;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-button:hover {
-    background-color: #0056b3;
-}
-
-/* Dark mode */
-<?php if ($darkModeEnabled): ?>
-    body, html {
-        background-color: #121212;
-        color: white;
-    }
-
-    .main-content {
-        background-color: #1e1e1e;
-        color: white;
-    }
-
-    input, button {
-        background-color: #333;
-        color: white;
-    }
-
-    button:hover {
-        background-color: #555;
-    }
-
-<?php else: ?>
-    body, html {
-        background-color: white;
-        color: black;
-    }
-
-    .main-content, .main-content > div {
-        background-color: #f5f5f5;
-        color: black;
-    }
-
-    input, button {
-        background-color: white;
-        color: black;
-    }
-
-    button:hover {
-        background-color: #ddd;
-    }
-
-<?php endif; ?>
+        button {
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    <?php if ($darkModeEnabled): ?>
+        body, html {
+            background-color: #121212;
+            color: white;
+        }
+        .main-content {
+            background-color: #1e1e1e;
+            color: white;
+        }
+        input, button {
+            background-color: #333;
+            color: white;
+        }
+        button:hover {
+            background-color: #555;
+        }
+    <?php else: ?>
+        body, html {
+            background-color: white;
+            color: black;
+        }
+        .main-content, .main-content > div {
+            background-color: #f5f5f5;
+            color: black;
+        }
+        input, button {
+            background-color: white;
+            color: black;
+        }
+        button:hover {
+            background-color: #ddd;
+        }
+    <?php endif; ?>
 
     </style>
 </head>
@@ -190,10 +176,8 @@ button:hover {
             </div>
             <div class="circle">
             <div class="circle-fill" style="background: conic-gradient(green <?= $progress ?>%, lightgrey 0%);">
-    <h1><?= number_format($progress, 0) . '%' ?></h1> <!-- Hier progressie laten zien -->
-</div>
-
-    
+            <h1><?= number_format($progress, 0) . '%' ?></h1>
+        </div>
             </div>
             <div class="wijzigings-blok">
                 <form action="" method="GET">

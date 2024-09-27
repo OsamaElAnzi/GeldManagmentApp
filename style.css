@@ -1,9 +1,11 @@
+/* Global reset */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+/* Body styling */
 body {
     font-family: 'Arial', sans-serif;
     background-color: #f4f4f9;
@@ -15,19 +17,23 @@ body {
     min-height: 100vh;
 }
 
+/* Container for main content */
 .container {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    max-width: 1200px;
     gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
+/* Main content styling */
 .main-content {
     background-color: #fff;
     border-radius: 10px;
     padding: 30px;
     width: 100%;
+    height: 817px;
     max-width: 400px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
     transition: box-shadow 0.3s ease;
@@ -37,6 +43,7 @@ body {
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
 }
 
+/* Heading styling */
 h1 {
     text-align: center;
     font-size: 2rem;
@@ -44,6 +51,7 @@ h1 {
     margin-bottom: 20px;
 }
 
+/* Info section */
 .info-van-bezit {
     text-align: center;
     margin-bottom: 30px;
@@ -54,6 +62,7 @@ h1 {
     margin: 10px 0;
 }
 
+/* Circle style */
 .circle {
     display: flex;
     justify-content: center;
@@ -75,6 +84,7 @@ h1 {
     color: #333;
 }
 
+/* Form styling */
 form {
     display: flex;
     flex-direction: column;
@@ -108,6 +118,7 @@ input[type="text"]:focus {
     outline: none;
 }
 
+/* Button styling */
 button {
     padding: 10px 20px;
     font-size: 1rem;
@@ -117,20 +128,15 @@ button {
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    margin-top: 10px;
     width: 100%;
+    margin-top: 10px;
 }
 
 button:hover {
     background-color: #0056b3;
 }
 
-.knoppen {
-    display: flex;
-    gap: 10px;
-    width: 100%;
-}
-
+/* Special button classes */
 .INKOMEN {
     background-color: #28a745;
 }
@@ -163,6 +169,7 @@ button:hover {
     background-color: #e0a800;
 }
 
+/* Dark and Day mode button */
 .dark-day-mode {
     display: flex;
     flex-direction: column;
@@ -179,7 +186,7 @@ button:hover {
     background-color: #5a6268;
 }
 
-/* Mobile styles */
+/* Layout adjustments for mobile */
 @media (max-width: 768px) {
     .container {
         flex-direction: column;
@@ -196,4 +203,20 @@ button:hover {
     button {
         width: 100%;
     }
+}
+
+/* Title styling */
+.title {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    color: #218838;
+}
+
+/* List styling */
+.lijst {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
 }
