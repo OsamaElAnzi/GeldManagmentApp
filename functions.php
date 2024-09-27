@@ -1,7 +1,7 @@
 <?php
 function conn() {
     $host = 'localhost';
-    $port = '3306';
+    $port = '3307';
     $dbname = 'REKENING'; 
     $user = 'root';
     $pass = '';
@@ -58,6 +58,12 @@ function getSpaarDoel() {
     $result = $query->fetch();
     return $result? $result['spaardoel'] : 0;
 }
+function getDatum() {
+    $pdo = conn();
+    $query = $pdo->query('SELECT CURDATE() AS datum');
+    $result = $query->fetch();
+    return $result['datum'];
+}
 
 function doelAanpassen($bedragInvoeren, $type) {
     $pdo = conn();
@@ -86,8 +92,10 @@ function updateSpaarDoel($spaardoel) {
 function resetDoel() {
     if (isset($_GET['RESET-KNOP'])) { 
         $pdo = conn();
-        $resetQuery = 'UPDATE BEDRAGEN SET bedrag = 0, spaardoel = 0 LIMIT 1';
-        $pdo->exec($resetQuery);
+        $resetQueryBedragen = 'UPDATE BEDRAGEN SET bedrag = 0, spaardoel = 0 ';
+        $resetQueryInkomenLijst = 'DELETE FROM inkomenlijst'; 
+        $pdo->exec($resetQueryInkomenLijst);
+        $pdo->exec($resetQueryBedragen);
         
         return 0; 
     }
@@ -99,7 +107,43 @@ function nogTeGaanVoorDoelBehaling() {
     $verschil = $spaardoel - $huidigBedrag;
     return $verschil;
 }
-function darkMode() {
-    $bg = '<style>.main-content{background-color:black}</style>';
-    return $bg;
+function maakTableInkomenLijst() {
+    $pdo = conn();
+    $query = 'CREATE TABLE IF NOT EXISTS inkomenlijst
+    (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        datum DATE,
+        bedrag DECIMAL(10, 2)
+    )';
+    $pdo->exec($query);
 }
+maakTableInkomenLijst();
+
+function voegToeAanInkomenLijst($datum, $bedrag) {
+    $pdo = conn();
+    $query = 'INSERT INTO inkomenlijst (datum, bedrag) VALUES (:datum, :bedrag)';
+    $stmt = $pdo->prepare($query);
+    $stmt->execute(['datum' => $datum, 'bedrag' => $bedrag]);
+}
+function getInkomenLijst() {
+    $pdo = conn();
+    $query = 'SELECT * FROM inkomenlijst ORDER BY datum DESC';
+    $stmt = $pdo->query($query);
+    return $stmt->fetchAll();
+}
+function displayInkomenLijst($condition) {
+    if ($condition) {
+        // Iterate over the items from getInkomenLijst()
+        foreach (getInkomenLijst() as $item) {
+            if ($item == true) {
+                echo '<h2>'.$item['datum'].'</h2>';
+                echo '<h2>+$'.$item['bedrag'].'</h2></BR' . PHP_EOL;
+            }else {
+                echo '<p>error</p>';
+            }
+        }
+    } else {
+        echo '<p>No income list to display.</p>';
+    }
+}
+
