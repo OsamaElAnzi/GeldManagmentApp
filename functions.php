@@ -135,15 +135,55 @@ function displayInkomenLijst($condition) {
     echo '<div class="lijstInLijst">'; 
     if ($condition) {  // The if block is properly opened here
         foreach (getInkomenLijst() as $item) {
-            echo '<div class="item">'; // Wrap each item in its own div
+            echo '<div class="item">'; 
             echo '<h2>' . $item['datum'] . '</h2>';
             echo '<h2>+' . $item['bedrag'] . '</h2>';
-            echo '</div>'; // Close the item div
+            echo '</div>';
         }
     } else {
         echo '<p>No income list to display.</p>';
     }
     echo '</div>';  // Close the outer div
+}
+function maakTableUitgavenLijst() {
+    $pdo = conn();
+    $query = 'CREATE TABLE IF NOT EXISTS uitgavenlijst
+    (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        datum DATE NOT NULL,
+        bedrag DECIMAL(10, 2)
+    )';
+    $pdo->exec($query);
+}
+maakTableUitgavenLijst();
+
+function voegToeAanUitgavenLijst($datum, $bedrag) {
+    $pdo = conn();
+    $query = 'INSERT INTO uitgavenlijst (datum, bedrag) VALUES (:datum, :bedrag)';
+    $stmt = $pdo->prepare($query);
+    $stmt->execute(['datum' => $datum, 'bedrag' => $bedrag]);
+}
+
+function getUitgavenLijst() {
+    $pdo = conn();
+    $query = 'SELECT * FROM uitgavenlijst ORDER BY datum DESC';
+    $stmt = $pdo->query($query);
+    return $stmt->fetchAll();
+}
+
+function displayUitgavenLijst($condition) {
+    echo '<div class="lijstInLijst">'; 
+    if ($condition) {
+        foreach (getUitgavenLijst() as $item) {
+            echo '<div class="item">'; 
+            echo '<h2>' . $item['datum'] . '</h2>';
+            echo '<h2>-' . $item['bedrag'] . '</h2>';  // Min-teken voor uitgaven
+            echo '</div>';
+        }
+    } else {
+        echo '<p>No expenses to display.</p>';
+    }
+    echo '</div>';  // Sluit de outer div
 }
 
 

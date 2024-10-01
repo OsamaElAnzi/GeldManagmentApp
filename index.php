@@ -30,6 +30,7 @@ if (isset($_GET['bedragInvoeren']) && is_numeric($_GET['bedragInvoeren'])) {
     } elseif (isset($_GET['UITGAVEN'])) {
         $bedragInvoeren = $_GET['bedragInvoeren'];
         $bedrag = doelAanpassen($bedragInvoeren, 'UITGAVEN');
+        voegToeAanUitgavenLijst($datum, $bedrag);
     }
 } elseif (isset($_GET['SPAARDOEL']) && is_numeric($_GET['SPAARDOEL'])) {
     $spaardoel = (float) $_GET['SPAARDOEL'];
@@ -230,6 +231,13 @@ $progress = ($spaardoel > 0) ? min(($bedrag / $spaardoel) * 100, 100) : 0;
         <div class="main-content">
             <div class="afnamen-lijst">
                 <h1>afnamen</h1>
+                <div class="lijst">
+                    <div class="title">
+                        <h2>Bedrag</h2>
+                        <h2>Datum</h2>
+                    </div>
+                    <?php displayUitgavenLijst($condition); ?>
+                </div>
             </div>
         </div>
     </div>
