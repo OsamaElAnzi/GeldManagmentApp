@@ -5,7 +5,6 @@ setupDatabase();
 $spaardoel = getSpaarDoel();
 $bedrag = getBedrag();
 $datum = getDatum();
-
 $condition = true;
 
 $darkModeEnabled = false;
@@ -26,11 +25,11 @@ if (isset($_GET['bedragInvoeren']) && is_numeric($_GET['bedragInvoeren'])) {
     if (isset($_GET['INKOMEN'])) {
         $bedragInvoeren = $_GET['bedragInvoeren'];
         $bedrag = doelAanpassen($bedragInvoeren, 'INKOMEN');
-        voegToeAanInkomenLijst($datum, $bedrag);
+        voegToeAanInkomenLijst($datum, $bedragInvoeren);
     } elseif (isset($_GET['UITGAVEN'])) {
         $bedragInvoeren = $_GET['bedragInvoeren'];
         $bedrag = doelAanpassen($bedragInvoeren, 'UITGAVEN');
-        voegToeAanUitgavenLijst($datum, $bedrag);
+        voegToeAanUitgavenLijst($datum, $bedragInvoeren);
     }
 } elseif (isset($_GET['SPAARDOEL']) && is_numeric($_GET['SPAARDOEL'])) {
     $spaardoel = (float) $_GET['SPAARDOEL'];

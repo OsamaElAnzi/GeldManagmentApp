@@ -94,6 +94,8 @@ function resetDoel() {
         $pdo = conn();
         $resetQueryBedragen = 'UPDATE BEDRAGEN SET bedrag = 0, spaardoel = 0 ';
         $resetQueryInkomenLijst = 'DELETE FROM inkomenlijst'; 
+        $resetQueryUitgavenLijst = 'DELETE FROM uitgavenlijst'; 
+        $pdo->exec($resetQueryUitgavenLijst);  
         $pdo->exec($resetQueryInkomenLijst);
         $pdo->exec($resetQueryBedragen);
         
@@ -119,11 +121,11 @@ function maakTableInkomenLijst() {
 }
 maakTableInkomenLijst();
 
-function voegToeAanInkomenLijst($datum, $bedrag) {
+function voegToeAanInkomenLijst($datum, $bedragInvoeren) {
     $pdo = conn();
     $query = 'INSERT INTO inkomenlijst (datum, bedrag) VALUES (:datum, :bedrag)';
     $stmt = $pdo->prepare($query);
-    $stmt->execute(['datum' => $datum, 'bedrag' => $bedrag]);
+    $stmt->execute(['datum' => $datum, 'bedrag' => $bedragInvoeren]);
 }
 function getInkomenLijst() {
     $pdo = conn();
@@ -157,11 +159,11 @@ function maakTableUitgavenLijst() {
 }
 maakTableUitgavenLijst();
 
-function voegToeAanUitgavenLijst($datum, $bedrag) {
+function voegToeAanUitgavenLijst($datum, $bedragInvoeren) {
     $pdo = conn();
     $query = 'INSERT INTO uitgavenlijst (datum, bedrag) VALUES (:datum, :bedrag)';
     $stmt = $pdo->prepare($query);
-    $stmt->execute(['datum' => $datum, 'bedrag' => $bedrag]);
+    $stmt->execute(['datum' => $datum, 'bedrag' => $bedragInvoeren]);
 }
 
 function getUitgavenLijst() {
@@ -177,13 +179,13 @@ function displayUitgavenLijst($condition) {
         foreach (getUitgavenLijst() as $item) {
             echo '<div class="item">'; 
             echo '<h2>' . $item['datum'] . '</h2>';
-            echo '<h2>-' . $item['bedrag'] . '</h2>';  // Min-teken voor uitgaven
+            echo '<h2>-' . $item['bedrag'] . '</h2>';
             echo '</div>';
         }
     } else {
         echo '<p>No expenses to display.</p>';
     }
-    echo '</div>';  // Sluit de outer div
+    echo '</div>'; 
 }
 
 
