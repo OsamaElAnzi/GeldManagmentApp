@@ -183,7 +183,7 @@ function displayUitgavenLijst($condition) {
             echo '</div>';
         }
     } else {
-        echo '<p>No expenses to display.</p>';
+        echo "<p>geen contante transactie's</p>";
     }
     echo '</div>'; 
 }

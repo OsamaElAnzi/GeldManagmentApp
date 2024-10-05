@@ -50,8 +50,9 @@ $progress = ($spaardoel > 0) ? min(($bedrag / $spaardoel) * 100, 100) : 0;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Doel Aanpassen</title>
-    <link rel="stylesheet" href="style.css" type="text/css">
+    <title>Doel%20Aanpassen</title>
+    <link rel="stylesheet" href="style.css?v=1.0" type="text/css">
+
     <style>
         * {
             margin: 0;
@@ -140,7 +141,11 @@ $progress = ($spaardoel > 0) ? min(($bedrag / $spaardoel) * 100, 100) : 0;
             button:hover {
                 background-color: #555;
             }
-
+            .main-content:hover {
+                -webkit-box-shadow: 0px 0px 84px -28px rgba(91,100,185,1);
+                -moz-box-shadow: 0px 0px 84px -28px rgba(91,100,185,1);
+                box-shadow: 0px 0px 84px -28px rgba(91,100,185,1);
+            }
         <?php else: ?>
             body,
             html {
@@ -185,9 +190,9 @@ $progress = ($spaardoel > 0) ? min(($bedrag / $spaardoel) * 100, 100) : 0;
         <div class="main-content">
             <h1>Doel</h1>
             <div class="info-van-bezit">
-                <p>Bedrag: <?= number_format($bedrag, 2) ?>$</p>
-                <p>Spaardoel: <?= number_format($spaardoel, 2); ?>$</p>
-                <p>Nog te gaan: <?= number_format(nogTeGaanVoorDoelBehaling(), 2); ?>$</p>
+                <p>Bedrag: €<?= number_format($bedrag, 2) ?>,-</p>
+                <p>Spaardoel: €<?= number_format($spaardoel, 2); ?>,-</p>
+                <p>Nog te gaan: €<?= number_format(nogTeGaanVoorDoelBehaling(), 2); ?>,-</p>
             </div>
             <div class="circle">
                 <div class="circle-fill" style="background: conic-gradient(green <?= $progress ?>%, lightgrey 0%);">
@@ -198,7 +203,7 @@ $progress = ($spaardoel > 0) ? min(($bedrag / $spaardoel) * 100, 100) : 0;
                 <form action="" method="GET">
                     <input type="hidden" name="mode" value="<?= $darkModeEnabled ? 'dark' : 'day' ?>">
                     <div class="input-van-bedrag">
-                        <p>$</p>
+                        <p>€</p>
                         <input type="text" name="bedragInvoeren" placeholder="BEDRAG" required>
                     </div>
                     <div class="knoppen">

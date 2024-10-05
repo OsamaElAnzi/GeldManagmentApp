@@ -29,7 +29,7 @@ body {
 
 /* Main content styling */
 .main-content {
-    background-color: #fff;
+    background-color: #332f2f;
     border-radius: 10px;
     padding: 30px;
     width: 100%;
@@ -40,9 +40,11 @@ body {
 }
 
 .main-content:hover {
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 15px 30px #5b64b9;
 }
-
+.doel-aanpassen {
+    padding-top: 10px;
+}
 /* Heading styling */
 h1 {
     text-align: center;
