@@ -237,31 +237,50 @@ button:hover {
 .pagination {
     display: flex;
     justify-content: center;
-    margin-top: 20px;
+    align-items: center;
+    margin: 20px 0;
 }
 
 .pagination a {
     padding: 10px 15px;
-    margin: 0 5px;
+    margin: 0 5px; /* Space between pagination links */
     text-decoration: none;
-    background-color: #007bff;
-    color: white;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
+    color: #007bff; /* Link color */
+    border: 1px solid #007bff; /* Border for pagination buttons */
+    border-radius: 5px; /* Rounded corners */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Transition effects */
+    font-weight: bold; /* Make the text bold */
 }
 
 .pagination a:hover {
-    background-color: #0056b3;
+    background-color: #007bff; /* Background color on hover */
+    color: white; /* Text color on hover */
 }
 
 .pagination a.active {
-    background-color: #0056b3;
+    background-color: #007bff; /* Background color for active page */
+    color: white; /* Text color for active page */
+    border: 1px solid #007bff; /* Border for active page */
+    cursor: default; /* Disable pointer on active page */
 }
 
-.pagination a.prev, .pagination a.next {
-    background-color: #28a745;
+.pagination .prev,
+.pagination .next {
+    background-color: #f4f4f9; /* Background for prev/next buttons */
+    border: 1px solid #ccc; /* Light border */
+    color: #333; /* Text color */
 }
 
-.pagination a.prev:hover, .pagination a.next:hover {
-    background-color: #218838;
+.pagination .prev:hover,
+.pagination .next:hover {
+    background-color: #ddd; /* Background color on hover */
 }
+
+.pagination .prev img,
+.pagination .next img {
+    vertical-align: middle; /* Align icons with text */
+    width: 20px; /* Set a fixed width for images */
+    height: auto; /* Maintain aspect ratio */
+    margin-right: 5px; /* Space between image and text */
+}
+

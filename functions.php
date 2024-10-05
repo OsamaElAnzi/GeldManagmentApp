@@ -1,6 +1,5 @@
 <?php
 
-// Database connection function
 function conn() {
     $host = 'localhost';
     $port = '3306';
@@ -17,11 +16,9 @@ function conn() {
     return new PDO($dsn, $user, $pass, $opt);
 }
 
-// Setup the database and create necessary tables
 function setupDatabase() {
     $pdo = conn();
     
-    // Create BEDRAGEN table
     $createBedragenTable = 'CREATE TABLE IF NOT EXISTS BEDRAGEN (
         id INT AUTO_INCREMENT PRIMARY KEY,
         bedrag DECIMAL(10, 2) NOT NULL DEFAULT 0,
@@ -29,7 +26,6 @@ function setupDatabase() {
     )';
     $pdo->exec($createBedragenTable);
 
-    // Check if there's no entry and insert default
     $query = $pdo->query('SELECT COUNT(*) as count FROM BEDRAGEN');
     $row = $query->fetch();
 
@@ -37,8 +33,6 @@ function setupDatabase() {
         $insertQuery = 'INSERT INTO BEDRAGEN (bedrag, spaardoel) VALUES (0, 0)';
         $pdo->exec($insertQuery);
     }
-
-    // Create INKOMEN table
     $createInkomenTable = 'CREATE TABLE IF NOT EXISTS inkomen (
         id INT AUTO_INCREMENT PRIMARY KEY,
         bedrag DECIMAL(10, 2) NOT NULL,
@@ -46,7 +40,6 @@ function setupDatabase() {
     )';
     $pdo->exec($createInkomenTable);
 
-    // Create UITGAVEN table
     $createUitgavenTable = 'CREATE TABLE IF NOT EXISTS uitgavenlijst (
         id INT AUTO_INCREMENT PRIMARY KEY,
         datum DATE NOT NULL,
@@ -55,7 +48,6 @@ function setupDatabase() {
     $pdo->exec($createUitgavenTable);
 }
 
-// Get the current balance
 function getBedrag() {
     $pdo = conn();
     $query = $pdo->query('SELECT bedrag FROM BEDRAGEN LIMIT 1');
@@ -63,7 +55,6 @@ function getBedrag() {
     return $result ? (float)$result['bedrag'] : 0;
 }
 
-// Get the savings goal
 function getSpaarDoel() {
     $pdo = conn();
     $query = $pdo->query('SELECT spaardoel FROM BEDRAGEN LIMIT 1');
@@ -71,7 +62,6 @@ function getSpaarDoel() {
     return $result ? (float)$result['spaardoel'] : 0;
 }
 
-// Get the current date
 function getDatum() {
     $pdo = conn();
     $query = $pdo->query('SELECT CURDATE() AS datum');
@@ -79,7 +69,6 @@ function getDatum() {
     return $result['datum'];
 }
 
-// Adjust the current balance based on income or expenses
 function doelAanpassen($bedragInvoeren, $type) {
     $pdo = conn();
     $huidigBedrag = getBedrag();
@@ -93,16 +82,12 @@ function doelAanpassen($bedragInvoeren, $type) {
 
     return $nieuwBedrag;
 }
-
-// Update the savings goal
 function updateSpaarDoel($spaardoel) {
     $pdo = conn();
     $updateQuery = 'UPDATE BEDRAGEN SET spaardoel = :spaardoel LIMIT 1';
     $stmt = $pdo->prepare($updateQuery);
     $stmt->execute(['spaardoel' => $spaardoel]);
 }
-
-// Reset all values to zero
 function resetDoel() {
     if (isset($_GET['RESET-KNOP'])) { 
         $pdo = conn();
@@ -118,22 +103,18 @@ function resetDoel() {
     return getBedrag();
 }
 
-// Calculate the remaining amount to reach the savings goal
 function nogTeGaanVoorDoelBehaling() {
     $huidigBedrag = getBedrag();
     $spaardoel = getSpaarDoel();
     return $spaardoel - $huidigBedrag;
 }
 
-// Add to the income list
 function voegToeAanInkomenLijst($datum, $bedragInvoeren) {
     $pdo = conn();
     $query = 'INSERT INTO inkomen (datum, bedrag) VALUES (:datum, :bedrag)';
     $stmt = $pdo->prepare($query);
     $stmt->execute(['datum' => $datum, 'bedrag' => $bedragInvoeren]);
 }
-
-// Get the income list with pagination
 function getInkomenLijst($condition, $limit, $offset) {
     $pdo = conn();
     $query = "SELECT bedrag, datum FROM inkomen WHERE $condition LIMIT :limit OFFSET :offset";
@@ -144,7 +125,6 @@ function getInkomenLijst($condition, $limit, $offset) {
     return $stmt->fetchAll();
 }
 
-// Display the income list
 function displayInkomenLijst($inkomen_lijst) {
     foreach ($inkomen_lijst as $item) {
         echo '<div class="item">';
@@ -154,7 +134,7 @@ function displayInkomenLijst($inkomen_lijst) {
     }
 }
 
-// Get the total number of income rows
+
 function countInkomenRows($condition) {
     $pdo = conn();
     $sql = "SELECT COUNT(*) as total FROM inkomen WHERE $condition";
@@ -164,7 +144,6 @@ function countInkomenRows($condition) {
     return $row['total'];
 }
 
-// Display pagination controls
 function displayPagination($current_page, $total_pages) {
     if ($total_pages > 1) {
         echo "<div class='pagination'>";
@@ -181,7 +160,93 @@ function displayPagination($current_page, $total_pages) {
         echo "</div>";
     }
 }
+function voegToeAanUitgavenLijst($datum, $bedragInvoeren) {
+    $pdo = conn();
+    $query = 'INSERT INTO uitgavenlijst (datum, bedrag) VALUES (:datum, :bedrag)';
+    $stmt = $pdo->prepare($query);
+    $stmt->execute(['datum' => $datum, 'bedrag' => $bedragInvoeren]);
+}
+function getUitgavenLijst($condition, $limit, $offset) {
+    $pdo = conn();
+    $query = "SELECT bedrag, datum FROM uitgavenlijst WHERE $condition LIMIT :limit OFFSET :offset";
+    $stmt = $pdo->prepare($query);
+    $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+    $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->fetchAll();
+}
+function displayUitgavenLijst($uitgaven_lijst) {
+    foreach ($uitgaven_lijst as $item) {
+        echo '<div class="item">';
+        echo '<p>' . $item['datum'] . '</p>';
+        echo '<p>-' . number_format($item['bedrag'], 2) . '</p>';
+        echo '</div>';
+    }
+}
 
-// Initialize the database
+function countUitgavenRows($condition) {
+    $pdo = conn();
+    $sql = "SELECT COUNT(*) as total FROM uitgavenlijst WHERE $condition";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+    $row = $stmt->fetch();
+    return $row['total'];
+}
+
+function displayInkomenPagination($current_page, $total_pages) {
+    if ($total_pages > 1) {
+        echo "<div class='pagination'>";
+        
+        // Previous Page Link
+        if ($current_page > 1) {
+            $mode = isset($_GET['mode']) ? htmlspecialchars($_GET['mode']) : '';
+            echo "<a href='?inkomen_page=" . ($current_page - 1) . "&mode=$mode' class='prev'><img width='20px' src='arrow_back_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.png' alt='foto'></a>";
+        }
+
+        // Page Number Links
+        for ($i = 1; $i <= $total_pages; $i++) {
+            $mode = isset($_GET['mode']) ? htmlspecialchars($_GET['mode']) : '';
+            $active_class = ($i == $current_page) ? 'active' : '';
+            echo "<a href='?inkomen_page=$i&mode=$mode' class='$active_class'>$i</a> ";
+        }
+
+        // Next Page Link
+        if ($current_page < $total_pages) {
+            $mode = isset($_GET['mode']) ? htmlspecialchars($_GET['mode']) : '';
+            echo "<a href='?inkomen_page=" . ($current_page + 1) . "&mode=$mode' class='next'><img width='20px' src='arrow_right_alt_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.png' alt='foto'></a>";
+        }
+
+        echo "</div>";
+    }
+}
+
+function displayUitgavenPagination($current_page, $total_pages) {
+    if ($total_pages > 1) {
+        echo "<div class='pagination'>";
+        
+        // Previous Page Link
+        if ($current_page > 1) {
+            $mode = isset($_GET['mode']) ? htmlspecialchars($_GET['mode']) : '';
+            echo "<a href='?uitgaven_page=" . ($current_page - 1) . "&mode=$mode' class='prev'><img width='20px' src='arrow_back_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.png' alt='foto'></a>";
+        }
+
+        // Page Number Links
+        for ($i = 1; $i <= $total_pages; $i++) {
+            $mode = isset($_GET['mode']) ? htmlspecialchars($_GET['mode']) : '';
+            $active_class = ($i == $current_page) ? 'active' : '';
+            echo "<a href='?uitgaven_page=$i&mode=$mode' class='$active_class'>$i</a> ";
+        }
+
+        // Next Page Link
+        if ($current_page < $total_pages) {
+            $mode = isset($_GET['mode']) ? htmlspecialchars($_GET['mode']) : '';
+            echo "<a href='?uitgaven_page=" . ($current_page + 1) . "&mode=$mode' class='next'><img width='20px' src='arrow_right_alt_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.png' alt='foto'></a>";
+        }
+
+        echo "</div>";
+    }
+}
+
+
 setupDatabase();
 

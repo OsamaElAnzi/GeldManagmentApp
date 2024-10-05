@@ -39,13 +39,23 @@ if (isset($_GET['bedragInvoeren']) && is_numeric($_GET['bedragInvoeren'])) {
 }
 
 $progress = ($spaardoel > 0) ? min(($bedrag / $spaardoel) * 100, 100) : 0;
-$items_per_page = 22;
-$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-$offset = ($page - 1) * $items_per_page;
-$condition = '1=1';
-$total_items = countInkomenRows($condition);
-$total_pages = ceil($total_items / $items_per_page);
-$inkomen_lijst = getInkomenLijst($condition, $items_per_page, $offset);
+$inkomen_page = isset($_GET['inkomen_page']) ? (int) $_GET['inkomen_page'] : 1;
+$inkomen_limit = 22;
+$inkomen_offset = ($inkomen_page - 1) * $inkomen_limit;
+
+$inkomen_condition = '1';
+$inkomen_total = countInkomenRows($inkomen_condition);
+$inkomen_total_pages = ceil($inkomen_total / $inkomen_limit);
+
+$inkomen_lijst = getInkomenLijst($inkomen_condition, $inkomen_limit, $inkomen_offset);
+$uitgaven_page = isset($_GET['uitgaven_page']) ? (int) $_GET['uitgaven_page'] : 1;
+$uitgaven_limit = 22;
+$uitgaven_offset = ($uitgaven_page - 1) * $uitgaven_limit;
+
+$uitgaven_condition = '1';
+$uitgaven_total = countUitgavenRows($uitgaven_condition);
+$uitgaven_total_pages = ceil($uitgaven_total / $uitgaven_limit);
+$uitgaven_lijst = getUitgavenLijst($uitgaven_condition, $uitgaven_limit, $uitgaven_offset);
 
 ?>
 
@@ -192,7 +202,7 @@ $inkomen_lijst = getInkomenLijst($condition, $items_per_page, $offset);
                     </div>
                     <?php displayInkomenLijst($inkomen_lijst); ?>
                 </div>
-                <?php displayPagination($page, $total_pages); ?>
+                <?php displayInkomenPagination($inkomen_page, $inkomen_total_pages); ?>
             </div>
         </div>
         <div class="main-content">
@@ -209,7 +219,7 @@ $inkomen_lijst = getInkomenLijst($condition, $items_per_page, $offset);
             </div>
             <div class="wijzigings-blok">
                 <form action="" method="GET">
-                    <input type="hidden" name="mode" value="<?= $darkModeEnabled ? 'dark' : 'day' ?>">
+                    <input type="hidden" name="mode" value="<?= htmlspecialchars($darkModeEnabled ? 'dark' : 'day') ?>">
                     <div class="input-van-bedrag">
                         <p>€</p>
                         <input type="text" name="bedragInvoeren" placeholder="BEDRAG" required>
@@ -222,25 +232,40 @@ $inkomen_lijst = getInkomenLijst($condition, $items_per_page, $offset);
             </div>
             <div class="doel-aanpassen">
                 <form action="" method="GET">
-                    <input type="hidden" name="mode" value="<?= $darkModeEnabled ? 'dark' : 'day' ?>">
+                    <input type="hidden" name="mode" value="<?= htmlspecialchars($darkModeEnabled ? 'dark' : 'day') ?>">
                     <input type="text" class="input-Aanpassen" name="SPAARDOEL" placeholder="Spaardoel">
                     <button type="submit" class="AANPASSEN" name="AANPASSEN">Aanpassen</button>
                 </form>
             </div>
             <div class="doel-reset">
                 <form action="" method="GET">
-                    <input type="hidden" name="mode" value="<?= $darkModeEnabled ? 'dark' : 'day' ?>">
+                    <input type="hidden" name="mode" value="<?= htmlspecialchars($darkModeEnabled ? 'dark' : 'day') ?>">
                     <button type="submit" name="RESET-KNOP" class="RESET-KNOP">Reset</button>
                 </form>
             </div>
             <div class="dark-day-mode">
                 <form action="" method="GET">
+                    <input type="hidden" name="inkomen_page" value="<?= htmlspecialchars($inkomen_page) ?>">
+                    <input type="hidden" name="uitgaven_page" value="<?= htmlspecialchars($uitgaven_page) ?>">
                     <button type="submit" name="mode" value="dark" class="KNOPDARKMODE">Dark Mode</button>
                     <button type="submit" name="mode" value="day" class="KNOPDAYMODE">Day Mode</button>
                 </form>
             </div>
         </div>
-    </div>
+        <div class="main-content">
+            <div class="uitgaven-lijst">
+                <h1>Uitgaven</h1>
+                <div class="lijst">
+                    <div class="title">
+                        <h2>Bedrag</h2>
+                        <h2>Datum</h2>
+                    </div>
+                    <?php displayUitgavenLijst($uitgaven_lijst); ?>
+                </div>
+                <?php displayUitgavenPagination($uitgaven_page, $uitgaven_total_pages); ?>
+            </div>
+        </div>
+
 </body>
 
 </html>
