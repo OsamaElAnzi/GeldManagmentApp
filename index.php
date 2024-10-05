@@ -10,7 +10,6 @@ $condition = true;
 $darkModeEnabled = false;
 $dayModeEnabled = true;
 
-
 if (isset($_GET['mode'])) {
     if ($_GET['mode'] == 'dark') {
         $darkModeEnabled = true;
@@ -40,7 +39,13 @@ if (isset($_GET['bedragInvoeren']) && is_numeric($_GET['bedragInvoeren'])) {
 }
 
 $progress = ($spaardoel > 0) ? min(($bedrag / $spaardoel) * 100, 100) : 0;
-
+$items_per_page = 22;
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$offset = ($page - 1) * $items_per_page;
+$condition = '1=1';
+$total_items = countInkomenRows($condition);
+$total_pages = ceil($total_items / $items_per_page);
+$inkomen_lijst = getInkomenLijst($condition, $items_per_page, $offset);
 
 ?>
 
@@ -141,11 +146,13 @@ $progress = ($spaardoel > 0) ? min(($bedrag / $spaardoel) * 100, 100) : 0;
             button:hover {
                 background-color: #555;
             }
+
             .main-content:hover {
-                -webkit-box-shadow: 0px 0px 84px -28px rgba(91,100,185,1);
-                -moz-box-shadow: 0px 0px 84px -28px rgba(91,100,185,1);
-                box-shadow: 0px 0px 84px -28px rgba(91,100,185,1);
+                -webkit-box-shadow: 0px 0px 84px -28px rgba(91, 100, 185, 1);
+                -moz-box-shadow: 0px 0px 84px -28px rgba(91, 100, 185, 1);
+                box-shadow: 0px 0px 84px -28px rgba(91, 100, 185, 1);
             }
+
         <?php else: ?>
             body,
             html {
@@ -183,8 +190,9 @@ $progress = ($spaardoel > 0) ? min(($bedrag / $spaardoel) * 100, 100) : 0;
                         <h2>Bedrag</h2>
                         <h2>Datum</h2>
                     </div>
-                    <?php displayInkomenLijst($condition); ?>
+                    <?php displayInkomenLijst($inkomen_lijst); ?>
                 </div>
+                <?php displayPagination($page, $total_pages); ?>
             </div>
         </div>
         <div class="main-content">
@@ -230,18 +238,6 @@ $progress = ($spaardoel > 0) ? min(($bedrag / $spaardoel) * 100, 100) : 0;
                     <button type="submit" name="mode" value="dark" class="KNOPDARKMODE">Dark Mode</button>
                     <button type="submit" name="mode" value="day" class="KNOPDAYMODE">Day Mode</button>
                 </form>
-            </div>
-        </div>
-        <div class="main-content">
-            <div class="afnamen-lijst">
-                <h1>afnamen</h1>
-                <div class="lijst">
-                    <div class="title">
-                        <h2>Bedrag</h2>
-                        <h2>Datum</h2>
-                    </div>
-                    <?php displayUitgavenLijst($condition); ?>
-                </div>
             </div>
         </div>
     </div>

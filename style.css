@@ -171,7 +171,6 @@ button:hover {
     background-color: #e0a800;
 }
 
-/* Dark and Day mode button */
 .dark-day-mode {
     display: flex;
     flex-direction: column;
@@ -188,7 +187,6 @@ button:hover {
     background-color: #5a6268;
 }
 
-/* Layout adjustments for mobile */
 @media (max-width: 768px) {
     .container {
         flex-direction: column;
@@ -207,13 +205,12 @@ button:hover {
     }
 }
 
-/* Title styling */
 .lijstInLijst {
     display: flex;
-    flex-direction: column; /* Stack items vertically */
+    flex-direction: column; 
     justify-content: space-around;
     color: #218838;
-    gap: 10px; /* Adds space between elements */
+    gap: 10px; 
 }
 .item {
     display: flex;
@@ -225,16 +222,46 @@ button:hover {
 }
 .title {
         display: flex;
-        flex-direction: row; /* Stack items vertically */
+        flex-direction: row; 
         justify-content: space-around;
         color: #5b64b9;
-        gap: 10px; /* Adds space between elements */
+        gap: 10px; 
 }
 
-/* List styling */
 .lijst {
     display: flex;
     flex-direction: column;
     gap: 10px;
     width: 100%;
+}
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pagination a {
+    padding: 10px 15px;
+    margin: 0 5px;
+    text-decoration: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.pagination a:hover {
+    background-color: #0056b3;
+}
+
+.pagination a.active {
+    background-color: #0056b3;
+}
+
+.pagination a.prev, .pagination a.next {
+    background-color: #28a745;
+}
+
+.pagination a.prev:hover, .pagination a.next:hover {
+    background-color: #218838;
 }
