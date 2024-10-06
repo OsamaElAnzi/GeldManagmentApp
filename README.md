@@ -12,3 +12,4 @@ Onder de knop Aanpassen heb je de knop Reset. > bij 1X reset klikken gaat je tot
 Je hebt ook natuurlijk de day en darkmode functie.
 
 Als je je spaardoel en gespaarde geld hebt ingevoerd dan kun je zien hoeveel je nog te gaan moet. je ziet het zowel in de cirle als in cijfers.
+STUDENT030OVN ben ik ook alleen dit is een andere account
