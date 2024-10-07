@@ -189,7 +189,7 @@ $uitgaven_lijst = getUitgavenLijst($uitgaven_condition, $uitgaven_limit, $uitgav
         <?php endif; ?>
     </style>
 </head>
-
+<!-- ColorZilla extention kan voor een error zorgen als je de html checkt naar netheid -->
 <body>
     <div class="container">
         <div class="main-content">
@@ -208,9 +208,9 @@ $uitgaven_lijst = getUitgavenLijst($uitgaven_condition, $uitgaven_limit, $uitgav
         <div class="main-content">
             <h1>Doel</h1>
             <div class="info-van-bezit">
-                <p>Bedrag: €<?= number_format($bedrag, 2) ?>,-</p>
+                <p>Bedrag: €<?= number_format($bedrag, 2, ',' , '.') ?>,-</p>
                 <p>Spaardoel: €<?= number_format($spaardoel, 2); ?>,-</p>
-                <p>Nog te gaan: €<?= number_format(nogTeGaanVoorDoelBehaling(), 2); ?>,-</p>
+                <p>Nog te gaan: €<?= number_format(nogTeGaanVoorDoelBehaling(), 2, ',' , '.'); ?>,-</p>
             </div>
             <div class="circle">
                 <div class="circle-fill" style="background: conic-gradient(green <?= $progress ?>%, lightgrey 0%);">
@@ -218,11 +218,11 @@ $uitgaven_lijst = getUitgavenLijst($uitgaven_condition, $uitgaven_limit, $uitgav
                 </div>
             </div>
             <div class="wijzigings-blok">
-                <form action="" method="GET">
+                <form action="" method="GET" autocomplete="off">
                     <input type="hidden" name="mode" value="<?= htmlspecialchars($darkModeEnabled ? 'dark' : 'day') ?>">
                     <div class="input-van-bedrag">
                         <p>€</p>
-                        <input type="text" name="bedragInvoeren" placeholder="BEDRAG" required>
+                        <input type="text" pattern=[0-9]* name="bedragInvoeren" placeholder="BEDRAG" maxlength="8" required>
                     </div>
                     <div class="knoppen">
                         <button type="submit" class="INKOMEN" name="INKOMEN">INKOMEN</button>
@@ -231,7 +231,7 @@ $uitgaven_lijst = getUitgavenLijst($uitgaven_condition, $uitgaven_limit, $uitgav
                 </form>
             </div>
             <div class="doel-aanpassen">
-                <form action="" method="GET">
+                <form action="" method="GET" autocomplete="off">
                     <input type="hidden" name="mode" value="<?= htmlspecialchars($darkModeEnabled ? 'dark' : 'day') ?>">
                     <input type="text" class="input-Aanpassen" name="SPAARDOEL" placeholder="Spaardoel">
                     <button type="submit" class="AANPASSEN" name="AANPASSEN">Aanpassen</button>

@@ -23,8 +23,8 @@ function setupDatabase()
 
     $createBedragenTable = 'CREATE TABLE IF NOT EXISTS BEDRAGEN (
         id INT AUTO_INCREMENT PRIMARY KEY,
-        bedrag DECIMAL(10, 2) NOT NULL DEFAULT 0,
-        spaardoel DECIMAL(10, 2) NOT NULL DEFAULT 0
+        bedrag DECIMAL(15, 2) NOT NULL DEFAULT 0,
+        spaardoel DECIMAL(15, 2) NOT NULL DEFAULT 0
     )';
     $pdo->exec($createBedragenTable);
 
@@ -35,7 +35,7 @@ function setupDatabase()
         $insertQuery = 'INSERT INTO BEDRAGEN (bedrag, spaardoel) VALUES (0, 0)';
         $pdo->exec($insertQuery);
     }
-    $createInkomenTable = 'CREATE TABLE IF NOT EXISTS inkomen (
+    $createInkomenTable = 'CREATE TABLE IF NOT EXISTS inkomenlijst (
         id INT AUTO_INCREMENT PRIMARY KEY,
         bedrag DECIMAL(10, 2) NOT NULL,
         datum DATE NOT NULL
@@ -100,7 +100,7 @@ function resetDoel()
     if (isset($_GET['RESET-KNOP'])) {
         $pdo = conn();
         $resetQueryBedragen = 'UPDATE BEDRAGEN SET bedrag = 0, spaardoel = 0';
-        $resetQueryInkomenLijst = 'DELETE FROM inkomen';
+        $resetQueryInkomenLijst = 'DELETE FROM inkomenlijst';
         $resetQueryUitgavenLijst = 'DELETE FROM uitgavenlijst';
         $pdo->exec($resetQueryUitgavenLijst);
         $pdo->exec($resetQueryInkomenLijst);
@@ -121,14 +121,14 @@ function nogTeGaanVoorDoelBehaling()
 function voegToeAanInkomenLijst($datum, $bedragInvoeren)
 {
     $pdo = conn();
-    $query = 'INSERT INTO inkomen (datum, bedrag) VALUES (:datum, :bedrag)';
+    $query = 'INSERT INTO inkomenlijst (datum, bedrag) VALUES (:datum, :bedrag)';
     $stmt = $pdo->prepare($query);
     $stmt->execute(['datum' => $datum, 'bedrag' => $bedragInvoeren]);
 }
 function getInkomenLijst($condition, $limit, $offset)
 {
     $pdo = conn();
-    $query = "SELECT bedrag, datum FROM inkomen WHERE $condition LIMIT :limit OFFSET :offset";
+    $query = "SELECT bedrag, datum FROM inkomenlijst WHERE $condition LIMIT :limit OFFSET :offset";
     $stmt = $pdo->prepare($query);
     $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
     $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
@@ -150,7 +150,7 @@ function displayInkomenLijst($inkomen_lijst)
 function countInkomenRows($condition)
 {
     $pdo = conn();
-    $sql = "SELECT COUNT(*) as total FROM inkomen WHERE $condition";
+    $sql = "SELECT COUNT(*) as total FROM inkomenlijst WHERE $condition";
     $stmt = $pdo->prepare($sql);
     $stmt->execute();
     $row = $stmt->fetch();
