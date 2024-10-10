@@ -128,7 +128,7 @@ function voegToeAanInkomenLijst($datum, $bedragInvoeren)
 function getInkomenLijst($condition, $limit, $offset)
 {
     $pdo = conn();
-    $query = "SELECT bedrag, datum FROM inkomenlijst WHERE $condition LIMIT :limit OFFSET :offset";
+    $query = "SELECT id, bedrag, datum FROM inkomenlijst WHERE $condition LIMIT :limit OFFSET :offset";
     $stmt = $pdo->prepare($query);
     $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
     $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
@@ -140,7 +140,8 @@ function displayInkomenLijst($inkomen_lijst)
 {
     foreach ($inkomen_lijst as $item) {
         echo '<div class="item">';
-        echo '<p>€' . number_format($item['bedrag'], 2) . '</p>';
+        echo '<a href="transacties\detailInkomenLijst.php?">test</a>';// moet nog een verbeterde rationele database maken voordat dit gaat lukken
+        echo '<p>€' . number_format($item['bedrag'], 2).'</p>';
         echo '<p>' . htmlspecialchars($item['datum']) . '</p>';
         echo '</div>';
     }
