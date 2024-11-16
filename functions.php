@@ -4,7 +4,7 @@ function conn()
 {
     $host = 'localhost';
     $port = '3306'; //Check altijd of je de goede port hebt draaien anders krijg je een error
-    $dbname = 'REKENING';
+    $dbname = 'rekening';
     $user = 'root';
     $pass = '';
     $charset = 'utf8mb4';
