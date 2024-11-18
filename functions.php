@@ -140,7 +140,7 @@ function displayInkomenLijst($inkomen_lijst)
 {
     foreach ($inkomen_lijst as $item) {
         echo '<div class="item">';
-        echo '<a href="transacties\detailInkomenLijst.php?">test</a>';// moet nog een verbeterde rationele database maken voordat dit gaat lukken
+        echo '<a href="transacties\detailInkomenLijst.php?id='.$item['id'].'">test</a>';// moet nog een verbeterde rationele database maken voordat dit gaat lukken
         echo '<p>€' . number_format($item['bedrag'], 2).'</p>';
         echo '<p>' . htmlspecialchars($item['datum']) . '</p>';
         echo '</div>';
@@ -255,6 +255,42 @@ function displayUitgavenPagination($current_page, $total_pages)
         echo "</div>";
     }
 }
-
+// dit stukje is voor de detail pagina voor inkomen
+function detailInkomen($id) {
+    $pdo = conn();
+    $query = "SELECT * FROM inkomenlijst WHERE id = :id";
+    $stmt = $pdo->prepare($query);
+    $stmt->execute(['id' => $id]);
+    $item = $stmt->fetch();
+    if ($item) {
+        echo '<p>$'. number_format($item['bedrag'], 2). '</p>';
+        echo '<p>'. htmlspecialchars($item['datum']). '</p>';
+    } else {
+        echo 'Item not found';
+    }
+}
+function editDetailInkomen() {
+    $pdo = conn();
+    echo '<button type="submit" name="edit">Edit</button>';
+    if (isset($_POST['id']) && isset($_POST['bedrag']) && isset($_POST['datum'])) {
+        $id = $_POST['id'];
+        $bedrag = $_POST['bedrag'];
+        $datum = $_POST['datum'];
+        $query = "UPDATE inkomenlijst SET bedrag = :bedrag, datum = :datum WHERE id = :id";
+        $stmt = $pdo->prepare($query);
+        $stmt->execute(['bedrag' => $bedrag, 'datum' => $datum, 'id' => $id]);
+        header('Location: index.php');
+    }
+}
+function verwijderDetailInkomen() {
+    $pdo = conn();
+    if (isset($_GET['id'])) {
+        $id = $_GET['id'];
+        $query = "DELETE FROM inkomenlijst WHERE id = :id";
+        $stmt = $pdo->prepare($query);
+        $stmt->execute(['id' => $id]);
+        header('Location: index.php');
+    }
+}
 
 setupDatabase();
