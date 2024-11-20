@@ -190,7 +190,7 @@ function voegToeAanUitgavenLijst($datum, $bedragInvoeren)
 function getUitgavenLijst($condition, $limit, $offset)
 {
     $pdo = conn();
-    $query = "SELECT bedrag, datum FROM uitgavenlijst WHERE $condition LIMIT :limit OFFSET :offset";
+    $query = "SELECT id, bedrag, datum FROM uitgavenlijst WHERE $condition LIMIT :limit OFFSET :offset";
     $stmt = $pdo->prepare($query);
     $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
     $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
@@ -202,8 +202,9 @@ function displayUitgavenLijst($uitgaven_lijst)
     echo '<div class="list-group">';
     foreach ($uitgaven_lijst as $item) {
         echo '<div class="list-group-item d-flex justify-content-between align-items-center">';
-        echo '<span>' . htmlspecialchars($item['datum']) . '</span>';
+        echo '<a href="transacties/detailUitgavenLijst.php?id=' . htmlspecialchars($item['id']) . '" class="text-decoration-none text-primary">Details</a>';
         echo '<span class="badge bg-danger">€-' . number_format($item['bedrag'], 2, ',', '.') . '</span>';
+        echo '<span>' . htmlspecialchars($item['datum']) . '</span>';
         echo '</div>';
     }
     echo '</div>';
@@ -343,6 +344,89 @@ function verwijderDetailInkomen($id)
     $pdo = conn();
 
     $query = "DELETE FROM inkomenlijst WHERE id = :id";
+    $stmt = $pdo->prepare($query);
+    $stmt->execute(['id' => $id]);
+
+    header('Location: http://localhost/GeldManagmentApp/');
+    exit();
+}
+//voor uitgaven
+function detailUitgaven($id)
+{
+    $pdo = conn();
+    $query = "SELECT * FROM uitgavenlijst WHERE id = :id";
+    $stmt = $pdo->prepare($query);
+    $stmt->execute(['id' => $id]);
+    $item = $stmt->fetch();
+
+    if ($item) {
+        echo <<<HTML
+<body class="d-flex justify-content-center align-items-center flex-column" style="min-height: 100vh; background-color: #f4f4f9;">
+    <h1>Detailpagina uitgave</h1><br />
+    <form style="width: 22rem;" action="" method="post">
+        <input type="hidden" name="id" value="{$item['id']}">
+
+        <div class="form-outline mb-4">
+            <input type="text" id="bedrag" name="bedrag" class="form-control" value="{$item['bedrag']}" required />
+            <label class="form-label" for="bedrag">Bedrag</label>
+        </div>
+
+        <div class="form-outline mb-4">
+            <input type="text" id="datum" name="datum" class="form-control" value="{$item['datum']}" required />
+            <label class="form-label" for="datum">Datum</label>
+        </div>
+
+        <div class="form-check d-flex justify-content-center mb-4">
+            <input class="form-check-input me-2" type="checkbox" value="1" id="terms" name="terms" required />
+            <label class="form-check-label" for="terms">
+                Je bent er van zeker dat je dit nauwkeurig hebt ingevoerd
+            </label>
+        </div>
+
+        <button type="submit" name="aanpassen" class="btn btn-success btn-block mb-4">Aanpassen</button>
+        <button type="submit" name="verwijderen" class="btn btn-danger btn-block mb-4">Verwijderen</button>
+    </form>
+</body>
+HTML;
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (isset($_POST['aanpassen'])) {
+                editDetailUitgaven();
+            } elseif (isset($_POST['verwijderen'])) {
+                verwijderDetailUitgaven($id);
+            }
+        }
+    } else {
+        echo '<div class="alert alert-danger" role="alert">Item niet gevonden</div>';
+    }
+}
+function editDetailUitgaven()
+{
+    $pdo = conn();
+
+    if (isset($_POST['id'], $_POST['bedrag'], $_POST['datum'])) {
+        $id = $_POST['id'];
+        $bedrag = $_POST['bedrag'];
+        $datum = $_POST['datum'];
+
+        $query = "UPDATE uitgavenlijst SET bedrag = :bedrag, datum = :datum WHERE id = :id";
+        $stmt = $pdo->prepare($query);
+        $stmt->execute([
+            'bedrag' => $bedrag,
+            'datum' => $datum,
+            'id' => $id
+        ]);
+        header("Location:http://localhost/GeldManagmentApp/transacties/detailUitgavenLijst.php?id=" . $id);
+        echo '<div class="alert alert-success" role="alert">Uitgave succesvol aangepast!</div>';
+    } else {
+        echo '<div class="alert alert-danger" role="alert">Vul alle velden in!</div>';
+    }
+}
+function verwijderDetailUitgaven($id)
+{
+    $pdo = conn();
+
+    $query = "DELETE FROM uitgavenlijst WHERE id = :id";
     $stmt = $pdo->prepare($query);
     $stmt->execute(['id' => $id]);
 
