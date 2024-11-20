@@ -416,8 +416,8 @@ function editDetailUitgaven()
             'datum' => $datum,
             'id' => $id
         ]);
-        header("Location:http://localhost/GeldManagmentApp/transacties/detailUitgavenLijst.php?id=" . $id);
         echo '<div class="alert alert-success" role="alert">Uitgave succesvol aangepast!</div>';
+        header("Location:http://localhost/GeldManagmentApp/transacties/detailUitgavenLijst.php?id=" . $id);
     } else {
         echo '<div class="alert alert-danger" role="alert">Vul alle velden in!</div>';
     }
