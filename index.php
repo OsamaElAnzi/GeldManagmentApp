@@ -68,14 +68,27 @@ $uitgaven_lijst = getUitgavenLijst($uitgaven_condition, $uitgaven_limit, $uitgav
     <title>Doel Aanpassen</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css">
     <style>
-        .circle-fill {
+        .circle-container {
             width: 150px;
             height: 150px;
-            border-radius: 50%;
-            background-color: lightgrey;
+            position: relative;
             display: flex;
             justify-content: center;
             align-items: center;
+        }
+
+        .circle-fill {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-align: center;
+            position: relative;
         }
     </style>
 </head>
@@ -89,10 +102,10 @@ $uitgaven_lijst = getUitgavenLijst($uitgaven_condition, $uitgaven_limit, $uitgav
                         <h2 class="card-title">Inkomen</h2>
                         <div class="list-group">
                             <div class="list-group-item d-flex justify-content-between">
+                                <strong>info</strong>
                                 <strong>Bedrag</strong>
                                 <strong>Datum</strong>
                             </div>
-                            <!-- probleem met table als in er moet beschrijving colomn erbij zelfde geld voor uitgaven -->
                             <?php displayInkomenLijst($inkomen_lijst); ?>
                         </div>
                         <div class="mt-3">
@@ -104,15 +117,16 @@ $uitgaven_lijst = getUitgavenLijst($uitgaven_condition, $uitgaven_limit, $uitgav
 
             <div class="col-lg-4 col-md-6">
                 <div class="card <?= $darkModeEnabled ? 'bg-secondary text-white' : 'bg-light text-dark'; ?> shadow">
-                    <div class="card-body text-center">
+                    <div class="card-body text-center d-flex align-item-center flex-column">
                         <h2>Doel</h2>
-                        <p>Bedrag: €<?= number_format($bedrag, 2, ',' , '.') ?>,-</p>
+                        <p>Bedrag: €<?= number_format($bedrag, 2, ',', '.') ?>,-</p>
                         <p>Spaardoel: €<?= number_format($spaardoel, 2); ?>,-</p>
-                        <p>Nog te gaan: €<?= number_format(nogTeGaanVoorDoelBehaling(), 2, ',' , '.'); ?>,-</p>
-                        <!-- circle heeft moeite om in het midden te zijn -->
-                        <div class="circle-fill mb-3"
-                            style="background: conic-gradient(green <?= $progress ?>%, lightgrey 0%);">
-                            <h3><?= number_format($progress, 0) . '%' ?></h3>
+                        <p>Nog te gaan: €<?= number_format(nogTeGaanVoorDoelBehaling(), 2, ',', '.'); ?>,-</p>
+                        <div class="circle-container d-flex justify-content-center align-items-center mb-3 w-100">
+                            <div class="circle-fill"
+                                style="background: conic-gradient(green <?= $progress ?>%, lightgrey 0%);">
+                                <h3><?= number_format($progress, 0) . '%' ?></h3>
+                            </div>
                         </div>
 
                         <form action="" method="GET" class="mb-3">
@@ -151,10 +165,10 @@ $uitgaven_lijst = getUitgavenLijst($uitgaven_condition, $uitgaven_limit, $uitgav
                         <h2 class="card-title">Uitgaven</h2>
                         <div class="list-group">
                             <div class="list-group-item d-flex justify-content-between">
+                                <strong>info</strong>
                                 <strong>Bedrag</strong>
                                 <strong>Datum</strong>
                             </div>
-                            <!-- moet nog een link aan toevoegevn die je verwijst naar de beschrijfing van de tranactie -->
                             <?php displayUitgavenLijst($uitgaven_lijst); ?>
                         </div>
                         <div class="mt-3">
