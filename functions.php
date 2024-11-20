@@ -140,8 +140,8 @@ function displayInkomenLijst($inkomen_lijst)
 {
     foreach ($inkomen_lijst as $item) {
         echo '<div class="item">';
-        echo '<a href="transacties\detailInkomenLijst.php?id='.$item['id'].'">test</a>';// moet nog een verbeterde rationele database maken voordat dit gaat lukken
-        echo '<p>€' . number_format($item['bedrag'], 2).'</p>';
+        echo '<a href="transacties\detailInkomenLijst.php?id=' . $item['id'] . '">test</a>';
+        echo '<p>€' . number_format($item['bedrag'], 2) . '</p>';
         echo '<p>' . htmlspecialchars($item['datum']) . '</p>';
         echo '</div>';
     }
@@ -256,41 +256,91 @@ function displayUitgavenPagination($current_page, $total_pages)
     }
 }
 // dit stukje is voor de detail pagina voor inkomen
-function detailInkomen($id) {
+function detailInkomen($id)
+{
     $pdo = conn();
     $query = "SELECT * FROM inkomenlijst WHERE id = :id";
     $stmt = $pdo->prepare($query);
     $stmt->execute(['id' => $id]);
     $item = $stmt->fetch();
+
     if ($item) {
-        echo '<p>$'. number_format($item['bedrag'], 2). '</p>';
-        echo '<p>'. htmlspecialchars($item['datum']). '</p>';
+        echo <<<HTML
+<body class="d-flex justify-content-center align-items-center flex-column" style="min-height: 100vh; background-color: #f4f4f9;">
+    <h1>Detailpagina inkomen</h1><br />
+    <form style="width: 22rem;" action="" method="post">
+        <input type="hidden" name="id" value="{$item['id']}">
+
+        <div class="form-outline mb-4">
+            <input type="text" id="bedrag" name="bedrag" class="form-control" value="{$item['bedrag']}" required />
+            <label class="form-label" for="bedrag">Bedrag</label>
+        </div>
+
+        <div class="form-outline mb-4">
+            <input type="text" id="datum" name="datum" class="form-control" value="{$item['datum']}" required />
+            <label class="form-label" for="datum">Datum</label>
+        </div>
+
+        <div class="form-check d-flex justify-content-center mb-4">
+            <input class="form-check-input me-2" type="checkbox" value="1" id="terms" name="terms" required />
+            <label class="form-check-label" for="terms">
+                Je bent er van zeker dat je dit nauwkeurig hebt ingevoerd
+            </label>
+        </div>
+
+        <button type="submit" name="aanpassen" class="btn btn-success btn-block mb-4">Aanpassen</button>
+        <button type="submit" name="verwijderen" class="btn btn-danger btn-block mb-4">Verwijderen</button>
+    </form>
+</body>
+HTML;
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (isset($_POST['aanpassen'])) {
+                editDetailInkomen();
+            } elseif (isset($_POST['verwijderen'])) {
+                verwijderDetailInkomen($id);
+            }
+        }
     } else {
-        echo 'Item not found';
+        echo '<div class="alert alert-danger" role="alert">Item niet gevonden</div>';
     }
 }
-function editDetailInkomen() {
+
+
+function editDetailInkomen()
+{
     $pdo = conn();
-    echo '<button type="submit" name="edit">Edit</button>';
-    if (isset($_POST['id']) && isset($_POST['bedrag']) && isset($_POST['datum'])) {
+
+    if (isset($_POST['id'], $_POST['bedrag'], $_POST['datum'])) {
         $id = $_POST['id'];
         $bedrag = $_POST['bedrag'];
         $datum = $_POST['datum'];
+
         $query = "UPDATE inkomenlijst SET bedrag = :bedrag, datum = :datum WHERE id = :id";
         $stmt = $pdo->prepare($query);
-        $stmt->execute(['bedrag' => $bedrag, 'datum' => $datum, 'id' => $id]);
-        header('Location: index.php');
+        $stmt->execute([
+            'bedrag' => $bedrag,
+            'datum' => $datum,
+            'id' => $id
+        ]);
+        header("Location:http://localhost/GeldManagmentApp/transacties/detailInkomenLijst.php?id=" . $id);
+        echo '<div class="alert alert-success" role="alert">Inkomen succesvol aangepast!</div>';
+    } else {
+        echo '<div class="alert alert-danger" role="alert">Vul alle velden in!</div>';
     }
 }
-function verwijderDetailInkomen() {
+
+function verwijderDetailInkomen($id)
+{
     $pdo = conn();
-    if (isset($_GET['id'])) {
-        $id = $_GET['id'];
-        $query = "DELETE FROM inkomenlijst WHERE id = :id";
-        $stmt = $pdo->prepare($query);
-        $stmt->execute(['id' => $id]);
-        header('Location: index.php');
-    }
+
+    $query = "DELETE FROM inkomenlijst WHERE id = :id";
+    $stmt = $pdo->prepare($query);
+    $stmt->execute(['id' => $id]);
+
+    header('Location: http://localhost/GeldManagmentApp/');
+    exit();
 }
+
 
 setupDatabase();
