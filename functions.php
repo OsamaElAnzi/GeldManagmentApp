@@ -124,6 +124,7 @@ function voegToeAanInkomenLijst($datum, $bedragInvoeren)
     $query = 'INSERT INTO inkomenlijst (datum, bedrag) VALUES (:datum, :bedrag)';
     $stmt = $pdo->prepare($query);
     $stmt->execute(['datum' => $datum, 'bedrag' => $bedragInvoeren]);
+    header("Location:http://localhost/GeldManagmentApp/");
 }
 function getInkomenLijst($condition, $limit, $offset)
 {
@@ -138,14 +139,17 @@ function getInkomenLijst($condition, $limit, $offset)
 
 function displayInkomenLijst($inkomen_lijst)
 {
+    echo '<div class="list-group">';
     foreach ($inkomen_lijst as $item) {
-        echo '<div class="item">';
-        echo '<a href="transacties\detailInkomenLijst.php?id=' . $item['id'] . '">test</a>';
-        echo '<p>€' . number_format($item['bedrag'], 2) . '</p>';
-        echo '<p>' . htmlspecialchars($item['datum']) . '</p>';
+        echo '<div class="list-group-item d-flex justify-content-between align-items-center">';
+        echo '<a href="transacties/detailInkomenLijst.php?id=' . htmlspecialchars($item['id']) . '" class="text-decoration-none text-primary">Details</a>';
+        echo '<span class="badge bg-success">€+' . number_format($item['bedrag'], 2, ',', '.') . '</span>';
+        echo '<span>' . htmlspecialchars($item['datum']) . '</span>';
         echo '</div>';
     }
+    echo '</div>';
 }
+
 
 
 function countInkomenRows($condition)
@@ -181,6 +185,7 @@ function voegToeAanUitgavenLijst($datum, $bedragInvoeren)
     $query = 'INSERT INTO uitgavenlijst (datum, bedrag) VALUES (:datum, :bedrag)';
     $stmt = $pdo->prepare($query);
     $stmt->execute(['datum' => $datum, 'bedrag' => $bedragInvoeren]);
+    header("Location: http://localhost/GeldManagmentApp/");
 }
 function getUitgavenLijst($condition, $limit, $offset)
 {
@@ -194,13 +199,16 @@ function getUitgavenLijst($condition, $limit, $offset)
 }
 function displayUitgavenLijst($uitgaven_lijst)
 {
+    echo '<div class="list-group">';
     foreach ($uitgaven_lijst as $item) {
-        echo '<div class="item">';
-        echo '<p>' . $item['datum'] . '</p>';
-        echo '<p>-' . number_format($item['bedrag'], 2) . '</p>';
+        echo '<div class="list-group-item d-flex justify-content-between align-items-center">';
+        echo '<span>' . htmlspecialchars($item['datum']) . '</span>';
+        echo '<span class="badge bg-danger">€-' . number_format($item['bedrag'], 2, ',', '.') . '</span>';
         echo '</div>';
     }
+    echo '</div>';
 }
+
 
 function countUitgavenRows($condition)
 {

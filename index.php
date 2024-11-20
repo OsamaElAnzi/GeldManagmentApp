@@ -58,54 +58,15 @@ $uitgaven_total_pages = ceil($uitgaven_total / $uitgaven_limit);
 $uitgaven_lijst = getUitgavenLijst($uitgaven_condition, $uitgaven_limit, $uitgaven_offset);
 
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Doel%20Aanpassen</title>
-    <link rel="stylesheet" href="style.css?v=1.0" type="text/css">
-
+    <title>Doel Aanpassen</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Arial', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background-color: #f4f4f9;
-            color: #333;
-            padding: 20px;
-        }
-
-        .container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            align-items: center;
-            gap: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .main-content {
-            background-color: #fff;
-            border-radius: 10px;
-            padding: 30px;
-            flex: 1;
-            min-width: 300px;
-            max-width: 400px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-        }
-
         .circle-fill {
             width: 150px;
             height: 150px;
@@ -115,157 +76,96 @@ $uitgaven_lijst = getUitgavenLijst($uitgaven_condition, $uitgaven_limit, $uitgav
             justify-content: center;
             align-items: center;
         }
-
-        input[type="text"],
-        button {
-            padding: 10px;
-            font-size: 1rem;
-            border-radius: 5px;
-            border: 1px solid gray;
-        }
-
-        button {
-            background-color: #007bff;
-            color: white;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        button:hover {
-            background-color: #0056b3;
-        }
-
-        <?php if ($darkModeEnabled): ?>
-            body,
-            html {
-                background-color: #121212;
-                color: white;
-            }
-
-            .main-content {
-                background-color: #1e1e1e;
-                color: white;
-            }
-
-            input,
-            button {
-                background-color: #333;
-                color: white;
-            }
-
-            button:hover {
-                background-color: #555;
-            }
-
-            .main-content:hover {
-                -webkit-box-shadow: 0px 0px 84px -28px rgba(91, 100, 185, 1);
-                -moz-box-shadow: 0px 0px 84px -28px rgba(91, 100, 185, 1);
-                box-shadow: 0px 0px 84px -28px rgba(91, 100, 185, 1);
-            }
-
-        <?php else: ?>
-            body,
-            html {
-                background-color: white;
-                color: black;
-            }
-
-            .main-content,
-            .main-content>div {
-                background-color: #f5f5f5;
-                color: black;
-            }
-
-            input,
-            button {
-                background-color: white;
-                color: black;
-            }
-
-            button:hover {
-                background-color: #ddd;
-            }
-
-        <?php endif; ?>
     </style>
 </head>
-<!-- ColorZilla extention kan voor een error zorgen als je de html checkt naar netheid -->
-<body>
-    <div class="container">
-        <div class="main-content">
-            <div class="inkomen-lijst">
-                <h1>Inkomen</h1>
-                <div class="lijst">
-                    <div class="title">
-                        <h2>Bedrag</h2>
-                        <h2>Datum</h2>
-                    </div>
-                    <?php displayInkomenLijst($inkomen_lijst); ?>
-                </div>
-                <?php displayInkomenPagination($inkomen_page, $inkomen_total_pages); ?>
-            </div>
-        </div>
-        <div class="main-content">
-            <h1>Doel</h1>
-            <div class="info-van-bezit">
-                <p>Bedrag: €<?= number_format($bedrag, 2, ',' , '.') ?>,-</p>
-                <p>Spaardoel: €<?= number_format($spaardoel, 2); ?>,-</p>
-                <p>Nog te gaan: €<?= number_format(nogTeGaanVoorDoelBehaling(), 2, ',' , '.'); ?>,-</p>
-            </div>
-            <div class="circle">
-                <div class="circle-fill" style="background: conic-gradient(green <?= $progress ?>%, lightgrey 0%);">
-                    <h1><?= number_format($progress, 0) . '%' ?></h1>
-                </div>
-            </div>
-            <div class="wijzigings-blok">
-                <form action="" method="GET" autocomplete="off">
-                    <input type="hidden" name="mode" value="<?= htmlspecialchars($darkModeEnabled ? 'dark' : 'day') ?>">
-                    <div class="input-van-bedrag">
-                        <p>€</p>
-                        <input type="text" pattern=[0-9]* name="bedragInvoeren" placeholder="BEDRAG" maxlength="8" required>
-                    </div>
-                    <div class="knoppen">
-                        <button type="submit" class="INKOMEN" name="INKOMEN">INKOMEN</button>
-                        <button type="submit" class="UITGAVEN" name="UITGAVEN">UITGAVEN</button>
-                    </div>
-                </form>
-            </div>
-            <div class="doel-aanpassen">
-                <form action="" method="GET" autocomplete="off">
-                    <input type="hidden" name="mode" value="<?= htmlspecialchars($darkModeEnabled ? 'dark' : 'day') ?>">
-                    <input type="text" class="input-Aanpassen" name="SPAARDOEL" placeholder="Spaardoel">
-                    <button type="submit" class="AANPASSEN" name="AANPASSEN">Aanpassen</button>
-                </form>
-            </div>
-            <div class="doel-reset">
-                <form action="" method="GET">
-                    <input type="hidden" name="mode" value="<?= htmlspecialchars($darkModeEnabled ? 'dark' : 'day') ?>">
-                    <button type="submit" name="RESET-KNOP" class="RESET-KNOP">Reset</button>
-                </form>
-            </div>
-            <div class="dark-day-mode">
-                <form action="" method="GET">
-                    <input type="hidden" name="inkomen_page" value="<?= htmlspecialchars($inkomen_page) ?>">
-                    <input type="hidden" name="uitgaven_page" value="<?= htmlspecialchars($uitgaven_page) ?>">
-                    <button type="submit" name="mode" value="dark" class="KNOPDARKMODE">Dark Mode</button>
-                    <button type="submit" name="mode" value="day" class="KNOPDAYMODE">Day Mode</button>
-                </form>
-            </div>
-        </div>
-        <div class="main-content">
-            <div class="uitgaven-lijst">
-                <h1>Uitgaven</h1>
-                <div class="lijst">
-                    <div class="title">
-                        <h2>Bedrag</h2>
-                        <h2>Datum</h2>
-                    </div>
-                    <?php displayUitgavenLijst($uitgaven_lijst); ?>
-                </div>
-                <?php displayUitgavenPagination($uitgaven_page, $uitgaven_total_pages); ?>
-            </div>
-        </div>
 
+<body class="<?= $darkModeEnabled ? 'bg-dark text-white' : 'bg-light text-dark'; ?>">
+    <div class="container my-5">
+        <div class="row g-4">
+            <div class="col-lg-4 col-md-6">
+                <div class="card <?= $darkModeEnabled ? 'bg-secondary text-white' : 'bg-light text-dark'; ?> shadow">
+                    <div class="card-body">
+                        <h2 class="card-title">Inkomen</h2>
+                        <div class="list-group">
+                            <div class="list-group-item d-flex justify-content-between">
+                                <strong>Bedrag</strong>
+                                <strong>Datum</strong>
+                            </div>
+                            <!-- probleem met table als in er moet beschrijving colomn erbij zelfde geld voor uitgaven -->
+                            <?php displayInkomenLijst($inkomen_lijst); ?>
+                        </div>
+                        <div class="mt-3">
+                            <?php displayInkomenPagination($inkomen_page, $inkomen_total_pages); ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <div class="card <?= $darkModeEnabled ? 'bg-secondary text-white' : 'bg-light text-dark'; ?> shadow">
+                    <div class="card-body text-center">
+                        <h2>Doel</h2>
+                        <p>Bedrag: €<?= number_format($bedrag, 2, ',' , '.') ?>,-</p>
+                        <p>Spaardoel: €<?= number_format($spaardoel, 2); ?>,-</p>
+                        <p>Nog te gaan: €<?= number_format(nogTeGaanVoorDoelBehaling(), 2, ',' , '.'); ?>,-</p>
+                        <!-- circle heeft moeite om in het midden te zijn -->
+                        <div class="circle-fill mb-3"
+                            style="background: conic-gradient(green <?= $progress ?>%, lightgrey 0%);">
+                            <h3><?= number_format($progress, 0) . '%' ?></h3>
+                        </div>
+
+                        <form action="" method="GET" class="mb-3">
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="SPAARDOEL" placeholder="Spaardoel" required>
+                                <button type="submit" class="btn btn-primary" name="AANPASSEN">Aanpassen</button>
+                            </div>
+                        </form>
+
+                        <form action="" method="GET">
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">€</span>
+                                <input type="text" name="bedragInvoeren" class="form-control" placeholder="BEDRAG"
+                                    pattern="[0-9]*" maxlength="8" required>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <button type="submit" name="INKOMEN" class="btn btn-success">INKOMEN</button>
+                                <button type="submit" name="UITGAVEN" class="btn btn-danger">UITGAVEN</button>
+                            </div>
+                        </form>
+                        <form action="" method="GET" class="mt-3">
+                            <button type="submit" name="RESET-KNOP" class="btn btn-warning">Reset</button>
+                        </form>
+
+                        <form action="" method="GET" class="mt-3">
+                            <button type="submit" name="mode" value="dark" class="btn btn-dark">Dark Mode</button>
+                            <button type="submit" name="mode" value="day" class="btn btn-light">Day Mode</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <div class="card <?= $darkModeEnabled ? 'bg-secondary text-white' : 'bg-light text-dark'; ?> shadow">
+                    <div class="card-body">
+                        <h2 class="card-title">Uitgaven</h2>
+                        <div class="list-group">
+                            <div class="list-group-item d-flex justify-content-between">
+                                <strong>Bedrag</strong>
+                                <strong>Datum</strong>
+                            </div>
+                            <!-- moet nog een link aan toevoegevn die je verwijst naar de beschrijfing van de tranactie -->
+                            <?php displayUitgavenLijst($uitgaven_lijst); ?>
+                        </div>
+                        <div class="mt-3">
+                            <?php displayUitgavenPagination($uitgaven_page, $uitgaven_total_pages); ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

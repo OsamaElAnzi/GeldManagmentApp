@@ -1,18 +1,16 @@
 <?php
 
-// Controleer of het bestand functions.php bestaat
 if (!file_exists('C:\xampp\htdocs\GeldManagmentApp\functions.php')) {
     echo 'Het bestand functions.php is niet gevonden.';
-    exit; // Beëindig de scriptuitvoering netjes
-} 
+    exit;
+}
 
 require 'C:\xampp\htdocs\GeldManagmentApp\functions.php';
 
-// Controleer of de ID-parameter aanwezig is en valideer deze
 if (isset($_GET['id']) && is_numeric($_GET['id'])) {
-    $id = intval($_GET['id']); // Converteer naar integer om SQL-injectie te voorkomen
+    $id = intval($_GET['id']);
 } else {
-    echo 'Geen geldig ID opgegeven.';
+    echo '<div class="alert alert-danger" role="alert">Item niet gevonden</div>';
     exit;
 }
 ?>
@@ -25,5 +23,23 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
     <title>Detail Inkomen</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
-    <?php detailInkomen($id) ?>
+<body style="background-color: #f4f4f9; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+    <div class="container">
+        <div class="mb-4 text-center">
+            <a href="http://localhost/GeldManagmentApp/" class="btn btn-danger">Terug</a>
+        </div>
+
+        <div class="card p-4 shadow-sm">
+            <?php
+            if (isset($_GET['id'])) {
+                $id = $_GET['id'];
+                detailInkomen($id);
+            } else {
+                echo '<div class="alert alert-danger" role="alert">Geen ID opgegeven!</div>';
+            }
+            ?>
+        </div>
+    </div>
+</body>
 </html>
+
