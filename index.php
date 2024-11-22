@@ -102,7 +102,7 @@ $uitgaven_lijst = getUitgavenLijst($uitgaven_condition, $uitgaven_limit, $uitgav
                 <div class="card <?= $darkModeEnabled ? 'bg-secondary text-white' : 'bg-light text-dark'; ?> shadow">
                     <div class="card-body">
                         <h2 class="card-title">Inkomen</h2>
-                        <h2 class="card-title">totaleinkomsten()</h2>
+                        <h2 class="card-title bg-success d-flex justify-content-center"><?= totaleInkomsten() ?></h2>
                         <div class="list-group">
                             <div class="list-group-item d-flex justify-content-between">
                                 <strong>info</strong>
@@ -125,6 +125,7 @@ $uitgaven_lijst = getUitgavenLijst($uitgaven_condition, $uitgaven_limit, $uitgav
                         <p>Bedrag: €<?= number_format($bedrag, 2, ',', '.') ?>,-</p>
                         <p>Spaardoel: €<?= number_format($spaardoel, 2); ?>,-</p>
                         <p>Nog te gaan: €<?= number_format(nogTeGaanVoorDoelBehaling(), 2, ',', '.'); ?>,-</p>
+                        <p>Hoeveelheid brieven:<?= getHoeveelheidBrieven(); ?></p>
                         <div class="circle-container d-flex justify-content-center align-items-center mb-3 w-100">
                             <div class="circle-fill"
                                 style="background: conic-gradient(green <?= $progress ?>%, lightgrey 0%);">
@@ -145,8 +146,18 @@ $uitgaven_lijst = getUitgavenLijst($uitgaven_condition, $uitgaven_limit, $uitgav
                             <div class="input-group mb-3">
                                 <span class="input-group-text">€</span>
                                 <input type="text" name="bedragInvoeren" class="form-control" placeholder="BEDRAG"
-                                     maxlength="8" required>
+                                    maxlength="8" required>
                             </div>
+                            <select class="form-select mb-3" aria-label="Default select example">
+                                <option value="geen bilject gekozen">Soort biljetten</option>
+                                <option value="5">€5,-</option>
+                                <option value="10">€10,-</option>
+                                <option value="20">€20,-</option>
+                                <option value="50">€50,-</option>
+                                <option value="100">€100,-</option>
+                                <option value="200">€200,-</option>
+                                <option value="500">€500,-</option>
+                            </select>
                             <div class="d-flex gap-2">
                                 <button type="submit" name="INKOMEN" class="btn btn-success">INKOMEN</button>
                                 <button type="submit" name="UITGAVEN" class="btn btn-danger">UITGAVEN</button>
@@ -169,7 +180,7 @@ $uitgaven_lijst = getUitgavenLijst($uitgaven_condition, $uitgaven_limit, $uitgav
                 <div class="card <?= $darkModeEnabled ? 'bg-secondary text-white' : 'bg-light text-dark'; ?> shadow">
                     <div class="card-body">
                         <h2 class="card-title">Uitgaven</h2>
-                        <h2 class="card-title">totaleUitagevens()</h2>
+                        <h2 class="card-title bg-danger d-flex justify-content-center"><?= totaleUitgaven() ?></h2>
                         <div class="list-group">
                             <div class="list-group-item d-flex justify-content-between">
                                 <strong>info</strong>

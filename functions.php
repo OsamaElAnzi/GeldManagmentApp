@@ -24,6 +24,7 @@ function setupDatabase()
     $createBedragenTable = 'CREATE TABLE IF NOT EXISTS BEDRAGEN (
         id INT AUTO_INCREMENT PRIMARY KEY,
         bedrag DECIMAL(15, 2) NOT NULL DEFAULT 0,
+        hoeveelheidbrieven VARCHAR(255) NULL,
         spaardoel DECIMAL(15, 2) NOT NULL DEFAULT 0
     )';
     $pdo->exec($createBedragenTable);
@@ -38,6 +39,7 @@ function setupDatabase()
     $createInkomenTable = 'CREATE TABLE IF NOT EXISTS inkomenlijst (
         id INT AUTO_INCREMENT PRIMARY KEY,
         bedrag DECIMAL(10, 2) NOT NULL,
+        soort_biljetten VARCHAR(255) NULL,
         datum DATE NOT NULL
     )';
     $pdo->exec($createInkomenTable);
@@ -45,6 +47,7 @@ function setupDatabase()
     $createUitgavenTable = 'CREATE TABLE IF NOT EXISTS uitgavenlijst (
         id INT AUTO_INCREMENT PRIMARY KEY,
         datum DATE NOT NULL,
+        soort_biljetten VARCHAR(255) NULL,
         bedrag DECIMAL(10, 2) NOT NULL
     )';
     $pdo->exec($createUitgavenTable);
@@ -57,7 +60,13 @@ function getBedrag()
     $result = $query->fetch();
     return $result ? (float)$result['bedrag'] : 0;
 }
-
+function getHoeveelheidBrieven() {
+    // hier moetene we nog alle papieren tellen van alle transacties en an elke soort biljet
+    $pdo = conn();
+    $query = $pdo->query('SELECT hoeveelheidbrieven FROM BEDRAGEN LIMIT 1');
+    $result = $query->fetch();
+    return $result? $result['hoeveelheidbrieven'] : 0;
+}
 function getSpaarDoel()
 {
     $pdo = conn();
@@ -93,13 +102,13 @@ function doelNaAanpassing($bedragNew, $type)
     $pdo = conn();
     $huidigBedrag = getBedrag();
     if ($type === 'NEW-INKOMEN') {
-        $huidigBedrag =+ (float)$bedragNew;
+        $huidigBedrag = +(float)$bedragNew;
         $updateQuery = 'UPDATE BEDRAGEN SET bedrag = :bedrag LIMIT 1';
         $stmt = $pdo->prepare($updateQuery);
         $stmt->execute(['bedrag' => $huidigBedrag]);
         header("Location:http://localhost/GeldManagmentApp/");
     } elseif ($type === 'NEW-UITGAVEN') {
-        $huidigBedrag =- $huidigBedrag - (float)$bedragNew;
+        $huidigBedrag = -$huidigBedrag - (float)$bedragNew;
         $updateQuery = 'UPDATE BEDRAGEN SET bedrag = :bedrag LIMIT 1';
         $stmt = $pdo->prepare($updateQuery);
         $stmt->execute(['bedrag' => $huidigBedrag]);
@@ -502,6 +511,43 @@ function verwijderDetailUitgaven($id)
 
     header('Location: http://localhost/GeldManagmentApp/');
     exit();
+}
+function totaleInkomsten()
+{
+    try {
+        $pdo = conn();
+        $query = "SELECT SUM(bedrag) as totaal FROM inkomenlijst";
+        $stmt = $pdo->prepare($query);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($result && $result['totaal'] !== null) {
+            return "€" . number_format($result['totaal'], 2, ',', '.');
+        } else {
+            return "Nog geen inkomsten.";
+        }
+    } catch (PDOException $e) {
+        return "Fout bij ophalen van inkomsten: " . $e->getMessage();
+    }
+}
+
+function totaleUitgaven()
+{
+    try {
+        $pdo = conn();
+        $query = "SELECT SUM(bedrag) as totaal FROM uitgavenlijst";
+        $stmt = $pdo->prepare($query);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($result && $result['totaal'] !== null) {
+            return "€" . number_format($result['totaal'], 2, ',', '.');
+        } else {
+            return "Nog geen uitgaven.";
+        }
+    } catch (PDOException $e) {
+        return "Fout bij ophalen van uitgaven: " . $e->getMessage();
+    }
 }
 
 setupDatabase();
