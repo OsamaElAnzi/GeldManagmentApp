@@ -402,7 +402,7 @@ function editDetailInkomen()
             'datum' => $datum,
             'id' => $id
         ]);
-        header("Location: http://localhost/GeldManagmentApp/?bedrag=" . $bedrag . "&type=" . $type . "&mode=dark");
+        header("Location: http://localhost/GeldManagmentApp/?bedrag=" . $bedrag);
         echo '<div class="alert alert-success" role="alert">Inkomen succesvol aangepast!</div>';
     } else {
         echo '<div class="alert alert-danger" role="alert">Vul alle velden in!</div>';
@@ -417,7 +417,7 @@ function verwijderDetailInkomen($id)
     $stmt = $pdo->prepare($query);
     $stmt->execute(['id' => $id]);
 
-    header('Location: http://localhost/GeldManagmentApp/?mode=dark');
+    header('Location: http://localhost/GeldManagmentApp/');
     exit();
 }
 //voor uitgaven
@@ -486,7 +486,7 @@ function editDetailUitgaven()
             'datum' => $datum,
             'id' => $id
         ]);
-        header("Location: http://localhost/GeldManagmentApp/?bedrag=" . $bedrag . "&type=" . $type . "&mode=dark");
+        header("Location: http://localhost/GeldManagmentApp/?bedrag=" . $bedrag);
         exit();
     } else {
         echo '<div class="alert alert-danger" role="alert">Vul alle velden in!</div>';
@@ -500,7 +500,7 @@ function verwijderDetailUitgaven($id)
     $stmt = $pdo->prepare($query);
     $stmt->execute(['id' => $id]);
 
-    header('Location: http://localhost/GeldManagmentApp/?mode=dark');
+    header('Location: http://localhost/GeldManagmentApp/');
     exit();
 }
 
