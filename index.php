@@ -9,16 +9,10 @@ $condition = true;
 $type = "";
 $darkModeEnabled = false;
 $dayModeEnabled = true;
+darkDayModus();
+// probleem met darkmodus
+$mode = isset($_GET['mode']) ? htmlspecialchars($_GET['mode']) : '';
 
-if (isset($_GET['mode'])) {
-    if ($_GET['mode'] == 'dark') {
-        $darkModeEnabled = true;
-        $dayModeEnabled = false;
-    } else {
-        $darkModeEnabled = false;
-        $dayModeEnabled = true;
-    }
-}
 if (isset($_GET['bedrag']) && isset($_GET['type'])) {
     $bedragNew = $_GET['bedrag'];
     $type = $_GET['type'];
@@ -40,30 +34,27 @@ if (isset($_GET['bedragInvoeren']) && is_numeric($_GET['bedragInvoeren'])) {
 } elseif (isset($_GET['RESET-KNOP'])) {
     $bedrag = resetDoel();
     $condition = false;
-    header("Location:http://localhost/GeldManagmentApp/");
 }
 
 $progress = ($spaardoel > 0) ? min(($bedrag / $spaardoel) * 100, 100) : 0;
 
 $inkomen_page = isset($_GET['inkomen_page']) ? (int) $_GET['inkomen_page'] : 1;
-$inkomen_limit = 10;
+$inkomen_limit = 11;
 $inkomen_offset = ($inkomen_page - 1) * $inkomen_limit;
-
 $inkomen_condition = '1';
 $inkomen_total = countInkomenRows($inkomen_condition);
 $inkomen_total_pages = ceil($inkomen_total / $inkomen_limit);
 $inkomen_lijst = getInkomenLijst($inkomen_condition, $inkomen_limit, $inkomen_offset);
 
 $uitgaven_page = isset($_GET['uitgaven_page']) ? (int) $_GET['uitgaven_page'] : 1;
-$uitgaven_limit = 10;
+$uitgaven_limit = 11;
 $uitgaven_offset = ($uitgaven_page - 1) * $uitgaven_limit;
-
 $uitgaven_condition = '1';
 $uitgaven_total = countUitgavenRows($uitgaven_condition);
 $uitgaven_total_pages = ceil($uitgaven_total / $uitgaven_limit);
 $uitgaven_lijst = getUitgavenLijst($uitgaven_condition, $uitgaven_limit, $uitgaven_offset);
-
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 

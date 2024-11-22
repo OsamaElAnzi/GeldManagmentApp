@@ -90,6 +90,7 @@ function doelAanpassen($bedragInvoeren, $type)
 }
 function doelNaAanpassing($bedragNew, $type)
 {
+    $mode = isset($_GET['mode']) ? htmlspecialchars($_GET['mode']) : '';
     $pdo = conn();
     $huidigBedrag = getBedrag();
     if ($type === 'NEW-INKOMEN') {
@@ -103,7 +104,7 @@ function doelNaAanpassing($bedragNew, $type)
         $updateQuery = 'UPDATE BEDRAGEN SET bedrag = :bedrag LIMIT 1';
         $stmt = $pdo->prepare($updateQuery);
         $stmt->execute(['bedrag' => $huidigBedrag]);
-
+        header("Location:http://localhost/GeldManagmentApp/");
     }
 }
 function updateSpaarDoel($spaardoel)
@@ -138,6 +139,7 @@ function nogTeGaanVoorDoelBehaling()
 
 function voegToeAanInkomenLijst($datum, $bedragInvoeren)
 {
+    $mode = isset($_GET['mode']) ? htmlspecialchars($_GET['mode']) : '';
     $pdo = conn();
     $query = 'INSERT INTO inkomenlijst (datum, bedrag) VALUES (:datum, :bedrag)';
     $stmt = $pdo->prepare($query);
@@ -199,6 +201,7 @@ function displayPagination($current_page, $total_pages)
 }
 function voegToeAanUitgavenLijst($datum, $bedragInvoeren)
 {
+    $mode = isset($_GET['mode']) ? htmlspecialchars($_GET['mode']) : '';
     $pdo = conn();
     $query = 'INSERT INTO uitgavenlijst (datum, bedrag) VALUES (:datum, :bedrag)';
     $stmt = $pdo->prepare($query);
@@ -242,46 +245,96 @@ function countUitgavenRows($condition)
 function displayInkomenPagination($current_page, $total_pages)
 {
     if ($total_pages > 1) {
-        echo "<div class='pagination'>";
+        echo "<nav aria-label='Page navigation'>";
+        echo "<ul class='pagination justify-content-center'>";
+
+        $mode = isset($_GET['mode']) ? htmlspecialchars($_GET['mode']) : '';
+
         if ($current_page > 1) {
-            $mode = isset($_GET['mode']) ? htmlspecialchars($_GET['mode']) : '';
-            echo "<a href='?inkomen_page=" . ($current_page - 1) . "&mode=$mode' class='prev'><img width='20px' src='foto\arrow_back_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.png' alt='foto'></a>";
+            echo "<li class='page-item'>";
+            echo "<a class='page-link' href='?inkomen_page=" . ($current_page - 1) . "&mode=$mode' aria-label='Previous'>";
+            echo "<img src='foto/arrow_back_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.png' width='20' alt='Previous'>";
+            echo "</a>";
+            echo "</li>";
+        } else {
+            echo "<li class='page-item disabled'>";
+            echo "<span class='page-link'>";
+            echo "<img src='foto/arrow_back_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.png' width='20' alt='Previous'>";
+            echo "</span>";
+            echo "</li>";
         }
         for ($i = 1; $i <= $total_pages; $i++) {
-            $mode = isset($_GET['mode']) ? htmlspecialchars($_GET['mode']) : '';
             $active_class = ($i == $current_page) ? 'active' : '';
-            echo "<a href='?inkomen_page=$i&mode=$mode' class='$active_class'>$i</a> ";
+            echo "<li class='page-item $active_class'>";
+            echo "<a class='page-link' href='?inkomen_page=$i&mode=$mode'>$i</a>";
+            echo "</li>";
         }
         if ($current_page < $total_pages) {
-            $mode = isset($_GET['mode']) ? htmlspecialchars($_GET['mode']) : '';
-            echo "<a href='?inkomen_page=" . ($current_page + 1) . "&mode=$mode' class='next'><img width='20px' src='foto\arrow_right_alt_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.png' alt='foto'></a>";
+            echo "<li class='page-item'>";
+            echo "<a class='page-link' href='?inkomen_page=" . ($current_page + 1) . "&mode=$mode' aria-label='Next'>";
+            echo "<img src='foto/arrow_right_alt_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.png' width='20' alt='Next'>";
+            echo "</a>";
+            echo "</li>";
+        } else {
+            echo "<li class='page-item disabled'>";
+            echo "<span class='page-link'>";
+            echo "<img src='foto/arrow_right_alt_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.png' width='20' alt='Next'>";
+            echo "</span>";
+            echo "</li>";
         }
 
-        echo "</div>";
+        echo "</ul>";
+        echo "</nav>";
     }
 }
+
 
 function displayUitgavenPagination($current_page, $total_pages)
 {
     if ($total_pages > 1) {
-        echo "<div class='pagination'>";
+        echo "<nav aria-label='Uitgaven page navigation'>";
+        echo "<ul class='pagination justify-content-center'>";
+
+        $mode = isset($_GET['mode']) ? htmlspecialchars($_GET['mode']) : '';
+
         if ($current_page > 1) {
-            $mode = isset($_GET['mode']) ? htmlspecialchars($_GET['mode']) : '';
-            echo "<a href='?uitgaven_page=" . ($current_page - 1) . "&mode=$mode' class='prev'><img width='20px' src='foto\arrow_back_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.png' alt='foto'></a>";
+            echo "<li class='page-item'>";
+            echo "<a class='page-link' href='?uitgaven_page=" . ($current_page - 1) . "&mode=$mode' aria-label='Previous'>";
+            echo "<img src='./foto/arrow_back_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.png' width='20' alt='Previous'>";
+            echo "</a>";
+            echo "</li>";
+        } else {
+            echo "<li class='page-item disabled'>";
+            echo "<span class='page-link'>";
+            echo "<img src='./foto/arrow_back_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.png' width='20' alt='Previous'>";
+            echo "</span>";
+            echo "</li>";
         }
         for ($i = 1; $i <= $total_pages; $i++) {
-            $mode = isset($_GET['mode']) ? htmlspecialchars($_GET['mode']) : '';
             $active_class = ($i == $current_page) ? 'active' : '';
-            echo "<a href='?uitgaven_page=$i&mode=$mode' class='$active_class'>$i</a> ";
+            echo "<li class='page-item $active_class'>";
+            echo "<a class='page-link' href='?uitgaven_page=$i&mode=$mode'>$i</a>";
+            echo "</li>";
         }
         if ($current_page < $total_pages) {
-            $mode = isset($_GET['mode']) ? htmlspecialchars($_GET['mode']) : '';
-            echo "<a href='?uitgaven_page=" . ($current_page + 1) . "&mode=$mode' class='next'><img width='20px' src='./foto/arrow_right_alt_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.png' alt='foto'></a>";
+            echo "<li class='page-item'>";
+            echo "<a class='page-link' href='?uitgaven_page=" . ($current_page + 1) . "&mode=$mode' aria-label='Next'>";
+            echo "<img src='./foto/arrow_right_alt_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.png' width='20' alt='Next'>";
+            echo "</a>";
+            echo "</li>";
+        } else {
+            echo "<li class='page-item disabled'>";
+            echo "<span class='page-link'>";
+            echo "<img src='./foto/arrow_right_alt_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.png' width='20' alt='Next'>";
+            echo "</span>";
+            echo "</li>";
         }
 
-        echo "</div>";
+        echo "</ul>";
+        echo "</nav>";
     }
 }
+
 // dit stukje is voor de detail pagina voor inkomen
 function detailInkomen($id)
 {
@@ -350,7 +403,7 @@ function editDetailInkomen()
             'datum' => $datum,
             'id' => $id
         ]);
-        header("Location: http://localhost/GeldManagmentApp/?bedrag=" . $bedrag . "&type=" . $type);
+        header("Location: http://localhost/GeldManagmentApp/?bedrag=" . $bedrag . "&type=" . $type . "&mode=dark");
         echo '<div class="alert alert-success" role="alert">Inkomen succesvol aangepast!</div>';
     } else {
         echo '<div class="alert alert-danger" role="alert">Vul alle velden in!</div>';
@@ -365,7 +418,7 @@ function verwijderDetailInkomen($id)
     $stmt = $pdo->prepare($query);
     $stmt->execute(['id' => $id]);
 
-    header('Location: http://localhost/GeldManagmentApp/');
+    header('Location: http://localhost/GeldManagmentApp/?mode=dark');
     exit();
 }
 //voor uitgaven
@@ -434,7 +487,7 @@ function editDetailUitgaven()
             'datum' => $datum,
             'id' => $id
         ]);
-        header("Location: http://localhost/GeldManagmentApp/?bedrag=" . $bedrag . "&type=" . $type);
+        header("Location: http://localhost/GeldManagmentApp/?bedrag=" . $bedrag . "&type=" . $type . "&mode=dark");
         exit();
     } else {
         echo '<div class="alert alert-danger" role="alert">Vul alle velden in!</div>';
@@ -448,9 +501,21 @@ function verwijderDetailUitgaven($id)
     $stmt = $pdo->prepare($query);
     $stmt->execute(['id' => $id]);
 
-    header('Location: http://localhost/GeldManagmentApp/');
+    header('Location: http://localhost/GeldManagmentApp/?mode=dark');
     exit();
 }
-
+function darkDayModus() {
+    global $darkModeEnabled, $dayModeEnabled;
+        if (isset($_GET['mode'])) {
+            $mode = $_GET['mode'];
+            if ($mode === 'dark') {
+                $darkModeEnabled = true;
+                $dayModeEnabled = false;
+            } else {
+                $darkModeEnabled = false;
+                $dayModeEnabled = true;
+            }
+        }
+}
 
 setupDatabase();
