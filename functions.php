@@ -88,6 +88,24 @@ function doelAanpassen($bedragInvoeren, $type)
 
     return $nieuwBedrag;
 }
+function doelNaAanpassing($bedragNew, $type)
+{
+    $pdo = conn();
+    $huidigBedrag = getBedrag();
+    if ($type === 'NEW-INKOMEN') {
+        $huidigBedrag = (float)$bedragNew;
+        $updateQuery = 'UPDATE BEDRAGEN SET bedrag = :bedrag LIMIT 1';
+        $stmt = $pdo->prepare($updateQuery);
+        $stmt->execute(['bedrag' => $huidigBedrag]);
+        header("Location:http://localhost/GeldManagmentApp/");
+    } elseif ($type === 'NEW-UITGAVEN') {
+        $huidigBedrag = $huidigBedrag - (float)$bedragNew;
+        $updateQuery = 'UPDATE BEDRAGEN SET bedrag = :bedrag LIMIT 1';
+        $stmt = $pdo->prepare($updateQuery);
+        $stmt->execute(['bedrag' => $huidigBedrag]);
+
+    }
+}
 function updateSpaarDoel($spaardoel)
 {
     $pdo = conn();
@@ -319,7 +337,7 @@ HTML;
 function editDetailInkomen()
 {
     $pdo = conn();
-
+    $type = 'NEW-INKOMEN';
     if (isset($_POST['id'], $_POST['bedrag'], $_POST['datum'])) {
         $id = $_POST['id'];
         $bedrag = $_POST['bedrag'];
@@ -332,7 +350,7 @@ function editDetailInkomen()
             'datum' => $datum,
             'id' => $id
         ]);
-        header("Location:http://localhost/GeldManagmentApp/transacties/detailInkomenLijst.php?id=" . $id);
+        header("Location: http://localhost/GeldManagmentApp/?bedrag=" . $bedrag . "&type=" . $type);
         echo '<div class="alert alert-success" role="alert">Inkomen succesvol aangepast!</div>';
     } else {
         echo '<div class="alert alert-danger" role="alert">Vul alle velden in!</div>';
@@ -403,7 +421,7 @@ HTML;
 function editDetailUitgaven()
 {
     $pdo = conn();
-
+    $type = 'NEW-UITGAVEN';
     if (isset($_POST['id'], $_POST['bedrag'], $_POST['datum'])) {
         $id = $_POST['id'];
         $bedrag = $_POST['bedrag'];
@@ -416,8 +434,8 @@ function editDetailUitgaven()
             'datum' => $datum,
             'id' => $id
         ]);
-        echo '<div class="alert alert-success" role="alert">Uitgave succesvol aangepast!</div>';
-        header("Location:http://localhost/GeldManagmentApp/transacties/detailUitgavenLijst.php?id=" . $id);
+        header("Location: http://localhost/GeldManagmentApp/?bedrag=" . $bedrag . "&type=" . $type);
+        exit();
     } else {
         echo '<div class="alert alert-danger" role="alert">Vul alle velden in!</div>';
     }

@@ -6,7 +6,7 @@ $spaardoel = getSpaarDoel();
 $bedrag = getBedrag();
 $datum = getDatum();
 $condition = true;
-
+$type = "";
 $darkModeEnabled = false;
 $dayModeEnabled = true;
 
@@ -19,7 +19,11 @@ if (isset($_GET['mode'])) {
         $dayModeEnabled = true;
     }
 }
-
+if (isset($_GET['bedrag']) && isset($_GET['type'])) {
+    $bedragNew = $_GET['bedrag'];
+    $type = $_GET['type'];
+    $bedragOutput = doelNaAanpassing($bedragNew, $type);
+}
 if (isset($_GET['bedragInvoeren']) && is_numeric($_GET['bedragInvoeren'])) {
     if (isset($_GET['INKOMEN'])) {
         $bedragInvoeren = $_GET['bedragInvoeren'];
@@ -36,6 +40,7 @@ if (isset($_GET['bedragInvoeren']) && is_numeric($_GET['bedragInvoeren'])) {
 } elseif (isset($_GET['RESET-KNOP'])) {
     $bedrag = resetDoel();
     $condition = false;
+    header("Location:http://localhost/GeldManagmentApp/");
 }
 
 $progress = ($spaardoel > 0) ? min(($bedrag / $spaardoel) * 100, 100) : 0;
