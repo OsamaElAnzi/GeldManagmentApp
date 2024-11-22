@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 require 'functions.php';
 setupDatabase();
 
@@ -6,12 +8,15 @@ $spaardoel = getSpaarDoel();
 $bedrag = getBedrag();
 $datum = getDatum();
 $condition = true;
-$type = "";
-$darkModeEnabled = false;
-$dayModeEnabled = true;
-darkDayModus();
-// probleem met darkmodus
-$mode = isset($_GET['mode']) ? htmlspecialchars($_GET['mode']) : '';
+
+if (isset($_GET['mode'])) {
+    $_SESSION['mode'] = htmlspecialchars($_GET['mode']);
+}
+
+$mode = isset($_SESSION['mode']) ? $_SESSION['mode'] : 'day';
+
+$darkModeEnabled = ($mode === 'dark');
+$dayModeEnabled = ($mode === 'day');
 
 if (isset($_GET['bedrag']) && isset($_GET['type'])) {
     $bedragNew = $_GET['bedrag'];
@@ -39,7 +44,7 @@ if (isset($_GET['bedragInvoeren']) && is_numeric($_GET['bedragInvoeren'])) {
 $progress = ($spaardoel > 0) ? min(($bedrag / $spaardoel) * 100, 100) : 0;
 
 $inkomen_page = isset($_GET['inkomen_page']) ? (int) $_GET['inkomen_page'] : 1;
-$inkomen_limit = 11;
+$inkomen_limit = 10;
 $inkomen_offset = ($inkomen_page - 1) * $inkomen_limit;
 $inkomen_condition = '1';
 $inkomen_total = countInkomenRows($inkomen_condition);
@@ -47,13 +52,14 @@ $inkomen_total_pages = ceil($inkomen_total / $inkomen_limit);
 $inkomen_lijst = getInkomenLijst($inkomen_condition, $inkomen_limit, $inkomen_offset);
 
 $uitgaven_page = isset($_GET['uitgaven_page']) ? (int) $_GET['uitgaven_page'] : 1;
-$uitgaven_limit = 11;
+$uitgaven_limit = 10;
 $uitgaven_offset = ($uitgaven_page - 1) * $uitgaven_limit;
 $uitgaven_condition = '1';
 $uitgaven_total = countUitgavenRows($uitgaven_condition);
 $uitgaven_total_pages = ceil($uitgaven_total / $uitgaven_limit);
 $uitgaven_lijst = getUitgavenLijst($uitgaven_condition, $uitgaven_limit, $uitgaven_offset);
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -96,6 +102,7 @@ $uitgaven_lijst = getUitgavenLijst($uitgaven_condition, $uitgaven_limit, $uitgav
                 <div class="card <?= $darkModeEnabled ? 'bg-secondary text-white' : 'bg-light text-dark'; ?> shadow">
                     <div class="card-body">
                         <h2 class="card-title">Inkomen</h2>
+                        <h2 class="card-title">totaleinkomsten()</h2>
                         <div class="list-group">
                             <div class="list-group-item d-flex justify-content-between">
                                 <strong>info</strong>
@@ -126,6 +133,7 @@ $uitgaven_lijst = getUitgavenLijst($uitgaven_condition, $uitgaven_limit, $uitgav
                         </div>
 
                         <form action="" method="GET" class="mb-3">
+                            <input type="hidden" name="mode" value="<?= $mode; ?>">
                             <div class="input-group">
                                 <input type="text" class="form-control" name="SPAARDOEL" placeholder="Spaardoel" required>
                                 <button type="submit" class="btn btn-primary" name="AANPASSEN">Aanpassen</button>
@@ -133,10 +141,11 @@ $uitgaven_lijst = getUitgavenLijst($uitgaven_condition, $uitgaven_limit, $uitgav
                         </form>
 
                         <form action="" method="GET">
+                            <input type="hidden" name="mode" value="<?= $mode; ?>">
                             <div class="input-group mb-3">
                                 <span class="input-group-text">€</span>
                                 <input type="text" name="bedragInvoeren" class="form-control" placeholder="BEDRAG"
-                                    pattern="[0-9]*" maxlength="8" required>
+                                     maxlength="8" required>
                             </div>
                             <div class="d-flex gap-2">
                                 <button type="submit" name="INKOMEN" class="btn btn-success">INKOMEN</button>
@@ -144,6 +153,7 @@ $uitgaven_lijst = getUitgavenLijst($uitgaven_condition, $uitgaven_limit, $uitgav
                             </div>
                         </form>
                         <form action="" method="GET" class="mt-3">
+                            <input type="hidden" name="mode" value="<?= $mode; ?>">
                             <button type="submit" name="RESET-KNOP" class="btn btn-warning">Reset</button>
                         </form>
 
@@ -159,6 +169,7 @@ $uitgaven_lijst = getUitgavenLijst($uitgaven_condition, $uitgaven_limit, $uitgav
                 <div class="card <?= $darkModeEnabled ? 'bg-secondary text-white' : 'bg-light text-dark'; ?> shadow">
                     <div class="card-body">
                         <h2 class="card-title">Uitgaven</h2>
+                        <h2 class="card-title">totaleUitagevens()</h2>
                         <div class="list-group">
                             <div class="list-group-item d-flex justify-content-between">
                                 <strong>info</strong>

@@ -90,17 +90,16 @@ function doelAanpassen($bedragInvoeren, $type)
 }
 function doelNaAanpassing($bedragNew, $type)
 {
-    $mode = isset($_GET['mode']) ? htmlspecialchars($_GET['mode']) : '';
     $pdo = conn();
     $huidigBedrag = getBedrag();
     if ($type === 'NEW-INKOMEN') {
-        $huidigBedrag = (float)$bedragNew;
+        $huidigBedrag =+ (float)$bedragNew;
         $updateQuery = 'UPDATE BEDRAGEN SET bedrag = :bedrag LIMIT 1';
         $stmt = $pdo->prepare($updateQuery);
         $stmt->execute(['bedrag' => $huidigBedrag]);
         header("Location:http://localhost/GeldManagmentApp/");
     } elseif ($type === 'NEW-UITGAVEN') {
-        $huidigBedrag = $huidigBedrag - (float)$bedragNew;
+        $huidigBedrag =- $huidigBedrag - (float)$bedragNew;
         $updateQuery = 'UPDATE BEDRAGEN SET bedrag = :bedrag LIMIT 1';
         $stmt = $pdo->prepare($updateQuery);
         $stmt->execute(['bedrag' => $huidigBedrag]);
@@ -144,7 +143,7 @@ function voegToeAanInkomenLijst($datum, $bedragInvoeren)
     $query = 'INSERT INTO inkomenlijst (datum, bedrag) VALUES (:datum, :bedrag)';
     $stmt = $pdo->prepare($query);
     $stmt->execute(['datum' => $datum, 'bedrag' => $bedragInvoeren]);
-    header("Location:http://localhost/GeldManagmentApp/");
+    header("Location:http://localhost/GeldManagmentApp/?mode=$mode");
 }
 function getInkomenLijst($condition, $limit, $offset)
 {
@@ -503,19 +502,6 @@ function verwijderDetailUitgaven($id)
 
     header('Location: http://localhost/GeldManagmentApp/?mode=dark');
     exit();
-}
-function darkDayModus() {
-    global $darkModeEnabled, $dayModeEnabled;
-        if (isset($_GET['mode'])) {
-            $mode = $_GET['mode'];
-            if ($mode === 'dark') {
-                $darkModeEnabled = true;
-                $dayModeEnabled = false;
-            } else {
-                $darkModeEnabled = false;
-                $dayModeEnabled = true;
-            }
-        }
 }
 
 setupDatabase();
