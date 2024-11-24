@@ -22,6 +22,7 @@ if (isset($_GET['bedrag']) && isset($_GET['type'])) {
     $bedragNew = $_GET['bedrag'];
     $type = $_GET['type'];
     $bedragOutput = doelNaAanpassing($bedragNew, $type);
+    header("Location:http://localhost/GeldManagmentApp/");
 }
 if (isset($_GET['bedragInvoeren']) && is_numeric($_GET['bedragInvoeren'])) {
     if (isset($_GET['INKOMEN'])) {

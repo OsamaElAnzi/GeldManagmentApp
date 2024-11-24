@@ -21,19 +21,19 @@ function setupDatabase()
 {
     $pdo = conn();
 
-    $createBedragenTable = 'CREATE TABLE IF NOT EXISTS BEDRAGEN (
+    $createbedragenTable = 'CREATE TABLE IF NOT EXISTS bedragen (
         id INT AUTO_INCREMENT PRIMARY KEY,
         bedrag DECIMAL(15, 2) NOT NULL DEFAULT 0,
         hoeveelheidbrieven VARCHAR(255) NULL,
         spaardoel DECIMAL(15, 2) NOT NULL DEFAULT 0
     )';
-    $pdo->exec($createBedragenTable);
+    $pdo->exec($createbedragenTable);
 
-    $query = $pdo->query('SELECT COUNT(*) as count FROM BEDRAGEN');
+    $query = $pdo->query('SELECT COUNT(*) as count FROM bedragen');
     $row = $query->fetch();
 
     if ($row['count'] == 0) {
-        $insertQuery = 'INSERT INTO BEDRAGEN (bedrag, spaardoel) VALUES (0, 0)';
+        $insertQuery = 'INSERT INTO bedragen (bedrag, spaardoel) VALUES (0, 0)';
         $pdo->exec($insertQuery);
     }
     $createInkomenTable = 'CREATE TABLE IF NOT EXISTS inkomenlijst (
@@ -56,21 +56,21 @@ function setupDatabase()
 function getBedrag()
 {
     $pdo = conn();
-    $query = $pdo->query('SELECT bedrag FROM BEDRAGEN LIMIT 1');
+    $query = $pdo->query('SELECT bedrag FROM bedragen LIMIT 1');
     $result = $query->fetch();
     return $result ? (float)$result['bedrag'] : 0;
 }
 function getHoeveelheidBrieven() {
     // hier moetene we nog alle papieren tellen van alle transacties en an elke soort biljet
     $pdo = conn();
-    $query = $pdo->query('SELECT hoeveelheidbrieven FROM BEDRAGEN LIMIT 1');
+    $query = $pdo->query('SELECT hoeveelheidbrieven FROM bedragen LIMIT 1');
     $result = $query->fetch();
     return $result? $result['hoeveelheidbrieven'] : 0;
 }
 function getSpaarDoel()
 {
     $pdo = conn();
-    $query = $pdo->query('SELECT spaardoel FROM BEDRAGEN LIMIT 1');
+    $query = $pdo->query('SELECT spaardoel FROM bedragen LIMIT 1');
     $result = $query->fetch();
     return $result ? (float)$result['spaardoel'] : 0;
 }
@@ -91,7 +91,7 @@ function doelAanpassen($bedragInvoeren, $type)
         ? $huidigBedrag + (float)$bedragInvoeren
         : $huidigBedrag - (float)$bedragInvoeren;
 
-    $updateQuery = 'UPDATE BEDRAGEN SET bedrag = :bedrag LIMIT 1';
+    $updateQuery = 'UPDATE bedragen SET bedrag = :bedrag LIMIT 1';
     $stmt = $pdo->prepare($updateQuery);
     $stmt->execute(['bedrag' => $nieuwBedrag]);
 
@@ -102,23 +102,21 @@ function doelNaAanpassing($bedragNew, $type)
     $pdo = conn();
     $huidigBedrag = getBedrag();
     if ($type === 'NEW-INKOMEN') {
-        $huidigBedrag = +(float)$bedragNew;
-        $updateQuery = 'UPDATE BEDRAGEN SET bedrag = :bedrag LIMIT 1';
+        $huidigBedrag =+ (float)$bedragNew;
+        $updateQuery = 'UPDATE bedragen SET bedrag = :bedrag LIMIT 1';
         $stmt = $pdo->prepare($updateQuery);
         $stmt->execute(['bedrag' => $huidigBedrag]);
-        header("Location:http://localhost/GeldManagmentApp/");
     } elseif ($type === 'NEW-UITGAVEN') {
-        $huidigBedrag = -$huidigBedrag - (float)$bedragNew;
-        $updateQuery = 'UPDATE BEDRAGEN SET bedrag = :bedrag LIMIT 1';
+        $huidigBedrag =- $huidigBedrag - (float)$bedragNew;
+        $updateQuery = 'UPDATE bedragen SET bedrag = :bedrag LIMIT 1';
         $stmt = $pdo->prepare($updateQuery);
         $stmt->execute(['bedrag' => $huidigBedrag]);
-        header("Location:http://localhost/GeldManagmentApp/");
     }
 }
 function updateSpaarDoel($spaardoel)
 {
     $pdo = conn();
-    $updateQuery = 'UPDATE BEDRAGEN SET spaardoel = :spaardoel LIMIT 1';
+    $updateQuery = 'UPDATE bedragen SET spaardoel = :spaardoel LIMIT 1';
     $stmt = $pdo->prepare($updateQuery);
     $stmt->execute(['spaardoel' => $spaardoel]);
 }
@@ -126,12 +124,12 @@ function resetDoel()
 {
     if (isset($_GET['RESET-KNOP'])) {
         $pdo = conn();
-        $resetQueryBedragen = 'UPDATE BEDRAGEN SET bedrag = 0, spaardoel = 0';
+        $resetQuerybedragen = 'UPDATE bedragen SET bedrag = 0, spaardoel = 0';
         $resetQueryInkomenLijst = 'DELETE FROM inkomenlijst';
         $resetQueryUitgavenLijst = 'DELETE FROM uitgavenlijst';
         $pdo->exec($resetQueryUitgavenLijst);
         $pdo->exec($resetQueryInkomenLijst);
-        $pdo->exec($resetQueryBedragen);
+        $pdo->exec($resetQuerybedragen);
 
         return 0;
     }
@@ -411,7 +409,7 @@ function editDetailInkomen()
             'datum' => $datum,
             'id' => $id
         ]);
-        header("Location: http://localhost/GeldManagmentApp/?bedrag=" . $bedrag);
+        header("Location: http://localhost/GeldManagmentApp/?bedrag=" . $bedrag . "&type=" . $type);
         echo '<div class="alert alert-success" role="alert">Inkomen succesvol aangepast!</div>';
     } else {
         echo '<div class="alert alert-danger" role="alert">Vul alle velden in!</div>';
@@ -495,7 +493,7 @@ function editDetailUitgaven()
             'datum' => $datum,
             'id' => $id
         ]);
-        header("Location: http://localhost/GeldManagmentApp/?bedrag=" . $bedrag);
+        header("Location: http://localhost/GeldManagmentApp/?bedrag=" . $bedrag . "&type=". $type);
         exit();
     } else {
         echo '<div class="alert alert-danger" role="alert">Vul alle velden in!</div>';
