@@ -128,7 +128,7 @@ $uitgaven_lijst = getUitgavenLijst($uitgaven_condition, $uitgaven_limit, $uitgav
                         <p>Bedrag: €<?= $bedrag ? number_format($bedrag, 2, ',', '.'): 0; ?>,-</p>
                         <p>Spaardoel: €<?= number_format($spaardoel, 2); ?>,-</p>
                         <p>Nog te gaan: €<?= number_format(nogTeGaanVoorDoelBehaling(), 2, ',', '.'); ?>,-</p>
-                        <p>Hoeveelheid brieven:<?= getHoeveelheidBrieven(); ?></p>
+                        <p>Hoeveelheid brieven:<?= biljettenTellerInkomen(); ?></p>
                         <div class="circle-container d-flex justify-content-center align-items-center mb-3 w-100">
                             <div class="circle-fill"
                                 style="background: conic-gradient(green <?= $progress ?>%, lightgrey 0%);">
