@@ -126,7 +126,7 @@ $uitgaven_lijst = getUitgavenLijst($uitgaven_condition, $uitgaven_limit, $uitgav
                     <div class="card-body text-center d-flex align-item-center flex-column">
                         <h2>Doel</h2>
                         <p>Bedrag: €<?= $bedrag ? number_format($bedrag, 2, ',', '.'): 0; ?>,-</p>
-                        <p>Spaardoel: €<?= number_format($spaardoel, 2); ?>,-</p>
+                        <p>Spaardoel: €<?= $spaardoel ? number_format($spaardoel, 2): 0; ?>,-</p>
                         <p>Nog te gaan: €<?= number_format(nogTeGaanVoorDoelBehaling(), 2, ',', '.'); ?>,-</p>
                         <p>Hoeveelheid brieven:<?= biljettenTellerInkomen(); ?></p>
                         <div class="circle-container d-flex justify-content-center align-items-center mb-3 w-100">

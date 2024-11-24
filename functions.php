@@ -106,14 +106,37 @@ function biljettenTellerInkomen() {
         return [];
     }
 }
-
-
 function biljettenTellerUitgaven() {
-    // hier moeten we nog alle transacties tellen van alle soorten biljetten
+
     $pdo = conn();
-    $query = $pdo->query('SELECT COUNT(*) as count FROM uitgavenlijst');
-    $row = $query->fetch();
-    return $row['count'];
+
+    try {
+        $stmt = $pdo->query('SELECT soort_biljetten, bedrag FROM uitgavenlijst');
+        $resultaten = $stmt->fetchAll();
+
+        if (!$resultaten) {
+            return "Geen gegevens beschikbaar.";
+        }
+        $biljettenTelling = [];
+
+        foreach ($resultaten as $row) {
+            $soort = $row['soort_biljetten'];
+            $bedrag = $row['bedrag'];
+
+            if ($soort > 0) {
+                $aantalBiljetten = $bedrag / $soort;
+
+                if (!isset($biljettenTelling[$soort])) {
+                    $biljettenTelling[$soort] = 0;
+                }
+                $biljettenTelling[$soort] += $aantalBiljetten;
+            }
+        }
+
+        return $biljettenTelling;
+    } catch (Exception $e) {
+        echo '<div class="alert alert-danger" role="alert">Er is een fout opgetreden: ' . htmlspecialchars($e->getMessage()) . '</div>';
+    }
 }
 function getSpaarDoel()
 {
