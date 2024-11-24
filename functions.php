@@ -56,16 +56,20 @@ function setupDatabase()
 function getBedrag()
 {
     $pdo = conn();
-    $query = $pdo->query('SELECT bedrag FROM bedragen LIMIT 1');
-    $result = $query->fetch();
-    return $result ? (float)$result['bedrag'] : 0;
+$query = 'SELECT bedrag FROM bedragen LIMIT 1';
+$stmt = $pdo->prepare($query);
+$stmt->execute();
+$result = $stmt->fetch();
+return (float)$result['bedrag'];
+
 }
-function getHoeveelheidBrieven() {
+function getHoeveelheidBrieven()
+{
     // hier moetene we nog alle papieren tellen van alle transacties en an elke soort biljet
     $pdo = conn();
     $query = $pdo->query('SELECT hoeveelheidbrieven FROM bedragen LIMIT 1');
     $result = $query->fetch();
-    return $result? $result['hoeveelheidbrieven'] : 0;
+    return $result ? $result['hoeveelheidbrieven'] : 0;
 }
 function getSpaarDoel()
 {
@@ -102,12 +106,12 @@ function doelNaAanpassing($bedragNew, $type)
     $pdo = conn();
     $huidigBedrag = getBedrag();
     if ($type === 'NEW-INKOMEN') {
-        $huidigBedrag =+ (float)$bedragNew;
+        $huidigBedrag = +(float)$bedragNew;
         $updateQuery = 'UPDATE bedragen SET bedrag = :bedrag LIMIT 1';
         $stmt = $pdo->prepare($updateQuery);
         $stmt->execute(['bedrag' => $huidigBedrag]);
     } elseif ($type === 'NEW-UITGAVEN') {
-        $huidigBedrag =- $huidigBedrag - (float)$bedragNew;
+        $huidigBedrag = -$huidigBedrag - (float)$bedragNew;
         $updateQuery = 'UPDATE bedragen SET bedrag = :bedrag LIMIT 1';
         $stmt = $pdo->prepare($updateQuery);
         $stmt->execute(['bedrag' => $huidigBedrag]);
@@ -143,13 +147,13 @@ function nogTeGaanVoorDoelBehaling()
     return $spaardoel - $huidigBedrag;
 }
 
-function voegToeAanInkomenLijst($datum, $bedragInvoeren)
+function voegToeAanInkomenLijst($datum, $bedragInvoeren, $soort_biljetten)
 {
     $mode = isset($_GET['mode']) ? htmlspecialchars($_GET['mode']) : '';
     $pdo = conn();
-    $query = 'INSERT INTO inkomenlijst (datum, bedrag) VALUES (:datum, :bedrag)';
+    $query = 'INSERT INTO inkomenlijst (datum, bedrag, soort_biljetten) VALUES (:datum, :bedrag, :soort_biljetten)';
     $stmt = $pdo->prepare($query);
-    $stmt->execute(['datum' => $datum, 'bedrag' => $bedragInvoeren]);
+    $stmt->execute(['datum' => $datum, 'bedrag' => $bedragInvoeren, 'soort_biljetten' => $soort_biljetten]);
     header("Location:http://localhost/GeldManagmentApp/?mode=$mode");
 }
 function getInkomenLijst($condition, $limit, $offset)
@@ -205,13 +209,12 @@ function displayPagination($current_page, $total_pages)
         echo "</div>";
     }
 }
-function voegToeAanUitgavenLijst($datum, $bedragInvoeren)
+function voegToeAanUitgavenLijst($datum, $bedragInvoeren, $soort_biljetten)
 {
-    $mode = isset($_GET['mode']) ? htmlspecialchars($_GET['mode']) : '';
     $pdo = conn();
-    $query = 'INSERT INTO uitgavenlijst (datum, bedrag) VALUES (:datum, :bedrag)';
+    $query = 'INSERT INTO uitgavenlijst (soort_biljetten ,datum, bedrag) VALUES (:soort_biljetten, :datum, :bedrag)';
     $stmt = $pdo->prepare($query);
-    $stmt->execute(['datum' => $datum, 'bedrag' => $bedragInvoeren]);
+    $stmt->execute(['datum' => $datum, 'bedrag' => $bedragInvoeren, 'soort_biljetten' => $soort_biljetten]);
     header("Location: http://localhost/GeldManagmentApp/");
 }
 function getUitgavenLijst($condition, $limit, $offset)
@@ -354,14 +357,23 @@ function detailInkomen($id)
         echo <<<HTML
 <body class="d-flex justify-content-center align-items-center flex-column" style="min-height: 100vh; background-color: #f4f4f9;">
     <h1>Detailpagina inkomen</h1><br />
-    <form style="width: 22rem;" action="" method="post">
+    <form style="width: 22rem;" action="" method="POST">
         <input type="hidden" name="id" value="{$item['id']}">
 
         <div class="form-outline mb-4">
             <input type="text" id="bedrag" name="bedrag" class="form-control" value="{$item['bedrag']}" required />
             <label class="form-label" for="bedrag">Bedrag</label>
         </div>
-
+        <select class="form-select mb-3" aria-label="Default select example" name="soort_biljetten">
+            <option value="geen bilject gekozen">Soort biljetten</option>
+            <option value="5">€5,-</option>
+            <option value="10">€10,-</option>
+            <option value="20">€20,-</option>
+            <option value="50">€50,-</option>
+            <option value="100">€100,-</option>
+            <option value="200">€200,-</option>
+            <option value="500">€500,-</option>
+        </select>
         <div class="form-outline mb-4">
             <input type="text" id="datum" name="datum" class="form-control" value="{$item['datum']}" required />
             <label class="form-label" for="datum">Datum</label>
@@ -401,17 +413,17 @@ function editDetailInkomen()
         $id = $_POST['id'];
         $bedrag = $_POST['bedrag'];
         $datum = $_POST['datum'];
+        $soort_biljetten = $_POST['soort_biljetten'];
 
-        $query = "UPDATE inkomenlijst SET bedrag = :bedrag, datum = :datum WHERE id = :id";
+        $query = "UPDATE inkomenlijst SET bedrag = :bedrag, datum = :datum, soort_biljetten = :soort_biljetten WHERE id = :id";
         $stmt = $pdo->prepare($query);
         $stmt->execute([
+            'soort_biljetten' => $soort_biljetten,
             'bedrag' => $bedrag,
             'datum' => $datum,
             'id' => $id
         ]);
         header("Location: http://localhost/GeldManagmentApp/?bedrag=" . $bedrag . "&type=" . $type);
-        echo '<div class="alert alert-success" role="alert">Inkomen succesvol aangepast!</div>';
-    } else {
         echo '<div class="alert alert-danger" role="alert">Vul alle velden in!</div>';
     }
 }
@@ -420,13 +432,36 @@ function verwijderDetailInkomen($id)
 {
     $pdo = conn();
 
-    $query = "DELETE FROM inkomenlijst WHERE id = :id";
-    $stmt = $pdo->prepare($query);
-    $stmt->execute(['id' => $id]);
+    try {
+        $queryFetch = $pdo->prepare('SELECT bedrag FROM inkomenlijst WHERE id = :id');
+        $queryFetch->execute(['id' => $id]);
+        $bedragMin = $queryFetch->fetch();
 
-    header('Location: http://localhost/GeldManagmentApp/');
-    exit();
+        if (!$bedragMin) {
+            echo '<div class="alert alert-danger" role="alert">Item niet gevonden!</div>';
+            return;
+        }
+
+        $result = $bedragMin['bedrag'];
+
+        $queryUpdate = $pdo->prepare('UPDATE bedragen SET bedrag = bedrag - :bedrag');
+        $queryUpdate->execute(['bedrag' => $result]);
+
+        $queryDelete = $pdo->prepare('DELETE FROM inkomenlijst WHERE id = :id');
+        $queryDelete->execute(['id' => $id]);
+
+        echo '<div class="alert alert-success" role="alert">Succesvol verwijderd!</div>';
+        echo '<script>
+                setTimeout(function() {
+                    window.location.href = "http://localhost/GeldManagmentApp/";
+                }, 1500)
+              </script>';
+    } catch (Exception $e) {
+        echo '<div class="alert alert-danger" role="alert">Er is een fout opgetreden: ' . htmlspecialchars($e->getMessage()) . '</div>';
+    }
 }
+
+
 //voor uitgaven
 function detailUitgaven($id)
 {
@@ -481,35 +516,61 @@ function editDetailUitgaven()
 {
     $pdo = conn();
     $type = 'NEW-UITGAVEN';
+
     if (isset($_POST['id'], $_POST['bedrag'], $_POST['datum'])) {
         $id = $_POST['id'];
         $bedrag = $_POST['bedrag'];
         $datum = $_POST['datum'];
+        $soort_biljetten = $_POST['soort_biljetten'];
 
-        $query = "UPDATE uitgavenlijst SET bedrag = :bedrag, datum = :datum WHERE id = :id";
+        $query = "UPDATE uitgavenlijst SET bedrag = :bedrag, datum = :datum, soort_biljetten = :soort_biljetten WHERE id = :id";
         $stmt = $pdo->prepare($query);
         $stmt->execute([
+            'soort_biljetten' => $soort_biljetten,
             'bedrag' => $bedrag,
             'datum' => $datum,
             'id' => $id
         ]);
-        header("Location: http://localhost/GeldManagmentApp/?bedrag=" . $bedrag . "&type=". $type);
+
+        header("Location: http://localhost/GeldManagmentApp/?bedrag=" . $bedrag . "&type=" . $type);
         exit();
     } else {
         echo '<div class="alert alert-danger" role="alert">Vul alle velden in!</div>';
     }
 }
+
 function verwijderDetailUitgaven($id)
 {
     $pdo = conn();
 
-    $query = "DELETE FROM uitgavenlijst WHERE id = :id";
-    $stmt = $pdo->prepare($query);
-    $stmt->execute(['id' => $id]);
+    try {
+        $queryFetch = $pdo->prepare('SELECT bedrag FROM uitgavenlijst WHERE id = :id');
+        $queryFetch->execute(['id' => $id]);
+        $bedragMin = $queryFetch->fetch();
 
-    header('Location: http://localhost/GeldManagmentApp/');
-    exit();
+        if (!$bedragMin) {
+            echo '<div class="alert alert-danger" role="alert">Item niet gevonden!</div>';
+            return;
+        }
+
+        $result = $bedragMin['bedrag'];
+
+        $queryUpdate = $pdo->prepare('UPDATE bedragen SET bedrag = bedrag + :bedrag');
+        $queryUpdate->execute(['bedrag' => $result]);
+        $queryDelete = $pdo->prepare('DELETE FROM uitgavenlijst WHERE id = :id');
+        $queryDelete->execute(['id' => $id]);
+
+        echo '<div class="alert alert-success" role="alert">Succesvol verwijderd!</div>';
+        echo '<script>
+                setTimeout(function() {
+                    window.location.href = "http://localhost/GeldManagmentApp/";
+                }, 1500)
+              </script>';
+    } catch (Exception $e) {
+        echo '<div class="alert alert-danger" role="alert">Er is een fout opgetreden: ' . htmlspecialchars($e->getMessage()) . '</div>';
+    }
 }
+
 function totaleInkomsten()
 {
     try {

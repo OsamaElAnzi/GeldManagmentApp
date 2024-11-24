@@ -22,17 +22,19 @@ if (isset($_GET['bedrag']) && isset($_GET['type'])) {
     $bedragNew = $_GET['bedrag'];
     $type = $_GET['type'];
     $bedragOutput = doelNaAanpassing($bedragNew, $type);
-    header("Location:http://localhost/GeldManagmentApp/");
 }
 if (isset($_GET['bedragInvoeren']) && is_numeric($_GET['bedragInvoeren'])) {
     if (isset($_GET['INKOMEN'])) {
         $bedragInvoeren = $_GET['bedragInvoeren'];
+        $soort_biljetten = $_GET['soort_biljetten'];
         $bedrag = doelAanpassen($bedragInvoeren, 'INKOMEN');
-        voegToeAanInkomenLijst($datum, $bedragInvoeren);
+        voegToeAanInkomenLijst($datum, $bedragInvoeren, $soort_biljetten);
+        header("Location:http://localhost/GeldManagmentApp/");
     } elseif (isset($_GET['UITGAVEN'])) {
         $bedragInvoeren = $_GET['bedragInvoeren'];
         $bedrag = doelAanpassen($bedragInvoeren, 'UITGAVEN');
-        voegToeAanUitgavenLijst($datum, $bedragInvoeren);
+        voegToeAanUitgavenLijst($datum, $bedragInvoeren, $soort_biljetten);
+        header("Location:http://localhost/GeldManagmentApp/");
     }
 } elseif (isset($_GET['SPAARDOEL']) && is_numeric($_GET['SPAARDOEL'])) {
     $spaardoel = (float) $_GET['SPAARDOEL'];
@@ -123,7 +125,7 @@ $uitgaven_lijst = getUitgavenLijst($uitgaven_condition, $uitgaven_limit, $uitgav
                 <div class="card <?= $darkModeEnabled ? 'bg-secondary text-white' : 'bg-light text-dark'; ?> shadow">
                     <div class="card-body text-center d-flex align-item-center flex-column">
                         <h2>Doel</h2>
-                        <p>Bedrag: €<?= number_format($bedrag, 2, ',', '.') ?>,-</p>
+                        <p>Bedrag: €<?= $bedrag ? number_format($bedrag, 2, ',', '.'): 0; ?>,-</p>
                         <p>Spaardoel: €<?= number_format($spaardoel, 2); ?>,-</p>
                         <p>Nog te gaan: €<?= number_format(nogTeGaanVoorDoelBehaling(), 2, ',', '.'); ?>,-</p>
                         <p>Hoeveelheid brieven:<?= getHoeveelheidBrieven(); ?></p>
@@ -149,7 +151,7 @@ $uitgaven_lijst = getUitgavenLijst($uitgaven_condition, $uitgaven_limit, $uitgav
                                 <input type="text" name="bedragInvoeren" class="form-control" placeholder="BEDRAG"
                                     maxlength="8" required>
                             </div>
-                            <select class="form-select mb-3" aria-label="Default select example">
+                            <select class="form-select mb-3" aria-label="Default select example" name="soort_biljetten">
                                 <option value="geen bilject gekozen">Soort biljetten</option>
                                 <option value="5">€5,-</option>
                                 <option value="10">€10,-</option>
