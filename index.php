@@ -42,6 +42,7 @@ if (isset($_GET['bedragInvoeren']) && is_numeric($_GET['bedragInvoeren'])) {
 } elseif (isset($_GET['RESET-KNOP'])) {
     $bedrag = resetDoel();
     $condition = false;
+    header("Location:http://localhost/GeldManagmentApp/");
 }
 
 $progress = ($spaardoel > 0) ? min(($bedrag / $spaardoel) * 100, 100) : 0;
@@ -128,7 +129,7 @@ $uitgaven_lijst = getUitgavenLijst($uitgaven_condition, $uitgaven_limit, $uitgav
                         <p>Bedrag: €<?= $bedrag ? number_format($bedrag, 2, ',', '.'): 0; ?>,-</p>
                         <p>Spaardoel: €<?= $spaardoel ? number_format($spaardoel, 2): 0; ?>,-</p>
                         <p>Nog te gaan: €<?= number_format(nogTeGaanVoorDoelBehaling(), 2, ',', '.'); ?>,-</p>
-                        <p>Hoeveelheid brieven:<?= biljettenTellerInkomen(); ?></p>
+                        <p>Hoeveelheid brieven:<?= getHoeveelheidBrieven(); ?></p>
                         <div class="circle-container d-flex justify-content-center align-items-center mb-3 w-100">
                             <div class="circle-fill"
                                 style="background: conic-gradient(green <?= $progress ?>%, lightgrey 0%);">

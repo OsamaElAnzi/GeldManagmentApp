@@ -65,14 +65,26 @@ return (float)$result['bedrag'];
 }
 function getHoeveelheidBrieven()
 {
-    // hier moetene we nog alle papieren tellen van alle transacties en an elke soort biljet
     $pdo = conn();
-    // biljettenTellerInkomen();
-    // biljettenTellerUitgaven();
-    $query = $pdo->query('SELECT hoeveelheidbrieven FROM bedragen LIMIT 1');
-    $result = $query->fetch();
-    return $result ? $result['hoeveelheidbrieven'] : 0;
+
+    try {
+        $brievenHoeveelheidInkomen = biljettenTellerInkomen();
+
+        $queryInsert = "UPDATE bedragen SET hoeveelheidbrieven = :hoeveelheid WHERE id = 1";
+        $stmt = $pdo->prepare($queryInsert);
+        $stmt->execute(['hoeveelheid' => $brievenHoeveelheidInkomen]);
+
+        $query = $pdo->query('SELECT hoeveelheidbrieven FROM bedragen LIMIT 1');
+        $result = $query->fetch();
+        foreach ($result as $row) {
+            return $row;
+        }
+    } catch (Exception $e) {
+        echo '<div class="alert alert-danger" role="alert">Er is een fout opgetreden: ' . htmlspecialchars($e->getMessage()) . '</div>';
+        return 0;
+    }
 }
+
 function biljettenTellerInkomen() {
     $pdo = conn();
 
@@ -81,33 +93,38 @@ function biljettenTellerInkomen() {
         $resultaten = $stmt->fetchAll();
 
         if (!$resultaten) {
-            return "Geen gegevens beschikbaar.";
+            return 0; // Geen data beschikbaar
         }
 
         $biljettenTelling = [];
 
         foreach ($resultaten as $row) {
-            $soort = $row['soort_biljetten'];
-            $bedrag = $row['bedrag'];
+            $soort = (int)$row['soort_biljetten'];
+            $bedrag = (int)$row['bedrag'];
 
             if ($soort > 0) {
-                $aantalBiljetten = $bedrag / $soort;
+                $aantalBiljetten = (int)($bedrag / $soort); // Aantal biljetten als integer
 
+                // Tellen per soort biljetten
                 if (!isset($biljettenTelling[$soort])) {
                     $biljettenTelling[$soort] = 0;
                 }
+
                 $biljettenTelling[$soort] += $aantalBiljetten;
+            } else {
+                return 0;
             }
         }
-        var_dump($biljettenTelling);
-        return $biljettenTelling;
+
+        // Totale som van alle biljetten
+        return array_sum($biljettenTelling);
     } catch (Exception $e) {
         echo '<div class="alert alert-danger" role="alert">Er is een fout opgetreden: ' . htmlspecialchars($e->getMessage()) . '</div>';
-        return [];
+        return 0;
     }
 }
-function biljettenTellerUitgaven() {
 
+function biljettenTellerUitgaven() {
     $pdo = conn();
 
     try {
@@ -115,29 +132,35 @@ function biljettenTellerUitgaven() {
         $resultaten = $stmt->fetchAll();
 
         if (!$resultaten) {
-            return "Geen gegevens beschikbaar.";
+            return 0;
         }
+
         $biljettenTelling = [];
 
         foreach ($resultaten as $row) {
-            $soort = $row['soort_biljetten'];
-            $bedrag = $row['bedrag'];
+            $soort = (int)$row['soort_biljetten'];
+            $bedrag = (int)$row['bedrag'];
 
             if ($soort > 0) {
-                $aantalBiljetten = $bedrag / $soort;
+                $aantalBiljetten = (int)($bedrag / $soort);
 
                 if (!isset($biljettenTelling[$soort])) {
                     $biljettenTelling[$soort] = 0;
                 }
+
                 $biljettenTelling[$soort] += $aantalBiljetten;
+            } else {
+                return 0;
             }
         }
 
-        return $biljettenTelling;
+        return array_sum($biljettenTelling);
     } catch (Exception $e) {
         echo '<div class="alert alert-danger" role="alert">Er is een fout opgetreden: ' . htmlspecialchars($e->getMessage()) . '</div>';
+        return 0;
     }
 }
+
 function getSpaarDoel()
 {
     $pdo = conn();
