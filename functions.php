@@ -40,6 +40,7 @@ function setupDatabase()
         id INT AUTO_INCREMENT PRIMARY KEY,
         bedrag DECIMAL(10, 2) NOT NULL,
         soort_biljetten VARCHAR(255) NULL,
+        aantalBiljettenInkomen INT NULL,
         datum DATE NOT NULL
     )';
     $pdo->exec($createInkomenTable);
@@ -48,6 +49,7 @@ function setupDatabase()
         id INT AUTO_INCREMENT PRIMARY KEY,
         datum DATE NOT NULL,
         soort_biljetten VARCHAR(255) NULL,
+        aantalBiljettenInkomen INT NULL,
         bedrag DECIMAL(10, 2) NOT NULL
     )';
     $pdo->exec($createUitgavenTable);
