@@ -456,8 +456,11 @@ function detailInkomen($id)
             <input type="text" id="bedrag" name="bedrag" class="form-control" value="{$item['bedrag']}" required />
             <label class="form-label" for="bedrag">Bedrag</label>
         </div>
+        <div class="form-outline mb-4">
+            <input type="text" id="soort_biljetten" name="soort_biljetten" class="form-control" value="{$item['soort_biljetten']}" disabled />
+            <label class="form-label" for="soort_biljetten">Soort biljet</label>
+        </div>
         <select class="form-select mb-3" aria-label="Default select example" name="soort_biljetten">
-            <option value="geen bilject gekozen">Soort biljetten</option>
             <option value="5">€5,-</option>
             <option value="10">€10,-</option>
             <option value="20">€20,-</option>
@@ -574,7 +577,19 @@ function detailUitgaven($id)
             <input type="text" id="bedrag" name="bedrag" class="form-control" value="{$item['bedrag']}" required />
             <label class="form-label" for="bedrag">Bedrag</label>
         </div>
-
+        <div class="form-outline mb-4">
+            <input type="text" id="soort_biljetten" name="soort_biljetten" class="form-control" value="{$item['soort_biljetten']}" disabled />
+            <label class="form-label" for="soort_biljetten">Soort biljet</label>
+        </div>
+        <select class="form-select mb-3" aria-label="Default select example" name="soort_biljetten">
+            <option value="5">€5,-</option>
+            <option value="10">€10,-</option>
+            <option value="20">€20,-</option>
+            <option value="50">€50,-</option>
+            <option value="100">€100,-</option>
+            <option value="200">€200,-</option>
+            <option value="500">€500,-</option>
+        </select>
         <div class="form-outline mb-4">
             <input type="text" id="datum" name="datum" class="form-control" value="{$item['datum']}" required />
             <label class="form-label" for="datum">Datum</label>

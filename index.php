@@ -32,6 +32,7 @@ if (isset($_GET['bedragInvoeren']) && is_numeric($_GET['bedragInvoeren'])) {
         header("Location:http://localhost/GeldManagmentApp/");
     } elseif (isset($_GET['UITGAVEN'])) {
         $bedragInvoeren = $_GET['bedragInvoeren'];
+        $soort_biljetten = $_GET['soort_biljetten'];
         $bedrag = doelAanpassen($bedragInvoeren, 'UITGAVEN');
         voegToeAanUitgavenLijst($datum, $bedragInvoeren, $soort_biljetten);
         header("Location:http://localhost/GeldManagmentApp/");
