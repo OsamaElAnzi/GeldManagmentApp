@@ -49,7 +49,7 @@ if (isset($_GET['bedragInvoeren']) && is_numeric($_GET['bedragInvoeren'])) {
 $progress = ($spaardoel > 0) ? min(($bedrag / $spaardoel) * 100, 100) : 0;
 
 $inkomen_page = isset($_GET['inkomen_page']) ? (int) $_GET['inkomen_page'] : 1;
-$inkomen_limit = 10;
+$inkomen_limit = 11;
 $inkomen_offset = ($inkomen_page - 1) * $inkomen_limit;
 $inkomen_condition = '1';
 $inkomen_total = countInkomenRows($inkomen_condition);
@@ -57,7 +57,7 @@ $inkomen_total_pages = ceil($inkomen_total / $inkomen_limit);
 $inkomen_lijst = getInkomenLijst($inkomen_condition, $inkomen_limit, $inkomen_offset);
 
 $uitgaven_page = isset($_GET['uitgaven_page']) ? (int) $_GET['uitgaven_page'] : 1;
-$uitgaven_limit = 10;
+$uitgaven_limit = 11;
 $uitgaven_offset = ($uitgaven_page - 1) * $uitgaven_limit;
 $uitgaven_condition = '1';
 $uitgaven_total = countUitgavenRows($uitgaven_condition);
