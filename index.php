@@ -27,14 +27,18 @@ if (isset($_GET['bedragInvoeren']) && is_numeric($_GET['bedragInvoeren'])) {
     if (isset($_GET['INKOMEN'])) {
         $bedragInvoeren = $_GET['bedragInvoeren'];
         $soort_biljetten = $_GET['soort_biljetten'];
-        $bedrag = doelAanpassen($bedragInvoeren, 'INKOMEN');
-        voegToeAanInkomenLijst($datum, $bedragInvoeren, $soort_biljetten);
+        if ((int)$bedragInvoeren >= (int) $soort_biljetten) {
+            $bedrag = doelAanpassen($bedragInvoeren, 'INKOMEN');
+            voegToeAanInkomenLijst($datum, $bedragInvoeren, $soort_biljetten);
+        }
         header("Location:http://localhost/GeldManagmentApp/");
     } elseif (isset($_GET['UITGAVEN'])) {
         $bedragInvoeren = $_GET['bedragInvoeren'];
         $soort_biljetten = $_GET['soort_biljetten'];
-        $bedrag = doelAanpassen($bedragInvoeren, 'UITGAVEN');
-        voegToeAanUitgavenLijst($datum, $bedragInvoeren, $soort_biljetten);
+        if ((int)$bedragInvoeren >= (int) $soort_biljetten) {
+            $bedrag = doelAanpassen($bedragInvoeren, 'INKOMEN');
+            voegToeAanUitgavenLijst($datum, $bedragInvoeren, $soort_biljetten);
+        }
         header("Location:http://localhost/GeldManagmentApp/");
     }
 } elseif (isset($_GET['SPAARDOEL']) && is_numeric($_GET['SPAARDOEL'])) {
