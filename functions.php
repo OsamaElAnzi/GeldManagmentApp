@@ -263,6 +263,7 @@ function displayInkomenLijst($inkomen_lijst)
 {
     echo '<div class="list-group">';
     foreach ($inkomen_lijst as $item) {
+        //moet darkmode variable meegeven zodat darkmode werkt voor inkomen
         echo '<div class="list-group-item d-flex justify-content-between align-items-center">';
         echo '<a href="transacties/detailInkomenLijst.php?id=' . htmlspecialchars($item['id']) . '" class="text-decoration-none text-primary">Details</a>';
         echo '<span class="badge bg-success">€+' . number_format($item['bedrag'], 2, ',', '.') . '</span>';
@@ -323,6 +324,7 @@ function displayUitgavenLijst($uitgaven_lijst)
 {
     echo '<div class="list-group">';
     foreach ($uitgaven_lijst as $item) {
+        //moet darkmode variable meegeven zodat darkmode werkt voor uitgaven
         echo '<div class="list-group-item d-flex justify-content-between align-items-center">';
         echo '<a href="transacties/detailUitgavenLijst.php?id=' . htmlspecialchars($item['id']) . '" class="text-decoration-none text-primary">Details</a>';
         echo '<span class="badge bg-danger">€-' . number_format($item['bedrag'], 2, ',', '.') . '</span>';
