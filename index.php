@@ -151,7 +151,7 @@ $uitgaven_lijst = getUitgavenLijst($uitgaven_condition, $uitgaven_limit, $uitgav
                             <div class="input-group mb-3">
                                 <span class="input-group-text">€</span>
                                 <input type="text" name="bedragInvoeren" class="form-control" placeholder="BEDRAG"
-                                    maxlength="8" required>
+                                    maxlength="8" pattern="^\d+(\.\d{1,2})?$" required>
                             </div>
                             <select class="form-select mb-3" aria-label="Default select example" name="soort_biljetten">
                                 <option value="geen bilject gekozen">Soort biljetten</option>

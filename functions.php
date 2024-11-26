@@ -49,7 +49,7 @@ function setupDatabase()
         id INT AUTO_INCREMENT PRIMARY KEY,
         datum DATE NOT NULL,
         soort_biljetten VARCHAR(255) NULL,
-        aantalBiljettenInkomen INT NULL,
+        aantalBiljettenUitgaven INT NULL,
         bedrag DECIMAL(10, 2) NOT NULL
     )';
     $pdo->exec($createUitgavenTable);
@@ -445,8 +445,24 @@ function detailInkomen($id)
     $stmt->execute(['id' => $id]);
     $item = $stmt->fetch();
 
-    if ($item) {
-        echo <<<HTML
+    if (!$item) {
+        echo '<div class="alert alert-danger" role="alert">Item niet gevonden</div>';
+        return;
+    }
+
+    $bedragInkomen = (float)$item['bedrag'];
+    $soort_biljetten = (int)$item['soort_biljetten'];
+    if ($soort_biljetten > 0) {
+        $aantalBiljettenInkomen = (int)($bedragInkomen / $soort_biljetten);
+
+        $updateQuery = "UPDATE inkomenlijst SET aantalBiljettenInkomen = :aantal WHERE id = :id";
+        $updateStmt = $pdo->prepare($updateQuery);
+        $updateStmt->execute(['aantal' => $aantalBiljettenInkomen, 'id' => $id]);
+    } else {
+        $aantalBiljettenInkomen = 0;
+    }
+
+    echo <<<HTML
 <body class="d-flex justify-content-center align-items-center flex-column" style="min-height: 100vh; background-color: #f4f4f9;">
     <h1>Detailpagina inkomen</h1><br />
     <form style="width: 22rem;" action="" method="POST">
@@ -459,6 +475,8 @@ function detailInkomen($id)
         <div class="form-outline mb-4">
             <input type="text" id="soort_biljetten" name="soort_biljetten" class="form-control" value="{$item['soort_biljetten']}" disabled />
             <label class="form-label" for="soort_biljetten">Soort biljet</label>
+            <input type="text" id="hoeveelheid" name="hoeveelheid" class="form-control" value="{$aantalBiljettenInkomen}" disabled />
+            <label class="form-label" for="soort_biljetten">Hoeveelheid</label>
         </div>
         <select class="form-select mb-3" aria-label="Default select example" name="soort_biljetten">
             <option value="5">€5,-</option>
@@ -487,17 +505,15 @@ function detailInkomen($id)
 </body>
 HTML;
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            if (isset($_POST['aanpassen'])) {
-                editDetailInkomen();
-            } elseif (isset($_POST['verwijderen'])) {
-                verwijderDetailInkomen($id);
-            }
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if (isset($_POST['aanpassen'])) {
+            editDetailInkomen();
+        } elseif (isset($_POST['verwijderen'])) {
+            verwijderDetailInkomen($id);
         }
-    } else {
-        echo '<div class="alert alert-danger" role="alert">Item niet gevonden</div>';
     }
 }
+
 
 
 function editDetailInkomen()
@@ -565,7 +581,17 @@ function detailUitgaven($id)
     $stmt = $pdo->prepare($query);
     $stmt->execute(['id' => $id]);
     $item = $stmt->fetch();
+    $bedragUitgave = (float)$item['bedrag'];
+    $soort_biljetten = (int)$item['soort_biljetten'];
+    if ($soort_biljetten > 0) {
+        $aantalBiljettenUitgaven = (int)($bedragUitgave / $soort_biljetten);
 
+        $updateQuery = "UPDATE uitgavenlijst SET aantalBiljettenUitgaven = :aantal WHERE id = :id";
+        $updateStmt = $pdo->prepare($updateQuery);
+        $updateStmt->execute(['aantal' => $aantalBiljettenUitgaven, 'id' => $id]);
+    } else {
+        $aantalBiljettenUitgaven = 0;
+    }
     if ($item) {
         echo <<<HTML
 <body class="d-flex justify-content-center align-items-center flex-column" style="min-height: 100vh; background-color: #f4f4f9;">
