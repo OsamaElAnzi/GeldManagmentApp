@@ -71,21 +71,24 @@ function getHoeveelheidBrieven()
 
     try {
         $brievenHoeveelheidInkomen = biljettenTellerInkomen();
+        $brievenHoeveelheidUitgaven = biljettenTellerUitgaven();
+
+        $verschil = $brievenHoeveelheidInkomen - $brievenHoeveelheidUitgaven;
 
         $queryInsert = "UPDATE bedragen SET hoeveelheidbrieven = :hoeveelheid WHERE id = 1";
         $stmt = $pdo->prepare($queryInsert);
-        $stmt->execute(['hoeveelheid' => $brievenHoeveelheidInkomen]);
+        $stmt->execute(['hoeveelheid' => $verschil]);
 
         $query = $pdo->query('SELECT hoeveelheidbrieven FROM bedragen LIMIT 1');
         $result = $query->fetch();
-        foreach ($result as $row) {
-            return $row;
-        }
+
+        return $result ? $result['hoeveelheidbrieven'] : 0;
     } catch (Exception $e) {
         echo '<div class="alert alert-danger" role="alert">Er is een fout opgetreden: ' . htmlspecialchars($e->getMessage()) . '</div>';
         return 0;
     }
 }
+
 
 function biljettenTellerInkomen() {
     $pdo = conn();
@@ -95,7 +98,7 @@ function biljettenTellerInkomen() {
         $resultaten = $stmt->fetchAll();
 
         if (!$resultaten) {
-            return 0; // Geen data beschikbaar
+            return 0;
         }
 
         $biljettenTelling = [];
@@ -105,9 +108,7 @@ function biljettenTellerInkomen() {
             $bedrag = (int)$row['bedrag'];
 
             if ($soort > 0) {
-                $aantalBiljetten = (int)($bedrag / $soort); // Aantal biljetten als integer
-
-                // Tellen per soort biljetten
+                $aantalBiljetten = (int)($bedrag / $soort);
                 if (!isset($biljettenTelling[$soort])) {
                     $biljettenTelling[$soort] = 0;
                 }
@@ -118,7 +119,6 @@ function biljettenTellerInkomen() {
             }
         }
 
-        // Totale som van alle biljetten
         return array_sum($biljettenTelling);
     } catch (Exception $e) {
         echo '<div class="alert alert-danger" role="alert">Er is een fout opgetreden: ' . htmlspecialchars($e->getMessage()) . '</div>';
