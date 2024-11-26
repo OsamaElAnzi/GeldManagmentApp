@@ -107,7 +107,7 @@ $uitgaven_lijst = getUitgavenLijst($uitgaven_condition, $uitgaven_limit, $uitgav
                 <div class="card <?= $darkModeEnabled ? 'bg-secondary text-white' : 'bg-light text-dark'; ?> shadow">
                     <div class="card-body">
                         <h2 class="card-title">Inkomen</h2>
-                        <h2 class="card-title bg-success d-flex justify-content-center"><?= totaleInkomsten() ?></h2>
+                        <h2 class="card-title bg-success d-flex justify-content-center p-2"><?= totaleInkomsten() ?></h2>
                         <div class="list-group">
                             <div class="list-group-item d-flex justify-content-between">
                                 <strong>info</strong>
@@ -185,7 +185,7 @@ $uitgaven_lijst = getUitgavenLijst($uitgaven_condition, $uitgaven_limit, $uitgav
                 <div class="card <?= $darkModeEnabled ? 'bg-secondary text-white' : 'bg-light text-dark'; ?> shadow">
                     <div class="card-body">
                         <h2 class="card-title">Uitgaven</h2>
-                        <h2 class="card-title bg-danger d-flex justify-content-center"><?= totaleUitgaven() ?></h2>
+                        <h2 class="card-title bg-danger d-flex justify-content-center p-2"><?= totaleUitgaven() ?></h2>
                         <div class="list-group">
                             <div class="list-group-item d-flex justify-content-between">
                                 <strong>info</strong>
