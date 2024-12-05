@@ -1,7 +1,6 @@
 <?php
 
 session_start();
-
 require 'functions.php';
 include 'back-end.php';
 ?>
