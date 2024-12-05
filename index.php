@@ -76,7 +76,7 @@ $uitgaven_lijst = getUitgavenLijst($uitgaven_condition, $uitgaven_limit, $uitgav
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Doel Aanpassen</title>
+    <title>GeldManagmentApp</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css">
     <style>
         .circle-container {
@@ -111,7 +111,7 @@ $uitgaven_lijst = getUitgavenLijst($uitgaven_condition, $uitgaven_limit, $uitgav
                 <div class="card <?= $darkModeEnabled ? 'bg-secondary text-white' : 'bg-light text-dark'; ?> shadow">
                     <div class="card-body">
                         <h2 class="card-title">Inkomen</h2>
-                        <h2 class="card-title bg-success d-flex justify-content-center p-2"><?= totaleInkomsten() ?></h2>
+                        <h2 class="card-title bg-success d-flex justify-content-center p-2 rounded"><?= totaleInkomsten() ?></h2>
                         <div class="list-group">
                             <div class="list-group-item d-flex justify-content-between">
                                 <strong>info</strong>
@@ -189,7 +189,7 @@ $uitgaven_lijst = getUitgavenLijst($uitgaven_condition, $uitgaven_limit, $uitgav
                 <div class="card <?= $darkModeEnabled ? 'bg-secondary text-white' : 'bg-light text-dark'; ?> shadow">
                     <div class="card-body">
                         <h2 class="card-title">Uitgaven</h2>
-                        <h2 class="card-title bg-danger d-flex justify-content-center p-2"><?= totaleUitgaven() ?></h2>
+                        <h2 class="card-title bg-danger d-flex justify-content-center p-2 rounded"><?= totaleUitgaven() ?></h2>
                         <div class="list-group">
                             <div class="list-group-item d-flex justify-content-between">
                                 <strong>info</strong>

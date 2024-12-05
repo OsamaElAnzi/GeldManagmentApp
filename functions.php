@@ -490,7 +490,7 @@ function detailInkomen($id)
             <option value="500">€500,-</option>
         </select>
         <div class="form-outline mb-4">
-            <input type="text" id="datum" name="datum" class="form-control" value="{$item['datum']}" required />
+            <input type="date" id="datum" name="datum" class="form-control" value="{$item['datum']}" required />
             <label class="form-label" for="datum">Datum</label>
         </div>
 
@@ -619,7 +619,7 @@ function detailUitgaven($id)
             <option value="500">€500,-</option>
         </select>
         <div class="form-outline mb-4">
-            <input type="text" id="datum" name="datum" class="form-control" value="{$item['datum']}" required />
+            <input type="date" id="datum" name="datum" class="form-control" value="{$item['datum']}" required />
             <label class="form-label" for="datum">Datum</label>
         </div>
 
