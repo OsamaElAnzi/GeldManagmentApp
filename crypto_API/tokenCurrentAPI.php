@@ -1,6 +1,5 @@
 <?php
 
-// testCommit
 $api_url = "https://api.coingecko.com/api/v3/coins/dogecoin/market_chart?vs_currency=eur&days=1";
 $response = file_get_contents($api_url);
 if (!$response) {
@@ -23,18 +22,32 @@ $price_json = json_encode($price);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dogecoin Price Chart</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <h2>Dogecoin Price in EUR (Last 24 Hours)</h2>
-    <canvas id="myChart" width="100" height="100"></canvas>
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Tokens Prices in EUR (Last 24 Hours)</h2>
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-title">
+                        <h3>Dogecoin</h3>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="DogeCoin"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
         const timeData = <?php echo $time_json; ?>;
         const priceData = <?php echo $price_json; ?>;
 
-        const ctx = document.getElementById('myChart').getContext('2d');
-        const myChart = new Chart(ctx, {
+        const ctx = document.getElementById('DogeCoin').getContext('2d');
+        const DogeCoin = new Chart(ctx, {
             type: 'line',
             data: {
                 labels: timeData,
@@ -48,6 +61,7 @@ $price_json = json_encode($price);
             },
             options: {
                 responsive: true,
+                maintainAspectRatio: true,
                 scales: {
                     x: {
                         title: {
@@ -66,5 +80,6 @@ $price_json = json_encode($price);
             }
         });
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
