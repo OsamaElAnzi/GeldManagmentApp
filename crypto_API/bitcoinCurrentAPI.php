@@ -1,5 +1,6 @@
 <?php
 
+// testCommit
 $api_url = "https://api.coingecko.com/api/v3/coins/dogecoin/market_chart?vs_currency=eur&days=1";
 $response = file_get_contents($api_url);
 if (!$response) {
