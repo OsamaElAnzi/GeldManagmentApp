@@ -58,12 +58,11 @@ function setupDatabase()
 function getBedrag()
 {
     $pdo = conn();
-$query = 'SELECT bedrag FROM bedragen LIMIT 1';
-$stmt = $pdo->prepare($query);
-$stmt->execute();
-$result = $stmt->fetch();
-return (float)$result['bedrag'];
-
+    $query = 'SELECT bedrag FROM bedragen LIMIT 1';
+    $stmt = $pdo->prepare($query);
+    $stmt->execute();
+    $result = $stmt->fetch();
+    return (float)$result['bedrag'];
 }
 function getHoeveelheidBrieven()
 {
@@ -90,7 +89,8 @@ function getHoeveelheidBrieven()
 }
 
 
-function biljettenTellerInkomen() {
+function biljettenTellerInkomen()
+{
     $pdo = conn();
 
     try {
@@ -126,7 +126,8 @@ function biljettenTellerInkomen() {
     }
 }
 
-function biljettenTellerUitgaven() {
+function biljettenTellerUitgaven()
+{
     $pdo = conn();
 
     try {

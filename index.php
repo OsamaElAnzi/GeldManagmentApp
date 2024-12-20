@@ -15,7 +15,16 @@ include 'back-end.php';
     <title>GeldManagmentApp</title>
     <link type="image/x-icon" rel="icon" href="./foto/profits.png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Orbitron&family=Oswald:wght@200..700&family=Playwrite+DE+VA+Guides&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Teko:wght@393&family=VT323&display=swap" rel="stylesheet">
     <style>
+        .ibm-plex-mono-thin {
+            font-family: "IBM Plex Mono", serif;
+            font-weight: 600;
+            font-style: italic;
+        }
+
         .circle-container {
             width: 150px;
             height: 150px;
@@ -41,7 +50,7 @@ include 'back-end.php';
     </style>
 </head>
 
-<body class="<?= $darkModeEnabled ? 'bg-dark text-white' : 'bg-light text-dark'; ?>">
+<body class="ibm-plex-mono-thin <?= $darkModeEnabled ? 'bg-dark text-white' : 'bg-light text-dark'; ?>">
     <div class="container my-5">
         <div class="row g-4">
             <div class="col-lg-4 col-md-6">
@@ -68,10 +77,32 @@ include 'back-end.php';
                 <div class="card <?= $darkModeEnabled ? 'bg-secondary text-white' : 'bg-light text-dark'; ?> shadow">
                     <div class="card-body text-center d-flex align-item-center flex-column">
                         <h2>Doel</h2>
-                        <p>Bedrag: €<?= $bedrag ? number_format($bedrag, 2, ',', '.'): 0; ?>,-</p>
-                        <p>Spaardoel: €<?= $spaardoel ? number_format($spaardoel, 2): 0; ?>,-</p>
+                        <p>Bedrag: €<?= $bedrag ? number_format($bedrag, 2, ',', '.') : 0; ?>,-</p>
+                        <p>Spaardoel: €<?= $spaardoel ? number_format($spaardoel, 2) : 0; ?>,-</p>
                         <p>Nog te gaan: €<?= number_format(nogTeGaanVoorDoelBehaling(), 2, ',', '.'); ?>,-</p>
-                        <p>Hoeveelheid brieven:<?= getHoeveelheidBrieven(); ?></p>
+                        <p>Hoeveelheid brieven:<?= getHoeveelheidBrieven(); ?>
+                            <button type="button" class="btn btn-primary ms-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                Biljetten
+                            </button>
+                            <!-- modal -->
+                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        ...
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-primary">Save changes</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </p>
                         <div class="circle-container d-flex justify-content-center align-items-center mb-3 w-100">
                             <div class="circle-fill"
                                 style="background: conic-gradient(green <?= $progress ?>%, lightgrey 0%);">
