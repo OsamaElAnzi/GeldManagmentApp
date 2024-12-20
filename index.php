@@ -93,11 +93,49 @@ include 'back-end.php';
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        ...
+                                        <div class="col">
+                                            Totaal: <?= getHoeveelheidBrieven(); ?>
+                                        </div>
+                                        <div class="row text-dark">
+                                            <div class="col">
+                                            €500
+                                                <br />
+                                                <?= biljet500() ?>
+                                            </div>
+                                            <div class="col">
+                                            €200
+                                                <br />
+                                                <?= biljet200() ?>
+                                            </div>
+                                            <div class="col">
+                                            €100
+                                                <br />
+                                                <?= biljet100() ?>
+                                            </div>
+                                            <div class="col">
+                                            €50
+                                                <br />
+                                                <?= biljet50() ?>
+                                            </div>
+                                            <div class="col">
+                                            €20
+                                                <br />
+                                                <?= biljet20() ?>
+                                            </div>
+                                            <div class="col">
+                                            €10
+                                                <br />
+                                                <?= biljet10() ?>
+                                            </div>
+                                            <div class="col">
+                                            €5
+                                                <br />
+                                                <?= biljet5() ?>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btn-primary">Save changes</button>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Sluiten</button>
                                     </div>
                                 </div>
                             </div>

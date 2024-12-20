@@ -744,5 +744,60 @@ function totaleUitgaven()
         return "Fout bij ophalen van uitgaven: " . $e->getMessage();
     }
 }
-
+function biljet500() {
+    $pdo = conn();
+    $query = "SELECT SUM(aantalBiljettenInkomen) as total FROM inkomenlijst WHERE soort_biljetten = 500";
+    $stmt = $pdo->prepare($query);
+    $stmt->execute();
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $result['total'] ? $result['total'] : 0;
+}
+function biljet200() {
+    $pdo = conn();
+    $query = "SELECT SUM(aantalBiljettenInkomen) as total FROM inkomenlijst WHERE soort_biljetten = 200";
+    $stmt = $pdo->prepare($query);
+    $stmt->execute();
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $result['total'] ? $result['total'] : 0;
+}
+function biljet100() {
+    $pdo = conn();
+    $query = "SELECT SUM(aantalBiljettenInkomen) as total FROM inkomenlijst WHERE soort_biljetten = 100";
+    $stmt = $pdo->prepare($query);
+    $stmt->execute();
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $result['total'] ? $result['total'] : 0;
+}
+function biljet50() {
+    $pdo = conn();
+    $query = "SELECT SUM(aantalBiljettenInkomen) as total FROM inkomenlijst WHERE soort_biljetten = 50";
+    $stmt = $pdo->prepare($query);
+    $stmt->execute();
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $result['total'] ? $result['total'] : 0;
+}
+function biljet20() {
+    $pdo = conn();
+    $query = "SELECT SUM(aantalBiljettenInkomen) as total FROM inkomenlijst WHERE soort_biljetten = 20";
+    $stmt = $pdo->prepare($query);
+    $stmt->execute();
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $result['total'] ? $result['total'] : 0;
+}
+function biljet10() {
+    $pdo = conn();
+    $query = "SELECT SUM(aantalBiljettenInkomen) as total FROM inkomenlijst WHERE soort_biljetten = 10";
+    $stmt = $pdo->prepare($query);
+    $stmt->execute();
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $result['total'] ? $result['total'] : 0;
+}
+function biljet5() {
+    $pdo = conn();
+    $query = "SELECT SUM(aantalBiljettenInkomen) as total FROM inkomenlijst WHERE soort_biljetten = 5";
+    $stmt = $pdo->prepare($query);
+    $stmt->execute();
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $result['total'] ? $result['total'] : 0;
+}
 setupDatabase();
