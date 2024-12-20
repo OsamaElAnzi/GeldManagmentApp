@@ -86,13 +86,12 @@ include 'back-end.php';
                             </button>
                             <!-- modal -->
                         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
+                            <div class="modal-dialog modal-xl">
                                 <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    <div class="modal-header d-flex justify-content-center">
+                                        <h1 class="modal-title fs-5 text-dark" id="exampleModalLabel">Biljetten met hoeveelheid</h1>
                                     </div>
-                                    <div class="modal-body">
+                                    <div class="modal-body w-100">
                                         <div class="col">
                                             Totaal: <?= getHoeveelheidBrieven(); ?>
                                         </div>
@@ -101,36 +100,50 @@ include 'back-end.php';
                                             €500
                                                 <br />
                                                 <?= biljet500() ?>
+                                                <br />
+                                                <?= bedragBiljet500() ?>
                                             </div>
                                             <div class="col">
                                             €200
                                                 <br />
                                                 <?= biljet200() ?>
+                                                 <br />
+                                                 <?= bedragBiljet200()?>
                                             </div>
                                             <div class="col">
                                             €100
                                                 <br />
                                                 <?= biljet100() ?>
+                                                 <br />
+                                                 <?= bedragBiljet100() ?>
                                             </div>
                                             <div class="col">
                                             €50
                                                 <br />
                                                 <?= biljet50() ?>
+                                                 <br />
+                                                 <?= bedragBiljet50() ?>
                                             </div>
                                             <div class="col">
                                             €20
                                                 <br />
                                                 <?= biljet20() ?>
+                                                 <br />
+                                                 <?= bedragBiljet20() ?>
                                             </div>
                                             <div class="col">
                                             €10
                                                 <br />
                                                 <?= biljet10() ?>
+                                                 <br />
+                                                 <?= bedragBiljet10() ?>
                                             </div>
                                             <div class="col">
                                             €5
                                                 <br />
                                                 <?= biljet5() ?>
+                                                 <br />
+                                                 <?= bedragBiljet5() ?>
                                             </div>
                                         </div>
                                     </div>
