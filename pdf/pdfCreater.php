@@ -1,17 +1,41 @@
 <?php
 require_once __DIR__ . '/../vendor/autoload.php';
-include './functions.php';
 use Dompdf\Dompdf;
 
-// Instantiate and use the dompdf class
+// Load the image as base64
+$imagePath = '../foto/profits.png';
+$imageData = file_exists($imagePath) ? base64_encode(file_get_contents($imagePath)) : '';
+$imageBase64 = $imageData ? 'data:image/png;base64,' . $imageData : '';
+
 $dompdf = new Dompdf();
 
 $html = '
 <style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+    .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 20px;
+        padding: 0 10px;
+    }
+    .logo {
+        width: 50px;
+    }
+    .title {
+        font-size: 24px;
+        margin: 0;
+        text-align: left;
+    }
     table {
-        font-family: arial;
+        font-family: Arial, sans-serif;
         width: 100%;
         border-collapse: collapse;
+        margin-top: 20px;
     }
     td, th {
         border: 1px solid black;
@@ -22,7 +46,10 @@ $html = '
         background-color: #f2f2f2;
     }
 </style>
-<h1>Welcome to the PDF Report</h1>
+<div class="header">
+    <h1 class="title">Welcome to the PDF Report</h1>
+    <img src="' . $imageBase64 . '" alt="Logo" class="logo">
+</div>
 <table>
     <tr>
         <th>Name</th>
@@ -42,15 +69,12 @@ $html = '
 </table>
 ';
 
-// Load HTML content
 $dompdf->loadHtml($html);
-
-// Setup the paper size and orientation
 $dompdf->setPaper('A4', 'portrait');
-
-// Render the HTML as PDF
 $dompdf->render();
-
-// Output the generated PDF
 $dompdf->stream('BACK-UP_INFO-VERMOGEN.pdf');
 ?>
+<!--
+  ;extension=gd
+die moet je opzoeken en die ; verwijderen zo krijg je dan de img te zie
+-->
