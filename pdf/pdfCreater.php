@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/../vendor/autoload.php';
-
+include './functions.php';
 use Dompdf\Dompdf;
 
 // Instantiate and use the dompdf class
@@ -52,5 +52,5 @@ $dompdf->setPaper('A4', 'portrait');
 $dompdf->render();
 
 // Output the generated PDF
-$dompdf->stream('report.pdf');
+$dompdf->stream('BACK-UP_INFO-VERMOGEN.pdf');
 ?>

@@ -183,9 +183,16 @@ include 'back-end.php';
                                         <option value="200">€200,-</option>
                                         <option value="500">€500,-</option>
                                     </select>
-                                    <div class="d-flex gap-2">
-                                        <button type="submit" name="INKOMEN" class="btn btn-success">INKOMEN</button>
+                                    <div class="d-flex gap-2 justify-content-between">
+                                        <div class="col d-flex flex-row">
+                                        <button type="submit" name="INKOMEN" class="btn btn-success me-2">INKOMEN</button>
                                         <button type="submit" name="UITGAVEN" class="btn btn-danger">UITGAVEN</button>
+                                        </div>
+                                        <div class="col">
+                                        <a href="http://localhost/GeldManagmentApp/pdf/pdfCreater.php" class="btn btn-primary">
+                                            <img src="./foto/download_icon.png" width="20px" />
+                                        </a>
+                                        </div>
                                     </div>
                                 </form>
                                 <form action="" method="GET" class="mt-3">
