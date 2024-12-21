@@ -97,6 +97,9 @@ include 'back-end.php';
                                         </div>
                                         <div class="row text-dark">
                                             <div class="col">
+                                                <?= biljettenTellerInkomen(); ?>
+                                            </div>
+                                            <div class="col">
                                             €500
                                                 <br />
                                                 <?= biljet500() ?>
