@@ -758,15 +758,23 @@ function biljet500() {
     $stmtUitgaven->execute();
     $resultUitgaven = $stmtUitgaven->fetch(PDO::FETCH_ASSOC);
     // TOTAAL
-    return ($resultInkomen['total'] - $resultUitgaven['total']) ? "". number_format(($resultInkomen['total'] - $resultUitgaven['total']), 2, ',', '.') : "���0";
+    return ($resultInkomen['total'] - $resultUitgaven['total']) ? "". number_format(($resultInkomen['total'] - $resultUitgaven['total']), 2, ',', '.') : 0;
 }
+
 function bedragBiljet500() {
     $pdo = conn();
-    $query = "SELECT SUM(bedrag) as total FROM inkomenlijst WHERE soort_biljetten = 500";
-    $stmt = $pdo->prepare($query);
-    $stmt->execute();
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    return $result['total'] ? "€". number_format($result['total'], 2, ',', '.') : "€0";
+    // INKOMEN biljet 500 in bedrag
+    $queryInkomen = "SELECT SUM(bedrag) as total FROM inkomenlijst WHERE soort_biljetten = 500";
+    $stmtInkomen = $pdo->prepare($queryInkomen);
+    $stmtInkomen->execute();
+    $resultInkomen = $stmtInkomen->fetch(PDO::FETCH_ASSOC);
+    // INKOMEN biljet 500 in bedrag
+    $queryUitgaven = "SELECT SUM(bedrag) as total FROM uitgavenlijst WHERE soort_biljetten = 500";
+    $stmtUitgaven = $pdo->prepare($queryUitgaven);
+    $stmtUitgaven->execute();
+    $resultUitgaven = $stmtUitgaven->fetch(PDO::FETCH_ASSOC);
+    // TOTAAL
+    return $resultInkomen['total'] - $resultUitgaven['total']? "€". number_format($resultInkomen['total'] - $resultUitgaven['total'], 2, ',', '.') : "€0";
 }
 // 200 EUR biljet UitrekenSysteem
 function biljet200() {
@@ -787,11 +795,18 @@ function biljet200() {
 }
 function bedragBiljet200() {
     $pdo = conn();
-    $query = "SELECT SUM(bedrag) as total FROM inkomenlijst WHERE soort_biljetten = 200";
-    $stmt = $pdo->prepare($query);
-    $stmt->execute();
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    return $result['total'] ? "€". number_format($result['total'], 2, ',', '.') : "€0";
+    // INKOMEN biljet 200 in bedrag
+    $queryInkomen = "SELECT SUM(bedrag) as total FROM inkomenlijst WHERE soort_biljetten = 200";
+    $stmtInkomen = $pdo->prepare($queryInkomen);
+    $stmtInkomen->execute();
+    $resultInkomen = $stmtInkomen->fetch(PDO::FETCH_ASSOC);
+    // UITGAVEN biljet 200 in bedrag
+    $queryUitgaven = "SELECT SUM(bedrag) as total FROM uitgavenlijst WHERE soort_biljetten = 200";
+    $stmtUitgaven = $pdo->prepare($queryUitgaven);
+    $stmtUitgaven->execute();
+    $resultUitgaven = $stmtUitgaven->fetch(PDO::FETCH_ASSOC);
+    // TOTAAL
+    return $resultInkomen['total'] - $resultUitgaven['total']? "€". number_format($resultInkomen['total'] - $resultUitgaven['total'], 2, ',', '.') : "€0";
 }
 // 100 EUR biljet UitrekenSysteem
 function biljet100() {
@@ -812,11 +827,18 @@ function biljet100() {
 
 function bedragBiljet100() {
     $pdo = conn();
-    $query = "SELECT SUM(bedrag) as total FROM inkomenlijst WHERE soort_biljetten = 100";
-    $stmt = $pdo->prepare($query);
-    $stmt->execute();
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    return $result['total'] ? "€". number_format($result['total'], 2, ',', '.') : "€0";
+    // INKOMEN biljet 100 in bedrag
+    $queryInkomen = "SELECT SUM(bedrag) as total FROM inkomenlijst WHERE soort_biljetten = 100";
+    $stmtInkomen = $pdo->prepare($queryInkomen);
+    $stmtInkomen->execute();
+    $resultInkomen = $stmtInkomen->fetch(PDO::FETCH_ASSOC);
+    // UITGAVEN biljet 100 in bedrag
+    $queryUitgaven = "SELECT SUM(bedrag) as total FROM uitgavenlijst WHERE soort_biljetten = 100";
+    $stmtUitgaven = $pdo->prepare($queryUitgaven);
+    $stmtUitgaven->execute();
+    $resultUitgaven = $stmtUitgaven->fetch(PDO::FETCH_ASSOC);
+    // TOTAAL
+    return $resultInkomen['total'] - $resultUitgaven['total']? "€". number_format($resultInkomen['total'] - $resultUitgaven['total'], 2, ',', '.') : "€0";
 }
 // 50 EUR biljet UitrekenSysteem
 function biljet50() {
@@ -836,11 +858,18 @@ function biljet50() {
 }
 function bedragBiljet50() {
     $pdo = conn();
-    $query = "SELECT SUM(bedrag) as total FROM inkomenlijst WHERE soort_biljetten = 50";
-    $stmt = $pdo->prepare($query);
-    $stmt->execute();
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    return $result['total'] ? "€". number_format($result['total'], 2, ',', '.') : "€0";
+    // INKOMEN biljet 50 in bedrag
+    $queryInkomen = "SELECT SUM(bedrag) as total FROM inkomenlijst WHERE soort_biljetten = 50";
+    $stmtInkomen = $pdo->prepare($queryInkomen);
+    $stmtInkomen->execute();
+    $resultInkomen = $stmtInkomen->fetch(PDO::FETCH_ASSOC);
+    // UITGAVEN biljet 50 in bedrag
+    $queryUitgaven = "SELECT SUM(bedrag) as total FROM uitgavenlijst WHERE soort_biljetten = 50";
+    $stmtUitgaven = $pdo->prepare($queryUitgaven);
+    $stmtUitgaven->execute();
+    $resultUitgaven = $stmtUitgaven->fetch(PDO::FETCH_ASSOC);
+    // TOTAAL
+    return $resultInkomen['total'] - $resultUitgaven['total']? "€". number_format($resultInkomen['total'] - $resultUitgaven['total'], 2, ',', '.') : "€0";
 }
 // 20 EUR biljet UitrekenSysteem
 function biljet20() {
@@ -860,15 +889,23 @@ function biljet20() {
 }
 function bedragBiljet20() {
     $pdo = conn();
-    $query = "SELECT SUM(bedrag) as total FROM inkomenlijst WHERE soort_biljetten = 20";
-    $stmt = $pdo->prepare($query);
-    $stmt->execute();
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    return $result['total'] ? "€". number_format($result['total'], 2, ',', '.') : "€0";
+    // INKOMEN biljet 20 in bedrag
+    $queryInkomen = "SELECT SUM(bedrag) as total FROM inkomenlijst WHERE soort_biljetten = 20";
+    $stmtInkomen = $pdo->prepare($queryInkomen);
+    $stmtInkomen->execute();
+    $resultInkomen = $stmtInkomen->fetch(PDO::FETCH_ASSOC);
+    // UITGAVEN biljet 20 in bedrag
+    $queryUitgaven = "SELECT SUM(bedrag) as total FROM uitgavenlijst WHERE soort_biljetten = 20";
+    $stmtUitgaven = $pdo->prepare($queryUitgaven);
+    $stmtUitgaven->execute();
+    $resultUitgaven = $stmtUitgaven->fetch(PDO::FETCH_ASSOC);
+    // TOTAAL
+    return $resultInkomen['total'] - $resultUitgaven['total']? "€". number_format($resultInkomen['total'] - $resultUitgaven['total'], 2, ',', '.') : "€0";
 }
 // 10 EUR biljet UitrekenSysteem
 function biljet10() {
     $pdo = conn();
+    // INKOMEN biljet 10
     $queryInkomen = "SELECT SUM(aantalBiljettenInkomen) as total FROM inkomenlijst WHERE soort_biljetten = 10";
     $stmtInkomen = $pdo->prepare($queryInkomen);
     $stmtInkomen->execute();
@@ -884,15 +921,23 @@ function biljet10() {
 
 function bedragBiljet10() {
     $pdo = conn();
-    $query = "SELECT SUM(bedrag) as total FROM inkomenlijst WHERE soort_biljetten = 10";
-    $stmt = $pdo->prepare($query);
-    $stmt->execute();
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    return $result['total'] ? "€". number_format($result['total'], 2, ',', '.') : "€0";
+    // INKOMEN biljet 10 in bedrag
+    $queryInkomen = "SELECT SUM(bedrag) as total FROM inkomenlijst WHERE soort_biljetten = 10";
+    $stmtInkomen = $pdo->prepare($queryInkomen);
+    $stmtInkomen->execute();
+    $resultInkomen = $stmtInkomen->fetch(PDO::FETCH_ASSOC);
+    // UITGAVEN biljet 10 in bedrag
+    $queryUitgaven = "SELECT SUM(bedrag) as total FROM uitgavenlijst WHERE soort_biljetten = 10";
+    $stmtUitgaven = $pdo->prepare($queryUitgaven);
+    $stmtUitgaven->execute();
+    $resultUitgaven = $stmtUitgaven->fetch(PDO::FETCH_ASSOC);
+    // TOTAAL
+    return $resultInkomen['total'] - $resultUitgaven['total']? "€". number_format($resultInkomen['total'] - $resultUitgaven['total'], 2, ',', '.') : "€0";
 }
 // 5 EUR biljet UitrekenSysteem
 function biljet5() {
     $pdo = conn();
+    // INKOMEN biljet 5
     $queryInkomen = "SELECT SUM(aantalBiljettenInkomen) as total FROM inkomenlijst WHERE soort_biljetten = 5";
     $stmtInkomen = $pdo->prepare($queryInkomen);
     $stmtInkomen->execute();
@@ -908,10 +953,17 @@ function biljet5() {
 }
 function bedragBiljet5() {
     $pdo = conn();
-    $query = "SELECT SUM(bedrag) as total FROM inkomenlijst WHERE soort_biljetten = 5";
-    $stmt = $pdo->prepare($query);
-    $stmt->execute();
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    return $result['total'] ? "€". number_format($result['total'], 2, ',', '.') : "€0";
+    // INKOMEN biljet 5 in bedrag
+    $queryInkomen = "SELECT SUM(bedrag) as total FROM inkomenlijst WHERE soort_biljetten = 5";
+    $stmtInkomen = $pdo->prepare($queryInkomen);
+    $stmtInkomen->execute();
+    $resultInkomen = $stmtInkomen->fetch(PDO::FETCH_ASSOC);
+    // UITGAVEN biljet 5 in bedrag
+    $queryUitgaven = "SELECT SUM(bedrag) as total FROM uitgavenlijst WHERE soort_biljetten = 5";
+    $stmtUitgaven = $pdo->prepare($queryUitgaven);
+    $stmtUitgaven->execute();
+    $resultUitgaven = $stmtUitgaven->fetch(PDO::FETCH_ASSOC);
+    // TOTAAL
+    return $resultInkomen['total'] - $resultUitgaven['total']? "€". number_format($resultInkomen['total'] - $resultUitgaven['total'], 2, ',', '.') : "€0";
 }
 setupDatabase();

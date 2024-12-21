@@ -77,132 +77,126 @@ include 'back-end.php';
                 <div class="card <?= $darkModeEnabled ? 'bg-secondary text-white' : 'bg-light text-dark'; ?> shadow">
                     <div class="card-body text-center d-flex align-item-center flex-column">
                         <h2>Doel</h2>
-                        <p>Bedrag: €<?= $bedrag ? number_format($bedrag, 2, ',', '.') : 0; ?>,-</p>
-                        <p>Spaardoel: €<?= $spaardoel ? number_format($spaardoel, 2) : 0; ?>,-</p>
-                        <p>Nog te gaan: €<?= number_format(nogTeGaanVoorDoelBehaling(), 2, ',', '.'); ?>,-</p>
-                        <p>Hoeveelheid brieven:<?= getHoeveelheidBrieven(); ?>
-                            <button type="button" class="btn btn-primary ms-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                Biljetten
-                            </button>
-                            <!-- modal -->
-                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-xl">
-                                <div class="modal-content">
-                                    <div class="modal-header d-flex justify-content-center">
-                                        <h1 class="modal-title fs-5 text-dark" id="exampleModalLabel">Biljetten met hoeveelheid</h1>
-                                    </div>
-                                    <div class="modal-body w-100">
-                                        <div class="col">
-                                            Totaal: <?= getHoeveelheidBrieven(); ?>
+                        <h3>Vermogen: <span class="border-bottom border-3">€<?= $bedrag ? number_format($bedrag, 2, ',', '.') : 0; ?>,-</span></h3>
+                        <h4>Spaardoel: €<?= $spaardoel ? number_format($spaardoel, 2) : 0; ?>,-<h4>
+                                <p>Nog te gaan: €<?= number_format(nogTeGaanVoorDoelBehaling(), 2, ',', '.'); ?>,-</p>
+                                <h6>Hoeveelheid brieven:<span class="border-bottom border-2"><?= getHoeveelheidBrieven(); ?></span>
+                                    <button type="button" class="btn btn-primary ms-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                        Biljetten
+                                    </button>
+                                    <!-- modal -->
+                                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-xl">
+                                            <div class="modal-content">
+                                                <div class="modal-header d-flex justify-content-center">
+                                                    <h1 class="modal-title fs-5 text-dark" id="exampleModalLabel">Biljetten met hoeveelheid</h1>
+                                                </div>
+                                                <div class="modal-body w-100">
+                                                    <div class="row text-dark">
+                                                        <div class="col">
+                                                            €500
+                                                            <br />
+                                                            <?= biljet500() ?>
+                                                            <br />
+                                                            <?= bedragBiljet500() ?>
+                                                        </div>
+                                                        <div class="col">
+                                                            €200
+                                                            <br />
+                                                            <?= biljet200() ?>
+                                                            <br />
+                                                            <?= bedragBiljet200() ?>
+                                                        </div>
+                                                        <div class="col">
+                                                            €100
+                                                            <br />
+                                                            <?= biljet100() ?>
+                                                            <br />
+                                                            <?= bedragBiljet100() ?>
+                                                        </div>
+                                                        <div class="col">
+                                                            €50
+                                                            <br />
+                                                            <?= biljet50() ?>
+                                                            <br />
+                                                            <?= bedragBiljet50() ?>
+                                                        </div>
+                                                        <div class="col">
+                                                            €20
+                                                            <br />
+                                                            <?= biljet20() ?>
+                                                            <br />
+                                                            <?= bedragBiljet20() ?>
+                                                        </div>
+                                                        <div class="col">
+                                                            €10
+                                                            <br />
+                                                            <?= biljet10() ?>
+                                                            <br />
+                                                            <?= bedragBiljet10() ?>
+                                                        </div>
+                                                        <div class="col">
+                                                            €5
+                                                            <br />
+                                                            <?= biljet5() ?>
+                                                            <br />
+                                                            <?= bedragBiljet5() ?>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Sluiten</button>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="row text-dark">
-                                            <div class="col">
-                                                <?= biljettenTellerInkomen(); ?>
-                                            </div>
-                                            <div class="col">
-                                            €500
-                                                <br />
-                                                <?= biljet500() ?>
-                                                <br />
-                                                <?= bedragBiljet500() ?>
-                                            </div>
-                                            <div class="col">
-                                            €200
-                                                <br />
-                                                <?= biljet200() ?>
-                                                 <br />
-                                                 <?= bedragBiljet200()?>
-                                            </div>
-                                            <div class="col">
-                                            €100
-                                                <br />
-                                                <?= biljet100() ?>
-                                                 <br />
-                                                 <?= bedragBiljet100() ?>
-                                            </div>
-                                            <div class="col">
-                                            €50
-                                                <br />
-                                                <?= biljet50() ?>
-                                                 <br />
-                                                 <?= bedragBiljet50() ?>
-                                            </div>
-                                            <div class="col">
-                                            €20
-                                                <br />
-                                                <?= biljet20() ?>
-                                                 <br />
-                                                 <?= bedragBiljet20() ?>
-                                            </div>
-                                            <div class="col">
-                                            €10
-                                                <br />
-                                                <?= biljet10() ?>
-                                                 <br />
-                                                 <?= bedragBiljet10() ?>
-                                            </div>
-                                            <div class="col">
-                                            €5
-                                                <br />
-                                                <?= biljet5() ?>
-                                                 <br />
-                                                 <?= bedragBiljet5() ?>
-                                            </div>
-                                        </div>
                                     </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Sluiten</button>
+                                </h6>
+                                <div class="circle-container d-flex justify-content-center align-items-center mb-3 w-100">
+                                    <div class="circle-fill"
+                                        style="background: conic-gradient(green <?= $progress ?>%, lightgrey 0%);">
+                                        <h3><?= number_format($progress, 0) . '%' ?></h3>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        </p>
-                        <div class="circle-container d-flex justify-content-center align-items-center mb-3 w-100">
-                            <div class="circle-fill"
-                                style="background: conic-gradient(green <?= $progress ?>%, lightgrey 0%);">
-                                <h3><?= number_format($progress, 0) . '%' ?></h3>
-                            </div>
-                        </div>
 
-                        <form action="" method="GET" class="mb-3">
-                            <input type="hidden" name="mode" value="<?= $mode; ?>">
-                            <div class="input-group">
-                                <input type="text" class="form-control" name="SPAARDOEL" placeholder="Spaardoel" required>
-                                <button type="submit" class="btn btn-primary" name="AANPASSEN">Aanpassen</button>
-                            </div>
-                        </form>
+                                <form action="" method="GET" class="mb-3">
+                                    <input type="hidden" name="mode" value="<?= $mode; ?>">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="SPAARDOEL" placeholder="Spaardoel" required>
+                                        <button type="submit" class="btn btn-primary" name="AANPASSEN">Aanpassen</button>
+                                    </div>
+                                </form>
 
-                        <form action="" method="GET">
-                            <input type="hidden" name="mode" value="<?= $mode; ?>">
-                            <div class="input-group mb-3">
-                                <span class="input-group-text">€</span>
-                                <input type="text" name="bedragInvoeren" class="form-control" placeholder="BEDRAG"
-                                    maxlength="8" pattern="^\d+(\.\d{1,2})?$" required>
-                            </div>
-                            <select class="form-select mb-3" aria-label="Default select example" name="soort_biljetten">
-                                <option value="geen bilject gekozen">Soort biljetten</option>
-                                <option value="5">€5,-</option>
-                                <option value="10">€10,-</option>
-                                <option value="20">€20,-</option>
-                                <option value="50">€50,-</option>
-                                <option value="100">€100,-</option>
-                                <option value="200">€200,-</option>
-                                <option value="500">€500,-</option>
-                            </select>
-                            <div class="d-flex gap-2">
-                                <button type="submit" name="INKOMEN" class="btn btn-success">INKOMEN</button>
-                                <button type="submit" name="UITGAVEN" class="btn btn-danger">UITGAVEN</button>
-                            </div>
-                        </form>
-                        <form action="" method="GET" class="mt-3">
-                            <input type="hidden" name="mode" value="<?= $mode; ?>">
-                            <button type="submit" name="RESET-KNOP" class="btn btn-warning">Reset</button>
-                        </form>
+                                <form action="" method="GET">
+                                    <input type="hidden" name="mode" value="<?= $mode; ?>">
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text">€</span>
+                                        <input type="text" name="bedragInvoeren" class="form-control" placeholder="BEDRAG"
+                                            maxlength="8" pattern="^\d+(\.\d{1,2})?$" required>
+                                    </div>
+                                    <select class="form-select mb-3" aria-label="Default select example" name="soort_biljetten">
+                                        <option value="geen bilject gekozen">Soort biljetten</option>
+                                        <option value="5">€5,-</option>
+                                        <option value="10">€10,-</option>
+                                        <option value="20">€20,-</option>
+                                        <option value="50">€50,-</option>
+                                        <option value="100">€100,-</option>
+                                        <option value="200">€200,-</option>
+                                        <option value="500">€500,-</option>
+                                    </select>
+                                    <div class="d-flex gap-2">
+                                        <button type="submit" name="INKOMEN" class="btn btn-success">INKOMEN</button>
+                                        <button type="submit" name="UITGAVEN" class="btn btn-danger">UITGAVEN</button>
+                                    </div>
+                                </form>
+                                <form action="" method="GET" class="mt-3">
+                                    <input type="hidden" name="mode" value="<?= $mode; ?>">
+                                    <button type="submit" name="RESET-KNOP" class="btn btn-warning">Reset</button>
+                                </form>
 
-                        <form action="" method="GET" class="mt-3">
-                            <button type="submit" name="mode" value="dark" class="btn btn-dark">Dark Mode</button>
-                            <button type="submit" name="mode" value="day" class="btn btn-light">Day Mode</button>
-                        </form>
+                                <form action="" method="GET" class="mt-3">
+                                    <button type="submit" name="mode" value="dark" class="btn btn-dark">Dark Mode</button>
+                                    <button type="submit" name="mode" value="day" class="btn btn-light">Day Mode</button>
+                                </form>
                     </div>
                 </div>
             </div>
