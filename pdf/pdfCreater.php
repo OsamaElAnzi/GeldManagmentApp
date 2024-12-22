@@ -1,15 +1,23 @@
 <?php
 require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../functions.php';
+
 use Dompdf\Dompdf;
 
 // Load the image as base64
-$imagePath = '../foto/profits.png';
+$imagePath = __DIR__ . '/../foto/profits.png';
 $imageData = file_exists($imagePath) ? base64_encode(file_get_contents($imagePath)) : '';
 $imageBase64 = $imageData ? 'data:image/png;base64,' . $imageData : '';
 
+// Data: function to variables
+$vermogen = getBedrag();
+$datum = getDatum();
+$nogTeGaan = nogTeGaanVoorDoelBehaling();
+$spaardoel = getSpaardoel();
+
 $dompdf = new Dompdf();
 
-$html = '
+$html = <<<HTML
 <style>
     body {
         font-family: Arial, sans-serif;
@@ -48,33 +56,23 @@ $html = '
 </style>
 <div class="header">
     <h1 class="title">Welcome to the PDF Report</h1>
-    <img src="' . $imageBase64 . '" alt="Logo" class="logo">
+    <img src="{$imageBase64}" alt="Logo" class="logo">
 </div>
+<h2>Vermogen: €{$vermogen},-</h2>
+<h2>Spaardoel: €{$spaardoel},-</h2>
+<h2>Nog te gaan: €{$nogTeGaan},-</h2>
 <table>
+    <h1>inkomen</h1>
     <tr>
-        <th>Name</th>
-        <th>Age</th>
-        <th>Country</th>
-    </tr>
-    <tr>
-        <td>Jane Doe</td>
-        <td>29</td>
-        <td>USA</td>
-    </tr>
-    <tr>
-        <td>John Smith</td>
-        <td>35</td>
-        <td>UK</td>
+        <th>Datum</th>
+        <th>Bedrag</th>
+        <th>Type</th>
     </tr>
 </table>
-';
+HTML;
 
 $dompdf->loadHtml($html);
 $dompdf->setPaper('A4', 'portrait');
 $dompdf->render();
 $dompdf->stream('BACK-UP_INFO-VERMOGEN.pdf');
 ?>
-<!--
-  ;extension=gd
-die moet je opzoeken en die ; verwijderen zo krijg je dan de img te zie
--->
