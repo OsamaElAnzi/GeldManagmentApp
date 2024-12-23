@@ -8,12 +8,38 @@ use Dompdf\Dompdf;
 $imagePath = __DIR__ . '/../foto/profits.png';
 $imageData = file_exists($imagePath) ? base64_encode(file_get_contents($imagePath)) : '';
 $imageBase64 = $imageData ? 'data:image/png;base64,' . $imageData : '';
+$moneyPath = __DIR__ . '/../foto/money.png';
+$moneyData = file_exists($moneyPath) ? base64_encode(file_get_contents($moneyPath)) : '';
+
+$moneyBase64 = $moneyData? 'data:image/png;base64,'. $moneyData : '';
 
 // Data: function to variables
 $vermogen = getBedrag();
 $datum = getDatum();
 $nogTeGaan = nogTeGaanVoorDoelBehaling();
 $spaardoel = getSpaardoel();
+$datum = getDatum();
+//500EUR
+$EUR500_Aantal = biljet500();
+$EUR500_Bedrag = bedragBiljet500();
+//200EUR
+$EUR200_Aantal = biljet200();
+$EUR200_Bedrag = bedragBiljet200();
+//100EUR
+$EUR100_Aantal = biljet100();
+$EUR100_Bedrag = bedragBiljet100();
+//50EUR
+$EUR50_Aantal = biljet50();
+$EUR50_Bedrag = bedragBiljet50();
+//20EUR
+$EUR20_Aantal = biljet20();
+$EUR20_Bedrag = bedragBiljet20();
+//10EUR
+$EUR10_Aantal = biljet10();
+$EUR10_Bedrag = bedragBiljet10();
+//5EUR
+$EUR5_Aantal = biljet5();
+$EUR5_Bedrag = bedragBiljet5();
 
 $dompdf = new Dompdf();
 
@@ -58,15 +84,50 @@ $html = <<<HTML
     <h1 class="title">Welcome to the PDF Report</h1>
     <img src="{$imageBase64}" alt="Logo" class="logo">
 </div>
+<h2>Datum: {$datum}</h2>
 <h2>Vermogen: €{$vermogen},-</h2>
 <h2>Spaardoel: €{$spaardoel},-</h2>
 <h2>Nog te gaan: €{$nogTeGaan},-</h2>
 <table>
-    <h1>inkomen</h1>
     <tr>
-        <th>Datum</th>
-        <th>Bedrag</th>
-        <th>Type</th>
+        <th><img src="{$moneyBase64}" width="20px" alt="Logo" class="logo"></th>
+        <th>Aantal</th>
+        <th>bedrag</th>
+    </tr>
+    <tr>
+        <td>€500</td>
+        <td>{$EUR500_Aantal}</td>
+        <td>{$EUR500_Bedrag}</td>
+    </tr>
+    <tr>
+        <td>€200</td>
+        <td>{$EUR200_Aantal}</td>
+        <td>{$EUR200_Bedrag}</td>
+    </tr>
+    <tr>
+        <td>€100</td>
+        <td>{$EUR100_Aantal}</td>
+        <td>{$EUR100_Bedrag}</td>
+    </tr>
+    <tr>
+        <td>€50</td>
+        <td>{$EUR50_Aantal}</td>
+        <td>{$EUR50_Bedrag}</td>
+    </tr>
+    <tr>
+        <td>€20</td>
+        <td>{$EUR20_Aantal}</td>
+        <td>{$EUR20_Bedrag}</td>
+    </tr>
+    <tr>
+        <td>€10</td>
+        <td>{$EUR10_Aantal}</td>
+        <td>{$EUR10_Bedrag}</td>
+    </tr>
+    <tr>
+        <td>€5</td>
+        <td>{$EUR5_Aantal}</td>
+        <td>{$EUR5_Bedrag}</td>
     </tr>
 </table>
 HTML;
