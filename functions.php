@@ -745,7 +745,8 @@ function totaleUitgaven()
     }
 }
 // 500 EUR biljet UitrekenSysteem
-function biljet500() {
+function biljet500()
+{
     $pdo = conn();
     // INKOMEN biljet 500
     $queryInkomen = "SELECT SUM(aantalBiljettenInkomen) as total FROM inkomenlijst WHERE soort_biljetten = 500";
@@ -758,10 +759,11 @@ function biljet500() {
     $stmtUitgaven->execute();
     $resultUitgaven = $stmtUitgaven->fetch(PDO::FETCH_ASSOC);
     // TOTAAL
-    return ($resultInkomen['total'] - $resultUitgaven['total']) ? "". number_format(($resultInkomen['total'] - $resultUitgaven['total']), 2, ',', '.') : 0;
+    return ($resultInkomen['total'] - $resultUitgaven['total']) ? "" . number_format(($resultInkomen['total'] - $resultUitgaven['total']), 2, ',', '.') : 0;
 }
 
-function bedragBiljet500() {
+function bedragBiljet500()
+{
     $pdo = conn();
     // INKOMEN biljet 500 in bedrag
     $queryInkomen = "SELECT SUM(bedrag) as total FROM inkomenlijst WHERE soort_biljetten = 500";
@@ -774,10 +776,11 @@ function bedragBiljet500() {
     $stmtUitgaven->execute();
     $resultUitgaven = $stmtUitgaven->fetch(PDO::FETCH_ASSOC);
     // TOTAAL
-    return $resultInkomen['total'] - $resultUitgaven['total']? "€". number_format($resultInkomen['total'] - $resultUitgaven['total'], 2, ',', '.') : "€0";
+    return $resultInkomen['total'] - $resultUitgaven['total'] ? "€" . number_format($resultInkomen['total'] - $resultUitgaven['total'], 2, ',', '.') : "€0";
 }
 // 200 EUR biljet UitrekenSysteem
-function biljet200() {
+function biljet200()
+{
     $pdo = conn();
     // INKOMEN biljet 200
     $queryInkomen = "SELECT SUM(aantalBiljettenInkomen) as total FROM inkomenlijst WHERE soort_biljetten = 200";
@@ -791,9 +794,9 @@ function biljet200() {
     $resultUitgaven = $stmtUitgaven->fetch(PDO::FETCH_ASSOC);
     // TOTAAL
     return ($resultInkomen['total'] - $resultUitgaven['total']) ? ($resultInkomen['total'] - $resultUitgaven['total']) : 0;
-
 }
-function bedragBiljet200() {
+function bedragBiljet200()
+{
     $pdo = conn();
     // INKOMEN biljet 200 in bedrag
     $queryInkomen = "SELECT SUM(bedrag) as total FROM inkomenlijst WHERE soort_biljetten = 200";
@@ -806,10 +809,11 @@ function bedragBiljet200() {
     $stmtUitgaven->execute();
     $resultUitgaven = $stmtUitgaven->fetch(PDO::FETCH_ASSOC);
     // TOTAAL
-    return $resultInkomen['total'] - $resultUitgaven['total']? "€". number_format($resultInkomen['total'] - $resultUitgaven['total'], 2, ',', '.') : "€0";
+    return $resultInkomen['total'] - $resultUitgaven['total'] ? "€" . number_format($resultInkomen['total'] - $resultUitgaven['total'], 2, ',', '.') : "€0";
 }
 // 100 EUR biljet UitrekenSysteem
-function biljet100() {
+function biljet100()
+{
     $pdo = conn();
     // INKOMEN biljet 100
     $queryInkomen = "SELECT SUM(aantalBiljettenInkomen) as total FROM inkomenlijst WHERE soort_biljetten = 100";
@@ -825,7 +829,8 @@ function biljet100() {
     return ($resultInkomen['total'] - $resultUitgaven['total']) ? ($resultInkomen['total'] - $resultUitgaven['total']) : 0;
 }
 
-function bedragBiljet100() {
+function bedragBiljet100()
+{
     $pdo = conn();
     // INKOMEN biljet 100 in bedrag
     $queryInkomen = "SELECT SUM(bedrag) as total FROM inkomenlijst WHERE soort_biljetten = 100";
@@ -838,10 +843,11 @@ function bedragBiljet100() {
     $stmtUitgaven->execute();
     $resultUitgaven = $stmtUitgaven->fetch(PDO::FETCH_ASSOC);
     // TOTAAL
-    return $resultInkomen['total'] - $resultUitgaven['total']? "€". number_format($resultInkomen['total'] - $resultUitgaven['total'], 2, ',', '.') : "€0";
+    return $resultInkomen['total'] - $resultUitgaven['total'] ? "€" . number_format($resultInkomen['total'] - $resultUitgaven['total'], 2, ',', '.') : "€0";
 }
 // 50 EUR biljet UitrekenSysteem
-function biljet50() {
+function biljet50()
+{
     $pdo = conn();
     // INKOMEN biljet 50
     $queryInkomen = "SELECT SUM(aantalBiljettenInkomen) as total FROM inkomenlijst WHERE soort_biljetten = 50";
@@ -856,7 +862,8 @@ function biljet50() {
     // TOTAAL
     return ($resultInkomen['total'] - $resultUitgaven['total']) ? ($resultInkomen['total'] - $resultUitgaven['total']) : 0;
 }
-function bedragBiljet50() {
+function bedragBiljet50()
+{
     $pdo = conn();
     // INKOMEN biljet 50 in bedrag
     $queryInkomen = "SELECT SUM(bedrag) as total FROM inkomenlijst WHERE soort_biljetten = 50";
@@ -869,10 +876,11 @@ function bedragBiljet50() {
     $stmtUitgaven->execute();
     $resultUitgaven = $stmtUitgaven->fetch(PDO::FETCH_ASSOC);
     // TOTAAL
-    return $resultInkomen['total'] - $resultUitgaven['total']? "€". number_format($resultInkomen['total'] - $resultUitgaven['total'], 2, ',', '.') : "€0";
+    return $resultInkomen['total'] - $resultUitgaven['total'] ? "€" . number_format($resultInkomen['total'] - $resultUitgaven['total'], 2, ',', '.') : "€0";
 }
 // 20 EUR biljet UitrekenSysteem
-function biljet20() {
+function biljet20()
+{
     $pdo = conn();
     // INKOMEN biljet 20
     $queryInkomen = "SELECT SUM(aantalBiljettenInkomen) as total FROM inkomenlijst WHERE soort_biljetten = 20";
@@ -887,7 +895,8 @@ function biljet20() {
     // TOTAAL
     return ($resultInkomen['total'] - $resultUitgaven['total']) ? ($resultInkomen['total'] - $resultUitgaven['total']) : 0;
 }
-function bedragBiljet20() {
+function bedragBiljet20()
+{
     $pdo = conn();
     // INKOMEN biljet 20 in bedrag
     $queryInkomen = "SELECT SUM(bedrag) as total FROM inkomenlijst WHERE soort_biljetten = 20";
@@ -900,10 +909,11 @@ function bedragBiljet20() {
     $stmtUitgaven->execute();
     $resultUitgaven = $stmtUitgaven->fetch(PDO::FETCH_ASSOC);
     // TOTAAL
-    return $resultInkomen['total'] - $resultUitgaven['total']? "€". number_format($resultInkomen['total'] - $resultUitgaven['total'], 2, ',', '.') : "€0";
+    return $resultInkomen['total'] - $resultUitgaven['total'] ? "€" . number_format($resultInkomen['total'] - $resultUitgaven['total'], 2, ',', '.') : "€0";
 }
 // 10 EUR biljet UitrekenSysteem
-function biljet10() {
+function biljet10()
+{
     $pdo = conn();
     // INKOMEN biljet 10
     $queryInkomen = "SELECT SUM(aantalBiljettenInkomen) as total FROM inkomenlijst WHERE soort_biljetten = 10";
@@ -919,7 +929,8 @@ function biljet10() {
     return ($resultInkomen['total'] - $resultUitgaven['total']) ? ($resultInkomen['total'] - $resultUitgaven['total']) : 0;
 }
 
-function bedragBiljet10() {
+function bedragBiljet10()
+{
     $pdo = conn();
     // INKOMEN biljet 10 in bedrag
     $queryInkomen = "SELECT SUM(bedrag) as total FROM inkomenlijst WHERE soort_biljetten = 10";
@@ -932,10 +943,11 @@ function bedragBiljet10() {
     $stmtUitgaven->execute();
     $resultUitgaven = $stmtUitgaven->fetch(PDO::FETCH_ASSOC);
     // TOTAAL
-    return $resultInkomen['total'] - $resultUitgaven['total']? "€". number_format($resultInkomen['total'] - $resultUitgaven['total'], 2, ',', '.') : "€0";
+    return $resultInkomen['total'] - $resultUitgaven['total'] ? "€" . number_format($resultInkomen['total'] - $resultUitgaven['total'], 2, ',', '.') : "€0";
 }
 // 5 EUR biljet UitrekenSysteem
-function biljet5() {
+function biljet5()
+{
     $pdo = conn();
     // INKOMEN biljet 5
     $queryInkomen = "SELECT SUM(aantalBiljettenInkomen) as total FROM inkomenlijst WHERE soort_biljetten = 5";
@@ -951,7 +963,8 @@ function biljet5() {
     $result = $resultInkomen['total'] - $resultUitgaven['total'];
     return $result;
 }
-function bedragBiljet5() {
+function bedragBiljet5()
+{
     $pdo = conn();
     // INKOMEN biljet 5 in bedrag
     $queryInkomen = "SELECT SUM(bedrag) as total FROM inkomenlijst WHERE soort_biljetten = 5";
@@ -964,6 +977,57 @@ function bedragBiljet5() {
     $stmtUitgaven->execute();
     $resultUitgaven = $stmtUitgaven->fetch(PDO::FETCH_ASSOC);
     // TOTAAL
-    return $resultInkomen['total'] - $resultUitgaven['total']? "€". number_format($resultInkomen['total'] - $resultUitgaven['total'], 2, ',', '.') : "€0";
+    return $resultInkomen['total'] - $resultUitgaven['total'] ? "€" . number_format($resultInkomen['total'] - $resultUitgaven['total'], 2, ',', '.') : "€0";
 }
+function heleTranactieLijst()
+{
+    $pdo = conn();
+
+    $query = "
+        SELECT
+            COALESCE(inkomenlijst.datum, uitgavenlijst.datum) AS datum,
+            COALESCE(inkomenlijst.bedrag, 0) AS bedrag,
+            COALESCE(inkomenlijst.soort_biljetten, '') AS soort_biljetten,
+            COALESCE(inkomenlijst.aantalBiljettenInkomen, 0) AS aantalBiljettenInkomen,
+            COALESCE(uitgavenlijst.aantalBiljettenUitgaven, 0) AS aantalBiljettenUitgaven
+        FROM
+            inkomenlijst
+        LEFT JOIN
+            uitgavenlijst
+        ON
+            inkomenlijst.datum = uitgavenlijst.datum
+        UNION
+        SELECT
+            COALESCE(inkomenlijst.datum, uitgavenlijst.datum) AS datum,
+            COALESCE(inkomenlijst.bedrag, 0) AS bedrag,
+            COALESCE(inkomenlijst.soort_biljetten, '') AS soort_biljetten,
+            COALESCE(inkomenlijst.aantalBiljettenInkomen, 0) AS aantalBiljettenInkomen,
+            COALESCE(uitgavenlijst.aantalBiljettenUitgaven, 0) AS aantalBiljettenUitgaven
+        FROM
+            uitgavenlijst
+        LEFT JOIN
+            inkomenlijst
+        ON
+            uitgavenlijst.datum = inkomenlijst.datum
+        ORDER BY
+            datum DESC;
+    ";
+
+    $stmt = $pdo->prepare($query);
+    $stmt->execute();
+    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    $output = "";
+    foreach ($result as $row) {
+        $output .= "<tr>";
+        $output .= "<td>" . htmlspecialchars($row['datum']) . "</td>";
+        $output .= "<td>" . htmlspecialchars($row['bedrag']) . "</td>";
+        $output .= "<td>" . htmlspecialchars($row['soort_biljetten']) . "</td>";
+        $output .= "<td>" . htmlspecialchars($row['aantalBiljettenInkomen']) . "</td>";
+        $output .= "<td>" . htmlspecialchars($row['aantalBiljettenUitgaven']) . "</td>";
+        $output .= "</tr>";
+    }
+    return $output;
+}
+
 setupDatabase();
