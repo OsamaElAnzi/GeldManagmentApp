@@ -11,7 +11,7 @@ $imageBase64 = $imageData ? 'data:image/png;base64,' . $imageData : '';
 $moneyPath = __DIR__ . '/../foto/money.png';
 $moneyData = file_exists($moneyPath) ? base64_encode(file_get_contents($moneyPath)) : '';
 
-$moneyBase64 = $moneyData? 'data:image/png;base64,'. $moneyData : '';
+$moneyBase64 = $moneyData ? 'data:image/png;base64,' . $moneyData : '';
 
 // Data: function to variables
 $vermogen = getBedrag();
@@ -41,9 +41,9 @@ $EUR10_Bedrag = bedragBiljet10();
 $EUR5_Aantal = biljet5();
 $EUR5_Bedrag = bedragBiljet5();
 // ALLE TRANSACIES
-$transacties = heleTranactieLijst();
+$transactiesInkomen = alleTranactiesInkomenLijst();
+$transactiesUitgaven = alleTranactiesUitgavenLijst();
 $dompdf = new Dompdf();
-$transacties = heleTranactieLijst();
 
 $html = <<<HTML
 <style>
@@ -80,15 +80,24 @@ $html = <<<HTML
 </table>
 <h2>Transacties</h2>
 <table>
+    <h3>Inkomen</h3>
     <tr>
         <th>Datum</th>
         <th>Bedrag</th>
         <th>Soort Biljetten</th>
         <th>Aantal Biljetten Inkomen</th>
-        <th>Aantal Biljetten Uitgaven</th>
     </tr>
-    {$transacties}
+    {$transactiesInkomen}
+    <h3>Uitgaven</h3>
+    <tr>
+        <th>Datum</th>
+        <th>Bedrag</th>
+        <th>Soort Biljetten</th>
+        <th>Aantal Biljetten Inkomen</th>
+    <tr>
+    {$transactiesUitgaven}
 </table>
+
 HTML;
 
 $dompdf->loadHtml($html);
@@ -96,4 +105,3 @@ $dompdf->setPaper('A4', 'portrait');
 $dompdf->render();
 $filename = 'BACK-UP_INFO-VERMOGEN_' . date('Y-m-d-m-s') . '.pdf';
 $dompdf->stream($filename);
-?>

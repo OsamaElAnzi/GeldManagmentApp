@@ -979,39 +979,11 @@ function bedragBiljet5()
     // TOTAAL
     return $resultInkomen['total'] - $resultUitgaven['total'] ? "€" . number_format($resultInkomen['total'] - $resultUitgaven['total'], 2, ',', '.') : "€0";
 }
-function heleTranactieLijst()
+function alleTranactiesInkomenLijst()
 {
     $pdo = conn();
 
-    $query = "
-        SELECT
-            COALESCE(inkomenlijst.datum, uitgavenlijst.datum) AS datum,
-            COALESCE(inkomenlijst.bedrag, 0) AS bedrag,
-            COALESCE(inkomenlijst.soort_biljetten, '') AS soort_biljetten,
-            COALESCE(inkomenlijst.aantalBiljettenInkomen, 0) AS aantalBiljettenInkomen,
-            COALESCE(uitgavenlijst.aantalBiljettenUitgaven, 0) AS aantalBiljettenUitgaven
-        FROM
-            inkomenlijst
-        LEFT JOIN
-            uitgavenlijst
-        ON
-            inkomenlijst.datum = uitgavenlijst.datum
-        UNION
-        SELECT
-            COALESCE(inkomenlijst.datum, uitgavenlijst.datum) AS datum,
-            COALESCE(inkomenlijst.bedrag, 0) AS bedrag,
-            COALESCE(inkomenlijst.soort_biljetten, '') AS soort_biljetten,
-            COALESCE(inkomenlijst.aantalBiljettenInkomen, 0) AS aantalBiljettenInkomen,
-            COALESCE(uitgavenlijst.aantalBiljettenUitgaven, 0) AS aantalBiljettenUitgaven
-        FROM
-            uitgavenlijst
-        LEFT JOIN
-            inkomenlijst
-        ON
-            uitgavenlijst.datum = inkomenlijst.datum
-        ORDER BY
-            datum DESC;
-    ";
+    $query = "SELECT * FROM inkomenlijst";
 
     $stmt = $pdo->prepare($query);
     $stmt->execute();
@@ -1021,9 +993,29 @@ function heleTranactieLijst()
     foreach ($result as $row) {
         $output .= "<tr>";
         $output .= "<td>" . htmlspecialchars($row['datum']) . "</td>";
-        $output .= "<td>" . htmlspecialchars($row['bedrag']) . "</td>";
+        $output .= "<td>€" . htmlspecialchars($row['bedrag']) . "</td>";
         $output .= "<td>" . htmlspecialchars($row['soort_biljetten']) . "</td>";
         $output .= "<td>" . htmlspecialchars($row['aantalBiljettenInkomen']) . "</td>";
+        $output .= "</tr>";
+    }
+    return $output;
+}
+function alleTranactiesUitgavenLijst()
+{
+    $pdo = conn();
+
+    $query = "SELECT * FROM uitgavenlijst";
+
+    $stmt = $pdo->prepare($query);
+    $stmt->execute();
+    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    $output = "";
+    foreach ($result as $row) {
+        $output .= "<tr>";
+        $output .= "<td>" . htmlspecialchars($row['datum']) . "</td>";
+        $output .= "<td>-€" . htmlspecialchars($row['bedrag']) . "</td>";
+        $output .= "<td>" . htmlspecialchars($row['soort_biljetten']) . "</td>";
         $output .= "<td>" . htmlspecialchars($row['aantalBiljettenUitgaven']) . "</td>";
         $output .= "</tr>";
     }
