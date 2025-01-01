@@ -151,7 +151,7 @@ function biljettenTellerUitgaven()
                     $biljettenTelling[$soort] = 0;
                 }
 
-                $biljettenTelling[$soort] -= $aantalBiljetten;
+                $biljettenTelling[$soort] += $aantalBiljetten;
             } else {
                 return 0;
             }
